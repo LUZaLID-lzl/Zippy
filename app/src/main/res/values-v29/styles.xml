@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 主要颜色设置 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- 强制使用浅色主题 -->
+        <item name="android:forceDarkAllowed">false</item>
+
+        <!-- 自定义属性 -->
+        <item name="backgroundColor">@color/background_light</item>
+        <item name="textColor">@color/text_light</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+
+        <!-- 状态栏设置 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- 导航栏相关 -->
+        <item name="nav_background">@color/nav_background</item>
+        <item name="nav_text">@color/nav_text</item>
+        <item name="navHeaderBackground">@color/white</item>
+
+        <!-- Material Design 相关 -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+    </style>
+</resources>

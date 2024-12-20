@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- 使用styles.xml中的AppTheme -->
+    <style name="PikachuTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/home_gradient_background_pikaqiu</item>
+    </style>
+
+    <style name="PikachuSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/pikaqiu_splash_background</item>
+        <item name="android:navigationBarColor">@color/pikaqiu_splash_background</item>
+    </style>
+
+    <style name="BulbasaurTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/home_gradient_background_bulbasaur</item>
+    </style>
+
+    <style name="BulbasaurSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/bulbasaur_splash_background</item>
+        <item name="android:navigationBarColor">@color/bulbasaur_splash_background</item>
+    </style>
+</resources>

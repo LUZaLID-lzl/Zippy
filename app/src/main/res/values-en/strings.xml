@@ -1,0 +1,149 @@
+<resources>
+    <string name="app_name">Zippy</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="user_bio">All future life spent in happiness is wasted, and all beautiful tomorrows await those who are determined.</string>
+    
+    <!-- Settings Page -->
+    <string name="settings">Settings</string>
+    <string name="english">China-En handover</string>
+
+    <!-- Navigation Drawer Menu -->
+    <string name="menu_todo">Todo List</string>
+    <string name="menu_device_info">Device Info</string>
+    <string name="menu_battery">Battery</string>
+    <string name="menu_test">Test</string>
+    <string name="menu_calorie">Calorie Calculator</string>
+
+    <!-- Home Page -->
+    <string name="btn_start">Start</string>
+    <string name="btn_settings">Settings</string>
+
+    <!-- Common -->
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="back">Back</string>
+    <string name="empty_todo_list">No todo items</string>
+
+    <!-- Battery Management -->
+    <string name="battery_level">Battery Level</string>
+    <string name="battery_status">Status</string>
+    <string name="battery_temperature">Temperature</string>
+    <string name="battery_charging">Charging</string>
+    <string name="battery_discharging">Discharging</string>
+    <string name="battery_full">Full</string>
+
+    <!-- Calorie Calculator -->
+    <string name="calorie_per_100g">Energy per 100g (kJ)</string>
+    <string name="calorie_grams">Grams</string>
+    <string name="calorie_result">Please enter values</string>
+    <string name="calorie_input_hint">Please enter valid values</string>
+
+    <!-- Device Information -->
+    <string name="device_info_basic">Basic Device Info</string>
+    <string name="device_info_system">System Info</string>
+    <string name="device_info_hardware">Hardware Info</string>
+    <string name="device_info_network">Network Info</string>
+    <string name="device_brand">Brand</string>
+    <string name="device_model">Model</string>
+    <string name="device_board">Board</string>
+    <string name="device_manufacturer">Manufacturer</string>
+    <string name="device_android_version">Android Version</string>
+    <string name="device_sdk_version">SDK Version</string>
+    <string name="device_build_id">Build ID</string>
+    <string name="device_security_patch">Security Patch Level</string>
+    <string name="device_kernel">Kernel Version</string>
+    <string name="device_cpu">CPU Architecture</string>
+    <string name="device_memory">Memory Size</string>
+    <string name="device_storage">Storage Space</string>
+    <string name="device_screen">Screen Resolution</string>
+    <string name="device_density">Screen Density</string>
+    <string name="device_language">System Language</string>
+    <string name="device_timezone">Time Zone</string>
+    <string name="device_root">Root Status</string>
+    <string name="device_root_yes">Rooted</string>
+    <string name="device_root_no">Not Rooted</string>
+    <string name="device_apps">Installed Apps</string>
+    <string name="device_app_count">Total %d Apps</string>
+    <string name="device_system_apps">System Apps</string>
+    <string name="device_user_apps">User Apps</string>
+    <string name="todo_format">Format as follows:</string>
+    <string name="todo_title_empty">Please enter todo title</string>
+
+    <!-- Todo List -->
+    <string name="todo_empty">No todo items</string>
+    <string name="todo_add">Add Todo</string>
+    <string name="todo_import">Import Todo</string>
+    <string name="todo_clear">Clear All</string>
+    <string name="todo_title">Title</string>
+    <string name="todo_content">Content</string>
+    <string name="todo_edit">Edit Todo</string>
+    <string name="todo_delete">Delete Todo</string>
+    <string name="todo_complete">Complete Todo</string>
+
+    <!-- Todo related -->
+    <string name="todo_deleted">Todo item deleted</string>
+    <string name="undo">Undo</string>
+    <string name="todo_input_empty">Please enter todo information</string>
+    <string name="todo_import_success">Successfully imported %d todo items</string>
+    <string name="todo_import_invalid_format">No valid todo items found, please check the format</string>
+    <string name="todo_import_failed">Import failed, please check the input format</string>
+    <string name="todo_clear_confirm">Are you sure you want to clear all todo items?</string>
+    <string name="todo_completed">Todo item completed</string>
+
+    <!-- Device Information Details -->
+    <string name="device_product">Product Name</string>
+    <string name="device_code">Device Code</string>
+    <string name="device_build_version">System Version</string>
+    <string name="device_radio_version">Radio Version</string>
+    <string name="device_build_time">Build Time</string>
+    <string name="device_cpu_cores">CPU Cores</string>
+    <string name="device_memory_total">Total Memory</string>
+    <string name="device_memory_available">Available Memory</string>
+    <string name="device_storage_total">Total Internal Storage</string>
+    <string name="device_storage_available">Available Internal Storage</string>
+    <string name="device_mac">MAC Address</string>
+    <string name="device_ip">IP Address</string>
+    <string name="device_network_type">Network Type</string>
+    <string name="mobile_data">Mobile Data</string>
+    <string name="device_do_app_num">Installed Apps</string>
+    <string name="device_do_sensor_num">Available Sensors</string>
+    <string name="unknow">Unknown</string>
+
+    <string name="device_title_app_list">Apps</string>
+    <string name="device_title_sensor">Sensor</string>
+    <string name="device_title_others">Others</string>
+
+    <!-- Battery Management Details -->
+    <string name="battery_current_level">Current Level: %.1f%%</string>
+    <string name="battery_charging_status">Charging Status: %s</string>
+    <string name="battery_charging_type">Charging Type: %s</string>
+    <string name="battery_temp_value">Battery Temperature: %.1f°C</string>
+    <string name="battery_voltage">Battery Voltage: %.2fV</string>
+    <string name="battery_tech">Battery Technology: %s</string>
+    <string name="battery_status_charging">Charging</string>
+    <string name="battery_status_discharging">Discharging</string>
+    <string name="battery_status_full">Full</string>
+    <string name="battery_status_not_charging">Not Charging</string>
+    <string name="battery_type_ac">AC Power</string>
+    <string name="battery_type_usb">USB</string>
+    <string name="battery_type_wireless">Wireless</string>
+
+    <!-- Calorie Calculator Details -->
+    <string name="calorie_total_energy">Total Energy: %.1f kJ</string>
+    <string name="calorie_total_calories">(About %.1f kcal)</string>
+    <string name="calorie_enter_value">Please enter values</string>
+    <string name="calorie_enter_valid">Please enter valid values</string>
+
+    <!-- Calorie Calculator Instructions -->
+    <string name="calorie_instruction">Instructions:\n1. Enter energy per 100g (kJ)\n2. Enter actual grams consumed\n3. System will automatically calculate total energy and convert to calories\n\nNote: 1 kJ ≈ 0.239 kcal</string>
+
+    <!-- Settings Page Details -->
+    <string name="language_title">Language Settings</string>
+    <string name="theme_title">Theme Settings</string>
+    <string name="language_description">Turn on for English, turn off for Chinese</string>
+    <string name="theme_description">Click to switch theme</string>
+    <string name="theme_tips">Switchover successful</string>
+</resources> 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 搜索框 -->
+    <group android:id="@+id/group_main">
+
+        <!-- 主要菜单项 -->
+        <item
+            android:id="@+id/nav_subscriptions"
+            android:icon="@drawable/ic_star"
+            android:title="@string/menu_device_info"/>
+
+        <item
+            android:id="@+id/nav_battery"
+            android:icon="@drawable/ic_battery"
+            android:title="@string/menu_battery"/>
+
+        <item
+            android:id="@+id/nav_todo"
+            android:icon="@drawable/ic_todo"
+            android:title="@string/menu_todo"/>
+
+        <item
+            android:id="@+id/nav_calorie"
+            android:icon="@drawable/ic_calorie"
+            android:title="@string/menu_calorie"/>
+
+        <item
+            android:id="@+id/nav_test"
+            android:icon="@drawable/ic_test"
+            android:title="@string/menu_test"/>
+    </group>
+</menu> 

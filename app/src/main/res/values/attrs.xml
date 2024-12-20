@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="backgroundColor" format="color"/>
+    <attr name="textColor" format="color"/>
+    <attr name="nav_background" format="color"/>
+    <attr name="nav_text" format="color"/>
+    <attr name="navHeaderBackground" format="color"/>
+</resources> 

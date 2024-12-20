@@ -1,0 +1,147 @@
+<resources>
+    <string name="app_name">Zippy</string>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="user_bio">所有未来在快乐中度过的生活，都是浪费的，所有美好的明天都等待着决心的人。</string>
+
+    <!-- 设置页面 -->
+    <string name="settings">设置</string>
+    <string name="english">中英切换</string>
+
+    <!-- 侧边栏菜单 -->
+    <string name="menu_todo">待办事项</string>
+    <string name="menu_device_info">设备信息</string>
+    <string name="menu_battery">电池管理</string>
+    <string name="menu_test">测试</string>
+    <string name="menu_calorie">热量计算</string>
+
+    <!-- 首页 -->
+    <string name="btn_start">开始</string>
+    <string name="btn_settings">设置</string>
+
+    <!-- 通用 -->
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="back">返回</string>
+    <string name="unknow">未知</string>
+    <string name="empty_todo_list">暂无待办事项</string>
+
+    <!-- 电池管理 -->
+    <string name="battery_level">电量</string>
+    <string name="battery_status">状态</string>
+    <string name="battery_temperature">温度</string>
+    <string name="battery_charging">充电中</string>
+    <string name="battery_discharging">放电中</string>
+    <string name="battery_full">已充满</string>
+
+    <!-- 电池管理详细 -->
+    <string name="battery_current_level">当前电量：%.1f%%</string>
+    <string name="battery_charging_status">充电状态：%s</string>
+    <string name="battery_charging_type">充电类型：%s</string>
+    <string name="battery_temp_value">电池温度：%.1f°C</string>
+    <string name="battery_voltage">电池电压：%.2fV</string>
+    <string name="battery_tech">电池技术：%s</string>
+    <string name="battery_status_charging">正在充电</string>
+    <string name="battery_status_discharging">正在放电</string>
+    <string name="battery_status_full">电量已满</string>
+    <string name="battery_status_not_charging">未充电</string>
+    <string name="battery_type_ac">交流电源</string>
+    <string name="battery_type_usb">USB</string>
+    <string name="battery_type_wireless">无线充电</string>
+
+    <!-- 热量计算 -->
+    <string name="calorie_per_100g">每100g的能量(kJ)</string>
+    <string name="calorie_grams">克数</string>
+    <string name="calorie_result">请输入数值</string>
+    <string name="calorie_input_hint">请输入有效数值</string>
+
+    <!-- 热量计算详细 -->
+    <string name="calorie_total_energy">总能量: %.1f kJ</string>
+    <string name="calorie_total_calories">(约 %.1f kcal)</string>
+    <string name="calorie_enter_value">请输入数值</string>
+    <string name="calorie_enter_valid">请输入有效数值</string>
+
+    <!-- 热量计算使用说明 -->
+    <string name="calorie_instruction">使用说明：\n1. 输入食品每100g的能量(kJ)\n2. 输入实际食用的克数\n3. 系统会自动计算总能量并转换为卡路里\n\n注：1 kJ ≈ 0.239 kcal</string>
+
+    <!-- 设备信息 -->
+    <string name="device_info_basic">基本设备信息</string>
+    <string name="device_info_system">系统信息</string>
+    <string name="device_info_hardware">硬件信息</string>
+    <string name="device_info_network">网络信息</string>
+
+    <!-- 待办事项 -->
+    <string name="todo_empty">暂无待办事项</string>
+    <string name="todo_add">添加待办</string>
+    <string name="todo_import">导入待办</string>
+    <string name="todo_clear">清空待办</string>
+    <string name="todo_title">标题</string>
+    <string name="todo_content">内容</string>
+    <string name="todo_edit">编辑待办</string>
+    <string name="todo_delete">删除待办</string>
+    <string name="todo_complete">完成待办</string>
+    <string name="todo_deleted">已删除待办事项</string>
+    <string name="undo">撤销</string>
+    <string name="todo_format">格式如下：</string>
+    <string name="todo_title_empty">请输入待办标题</string>
+    <string name="todo_input_empty">请输入待办信息</string>
+    <string name="todo_import_success">成功导入 %d 条待办事项</string>
+    <string name="todo_import_invalid_format">未找到有效的待办信息，请检查格式是否正确</string>
+    <string name="todo_import_failed">导入失败，请检查输入格式</string>
+    <string name="todo_clear_confirm">确定要清空所有待办事项吗？</string>
+    <string name="todo_completed">已完成待办事项</string>
+
+    <!-- 设备信息详细 -->
+    <string name="device_brand">品牌</string>
+    <string name="device_model">型号</string>
+    <string name="device_board">主板</string>
+    <string name="device_manufacturer">制造商</string>
+    <string name="device_android_version">Android版本</string>
+    <string name="device_sdk_version">SDK版本</string>
+    <string name="device_build_id">构建编号</string>
+    <string name="device_security_patch">安全补丁级别</string>
+    <string name="device_kernel">内核版本</string>
+    <string name="device_cpu">CPU架构</string>
+    <string name="device_memory">内存大小</string>
+    <string name="device_storage">存储空间</string>
+    <string name="device_screen">屏幕分辨率</string>
+    <string name="device_density">屏幕密度</string>
+    <string name="device_language">系统语言</string>
+    <string name="device_timezone">时区</string>
+    <string name="device_root">Root状态</string>
+    <string name="device_root_yes">已Root</string>
+    <string name="device_root_no">未Root</string>
+    <string name="device_apps">已安装应用</string>
+    <string name="device_app_count">共 %d 个应用</string>
+    <string name="device_system_apps">系统应用</string>
+    <string name="device_user_apps">用户应用</string>
+    <string name="device_product">产品名称</string>
+    <string name="device_code">设备代号</string>
+    <string name="device_build_version">系统版本号</string>
+    <string name="device_radio_version">基带版本</string>
+    <string name="device_build_time">构建时间</string>
+    <string name="device_cpu_cores">CPU 核心数</string>
+    <string name="device_memory_total">总内存</string>
+    <string name="device_memory_available">可用内存</string>
+    <string name="device_storage_total">内部存储总空间</string>
+    <string name="device_storage_available">内部存储可用空间</string>
+    <string name="device_mac">MAC 地址</string>
+    <string name="device_ip">IP 地址</string>
+    <string name="device_network_type">网络类型</string>
+    <string name="mobile_data">移动数据</string>
+    <string name="device_do_app_num">已安装应用数量</string>
+    <string name="device_do_sensor_num">可用传感器数量</string>
+    <string name="device_title_app_list">应用列表</string>
+    <string name="device_title_sensor">传感器</string>
+    <string name="device_title_others">其他信息</string>
+
+    <!-- 设置页面详细 -->
+    <string name="language_title">语言设置</string>
+    <string name="theme_title">主题设置</string>
+    <string name="language_description">开启切换为英文，关闭切换为中文</string>
+    <string name="theme_description">点击切换主题</string>
+    <string name="theme_tips">切换成功</string>
+    <!-- Strings used for fragments for navigation -->
+</resources>

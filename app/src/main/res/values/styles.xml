@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础应用主题 -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 主要颜色设置 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        
+        <!-- 强制使用浅色主题 -->
+        <item name="android:forceDarkAllowed">false</item>
+        
+        <!-- 自定义属性 -->
+        <item name="backgroundColor">@color/background_light</item>
+        <item name="textColor">@color/text_light</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        
+        <!-- 状态栏设置 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- 导航栏相关 -->
+        <item name="nav_background">@color/nav_background</item>
+        <item name="nav_text">@color/nav_text</item>
+        <item name="navHeaderBackground">@color/white</item>
+
+        <!-- Material Design 相关 -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+    </style>
+
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ProfileActionButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:background">@drawable/circle_button_background</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="NavigationDrawerStyle" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="android:listPreferredItemHeightSmall">56dp</item>
+        <item name="android:listPreferredItemPaddingLeft">24dp</item>
+        <item name="android:listPreferredItemPaddingRight">24dp</item>
+        <item name="android:background">@color/nav_background</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="itemTextColor">@color/text_color</item>
+        <item name="itemIconTint">@color/text_color</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="itemIconPadding">16dp</item>
+        <item name="itemHorizontalPadding">24dp</item>
+        <item name="itemVerticalPadding">8dp</item>
+        <item name="android:statusBarColor">@color/nav_background</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/bg_dialog</item>
+        <item name="android:textColor">#DE000000</item>
+        <item name="android:textColorPrimary">#99000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:padding">8dp</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/blue_500</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="LoadingDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+    </style>
+
+</resources> 
