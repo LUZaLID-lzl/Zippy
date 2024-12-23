@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,21 +27,16 @@ public abstract class BaseFragment extends Fragment {
         ImageButton backButton = view.findViewById(R.id.btn_back);
         backButton.setOnClickListener(v -> {
             if (getActivity() != null) {
-                getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
-                    .replace(R.id.content_frame, new HomeFragment())
-                    .commit();
-
+                getActivity().onBackPressed();
             }
         });
 
         // 初始化视图
         initViews(view);
+
     }
+
+
 
     // 子类必须实现的方法
     protected abstract String getTitle();

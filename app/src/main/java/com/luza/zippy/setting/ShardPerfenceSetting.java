@@ -11,7 +11,7 @@ public class ShardPerfenceSetting {
     private SharedPreferences.Editor editor;
     private Context mContext;
     private String language;        //en - zh
-    private String homeTheme;       //pikachu - bulbasaur - squirtle
+    private String homeTheme;       //pikachu - bulbasaur - squirtle - Mewtwo
 
 
     public String getLanguage() {

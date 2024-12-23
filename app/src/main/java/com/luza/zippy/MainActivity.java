@@ -52,8 +52,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         util = new Util();
         shardPerfenceSetting = new ShardPerfenceSetting(this);
         shardPerfenceSetting.update();
-        util.updateTheme(this);
-
+        
+        // 根据保存的主题设置当前主题
+        String currentTheme = shardPerfenceSetting.getHomeTheme();
+        if ("pikachu".equals(currentTheme)) {
+            setTheme(R.style.PikachuTheme);
+        } else if ("bulbasaur".equals(currentTheme)) {
+            setTheme(R.style.BulbasaurTheme);
+        }
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -62,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupGestureDetector();
 
         if (savedInstanceState == null) {
-            android.util.Log.d("liziluo","test_log: ");
             loadHomeFragment();
         }
     }
@@ -96,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 加载首页Fragment
      */
     private void loadHomeFragment() {
+        // 清空回退栈
+        FragmentManager fm = getSupportFragmentManager();
+        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, new HomeFragment());
         transaction.commit();
@@ -106,6 +116,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 加载其他Fragment
      */
     private void loadFragment(Fragment fragment) {
+        // 如果当前不是首页，先清空回退栈
+        if (!isHome) {
+            FragmentManager fm = getSupportFragmentManager();
+            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(
             R.anim.slide_in_right,  // 进入动画
@@ -143,22 +159,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (!isHome) {
-            // 不在首页时才响应返回键，并添加动画
+        } else {
             FragmentManager fm = getSupportFragmentManager();
-            if (fm.getBackStackEntryCount() > 0) {
+            if (fm.getBackStackEntryCount() > 1) {
+                // 如果回退栈中有多个Fragment，弹出顶部的Fragment
                 fm.popBackStack();
-                // 添加返回动画
-                overridePendingTransition(
-                    R.anim.slide_in_left,  // 新页面从左边进入
-                    R.anim.slide_out_right  // 当前页面从右边退出
-                );
+            } else if (fm.getBackStackEntryCount() == 1) {
+                // 如果只剩一个Fragment，清空回退栈并加载首页
+                loadHomeFragment();
+            } else {
+                super.onBackPressed();
             }
         }
-        // 在首页时不做任何响应
     }
 
     // 添加返回栈监听器
@@ -174,25 +188,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        android.util.Log.d("liziluo","onResume: " + MainActivity.needRecreate);
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
         util.updateLocale(this);
-
-        if (MainActivity.needRecreate){
-            android.util.Log.d("liziluo","need update: ");
-            updateTheme();
-        }
-        initViews();
-    }
-
-    public void updateTheme(){
-        this.recreate();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        getSupportFragmentManager().removeOnBackStackChangedListener(backStackChangedListener);
     }
 
     private void setupGestureDetector() {

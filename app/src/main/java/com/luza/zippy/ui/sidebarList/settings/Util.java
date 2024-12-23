@@ -27,38 +27,4 @@ public class Util {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    public void updateTheme(Activity activity) {
-        ShardPerfenceSetting shardPerfenceSetting = new ShardPerfenceSetting(activity.getBaseContext());
-        String theme = shardPerfenceSetting.getHomeTheme();
-        Log.d("liziluo","activity.getComponentName() : " + activity.getComponentName());
-        if (activity.getComponentName().toString().contains("SplashActivity")){
-            switch (theme) {
-                case "pikachu":
-                    activity.setTheme(R.style.PikachuSplashTheme);
-                    break;
-                case "bulbasaur":
-                    activity.setTheme(R.style.BulbasaurSplashTheme);
-                    break;
-                default:
-            }
-        }else if (activity.getComponentName().toString().contains("MainActivity")){
-            if (MainActivity.needRecreate){
-                switch (theme) {
-                    case "pikachu":
-                        Log.d("liziluo","pikachu : ");
-                        activity.setTheme(R.style.PikachuTheme);
-                        break;
-                    case "bulbasaur":
-                        Log.d("liziluo","bulbasaur : ");
-                        activity.setTheme(R.style.BulbasaurTheme);
-                        break;
-                    default:
-                        activity.setTheme(R.style.PikachuTheme);
-                        break;
-                }
-                MainActivity.needRecreate = false;
-            }
-        }
-    }
-
 }

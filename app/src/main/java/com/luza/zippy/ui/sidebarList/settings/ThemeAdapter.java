@@ -2,6 +2,7 @@ package com.luza.zippy.ui.sidebarList.settings;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,12 +91,31 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
                         selectedPosition = position;
                         theme.isEnabled = true;
 
+                        // 保存主题设置
                         shardPerfenceSetting.setHomeTheme(theme.description);
                         shardPerfenceSetting.setSharedPreferences();
                         shardPerfenceSetting.update();
-                        MainActivity.needRecreate = true;
 
-                        Toast.makeText(mActivity,  mActivity.getBaseContext().getString(R.string.theme_tips), Toast.LENGTH_SHORT).show();
+                        // 显示加载对话框
+                        Dialog loadingDialog = new Dialog(mActivity, R.style.LoadingDialog);
+                        loadingDialog.setContentView(R.layout.loading_dialog);
+                        loadingDialog.setCancelable(false);
+                        loadingDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        loadingDialog.show();
+
+                        // 延迟一小段时间后重新创建Activity
+                        new Handler().postDelayed(() -> {
+                            loadingDialog.dismiss();
+                            if (mActivity instanceof MainActivity) {
+                                // 重新创建Activity以应用新主题
+                                Intent intent = mActivity.getIntent();
+                                mActivity.finish();
+                                mActivity.startActivity(intent);
+                                mActivity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            }
+                        }, 500);
+
+                        Toast.makeText(mActivity, mActivity.getBaseContext().getString(R.string.theme_tips), Toast.LENGTH_SHORT).show();
 
                         // 刷新列表显示
                         notifyItemChanged(oldSelectedPosition);
