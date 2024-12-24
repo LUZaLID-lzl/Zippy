@@ -140,7 +140,7 @@
     <!-- 设置页面详细 -->
     <string name="language_title">语言设置</string>
     <string name="theme_title">主题设置</string>
-    <string name="language_description">开启切换为英文，关闭切换为中文</string>
+    <string name="language_description">开启为英文，关闭为中文</string>
     <string name="theme_description">点击切换主题</string>
     <string name="theme_tips">切换成功</string>
     <!-- Strings used for fragments for navigation -->

@@ -41,7 +41,7 @@ public class ShardPerfenceSetting {
     public void getSharedPreferences(){
         sharedPreferences = mContext.getSharedPreferences(PREF_NAME, mContext.MODE_PRIVATE);
         setLanguage(sharedPreferences.getString("language", "en"));
-        setHomeTheme(sharedPreferences.getString("homeTheme", "pikachu"));
+        setHomeTheme(sharedPreferences.getString("homeTheme", "squirtle"));
     }
 
     public ShardPerfenceSetting(Context context) {

@@ -19,5 +19,6 @@
     <color name="text_color">#000000</color>
     <color name="pikaqiu_splash_background">#FFC603</color>
     <color name="bulbasaur_splash_background">#13B4FC</color>
+    <color name="squirtle_splash_background">#5CB860</color>
     <color name="icon_background">#FFFFFF</color>
 </resources>

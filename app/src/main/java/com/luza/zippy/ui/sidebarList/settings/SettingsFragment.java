@@ -83,7 +83,8 @@ public class SettingsFragment extends BaseFragment {
     private List<ThemeItem> getThemeList() {
         return Arrays.asList(
                 new ThemeItem("Pokemon", "pikachu",  R.drawable.pikaqiu_2, R.drawable.bg_setting_card_background_pikaqiu),
-                new ThemeItem("Pokemon", "bulbasaur", R.drawable.bulbasaur_1, R.drawable.bg_setting_card_background_bulbasaur)
+                new ThemeItem("Pokemon", "bulbasaur", R.drawable.bulbasaur_1, R.drawable.bg_setting_card_background_bulbasaur),
+                new ThemeItem("Pokemon", "squirtle", R.drawable.squirtle_1, R.drawable.bg_setting_card_background_squirtle)
         );
     }
 

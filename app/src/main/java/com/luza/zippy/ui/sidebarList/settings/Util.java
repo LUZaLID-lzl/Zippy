@@ -16,6 +16,8 @@ import com.luza.zippy.setting.ShardPerfenceSetting;
 import java.util.Locale;
 
 public class Util {
+    private static final String TAG = "Util";
+
     public void updateLocale(Context context){
         ShardPerfenceSetting shardPerfenceSetting = new ShardPerfenceSetting(context);
         String language = shardPerfenceSetting.getLanguage();
@@ -27,4 +29,23 @@ public class Util {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
+    public void updateTheme(Activity activity) {
+        ShardPerfenceSetting shardPerfenceSetting = new ShardPerfenceSetting(activity.getBaseContext());
+        String theme = shardPerfenceSetting.getHomeTheme();
+        Log.d(TAG,"activity.getComponentName() : " + activity.getComponentName());
+        if (activity.getComponentName().toString().contains("SplashActivity")){
+            switch (theme) {
+                case "pikachu":
+                    activity.setTheme(R.style.PikachuSplashTheme);
+                    break;
+                case "bulbasaur":
+                    activity.setTheme(R.style.BulbasaurSplashTheme);
+                    break;
+                case "squirtle":
+                    activity.setTheme(R.style.SquirtleSplashTheme);
+                    break;
+                default:
+            }
+        }
+    }
 }

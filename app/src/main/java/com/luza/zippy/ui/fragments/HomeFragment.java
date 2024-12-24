@@ -50,6 +50,17 @@ public class HomeFragment extends Fragment {
         R.drawable.bulbasaur_5,
     };
 
+    private final int[] squirtleImages = {
+            R.drawable.squirtle_1,
+            R.drawable.squirtle_2,
+            R.drawable.squirtle_3,
+            R.drawable.squirtle_4,
+            R.drawable.squirtle_5,
+            R.drawable.squirtle_6,
+            R.drawable.squirtle_7,
+
+    };
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -117,6 +128,9 @@ public class HomeFragment extends Fragment {
                 break;
             case "bulbasaur":
                 currentImages = bulbasaurImages;
+                break;
+            case "squirtle":
+                currentImages = squirtleImages;
                 break;
             default:
                 currentImages = pikachuImages;

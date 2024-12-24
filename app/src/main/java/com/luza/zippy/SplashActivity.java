@@ -14,10 +14,13 @@ public class SplashActivity extends AppCompatActivity {
     private static final long SPLASH_DELAY = 1500; // 1.5秒的延迟
     private ShardPerfenceSetting shardPerfenceSetting;
     private ImageView imageView;
+    private Util util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        util = new Util();
+        util.updateTheme(this);
         setContentView(R.layout.activity_splash);
 
         imageView = findViewById(R.id.bg_screen_splash);
@@ -29,6 +32,9 @@ public class SplashActivity extends AppCompatActivity {
                 break;
             case "bulbasaur":
                 imageView.setImageResource(R.drawable.ic_screen_bulbasaur);
+                break;
+            case "squirtle":
+                imageView.setImageResource(R.drawable.ic_screen_squirtle);
                 break;
         }
 

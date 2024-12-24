@@ -59,6 +59,9 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
             case "bulbasaur":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_water_drop));
                 break;
+            case "squirtle":
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_leaf));
+                break;
             default:
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));
                 break;

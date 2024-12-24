@@ -55,10 +55,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         
         // 根据保存的主题设置当前主题
         String currentTheme = shardPerfenceSetting.getHomeTheme();
-        if ("pikachu".equals(currentTheme)) {
-            setTheme(R.style.PikachuTheme);
-        } else if ("bulbasaur".equals(currentTheme)) {
-            setTheme(R.style.BulbasaurTheme);
+        switch (currentTheme){
+            case "pikachu":
+                setTheme(R.style.PikachuTheme);
+                break;
+            case "bulbasaur":
+                setTheme(R.style.BulbasaurTheme);
+                break;
+            case "squirtle":
+                setTheme(R.style.SquirtleTheme);
+                break;
         }
         
         super.onCreate(savedInstanceState);
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new TodoFragment());
         } else if (id == R.id.nav_calorie) {
             loadFragment(new CalorieFragment());
-        }else if (id == R.id.nav_test) {
+        }else if (id == R.id .nav_test) {
             loadFragment(new TestFragment());
         }
 

@@ -18,4 +18,13 @@
         <item name="android:statusBarColor">@color/bulbasaur_splash_background</item>
         <item name="android:navigationBarColor">@color/bulbasaur_splash_background</item>
     </style>
+
+    <style name="SquirtleTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/home_gradient_background_squirtle</item>
+    </style>
+
+    <style name="SquirtleSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/squirtle_splash_background</item>
+        <item name="android:navigationBarColor">@color/squirtle_splash_background</item>
+    </style>
 </resources>
