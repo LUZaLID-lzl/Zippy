@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,9 @@ public class DeviceInfoFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private View currentSelectedTab;
+    private View layoutApps, layoutSensors, layoutDeviceInfo;
+    private ImageView imageApps, imageSensors, imageDeviceInfo;
+    private TextView textApps, textSensors, textDeviceInfo;
 
     @Nullable
     @Override
@@ -64,103 +68,167 @@ public class DeviceInfoFragment extends BaseFragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         
+        // 初始化视图引用
+        layoutApps = view.findViewById(R.id.layout_apps);
+        layoutSensors = view.findViewById(R.id.layout_sensors);
+        layoutDeviceInfo = view.findViewById(R.id.layout_device_info);
+        
+        imageApps = view.findViewById(R.id.image_apps);
+        imageSensors = view.findViewById(R.id.image_sensors);
+        imageDeviceInfo = view.findViewById(R.id.image_device_info);
+        
+        textApps = view.findViewById(R.id.text_apps);
+        textSensors = view.findViewById(R.id.text_sensors);
+        textDeviceInfo = view.findViewById(R.id.text_device_info);
+
         // 设置点击事件
-        View appsTab = view.findViewById(R.id.layout_apps);
-        View sensorsTab = view.findViewById(R.id.layout_sensors);
-        View deviceInfoTab = view.findViewById(R.id.layout_device_info);
-
-        appsTab.setOnClickListener(v -> {
-            updateTabSelection(v);
-            switchContent(this::loadApps);
-        });
-        sensorsTab.setOnClickListener(v -> {
-            updateTabSelection(v);
-            switchContent(this::loadSensors);
-        });
-        deviceInfoTab.setOnClickListener(v -> {
-            updateTabSelection(v);
-            switchContent(this::loadDeviceInfo);
+        layoutApps.setOnClickListener(v -> {
+            updateSelection(0);
+            // 显示应用列表
+            showAppList();
         });
 
-        // 默认选中应用列表（无动画）
-        updateTabSelection(appsTab);
-        loadApps();
+        layoutSensors.setOnClickListener(v -> {
+            updateSelection(1);
+            // 显示传感器列表
+            showSensorList();
+        });
+
+        layoutDeviceInfo.setOnClickListener(v -> {
+            updateSelection(2);
+            // 显示设备信息
+            showDeviceInfo();
+        });
+
+        // 默认选中设备信息
+        updateSelection(0);
+        showAppList();
     }
 
-    private void updateTabSelection(View selectedTab) {
-        // 清除之前选中的状态
-        if (currentSelectedTab != null) {
-            currentSelectedTab.setBackgroundResource(android.R.color.transparent);
+    private void updateSelection(int selectedIndex) {
+        // 重置所有选项的状态并播放动画
+        resetItemWithAnimation(layoutApps, imageApps, textApps);
+        resetItemWithAnimation(layoutSensors, imageSensors, textSensors);
+        resetItemWithAnimation(layoutDeviceInfo, imageDeviceInfo, textDeviceInfo);
+
+        // 设置选中项的状态并播放动画
+        switch (selectedIndex) {
+            case 0:
+                selectItemWithAnimation(layoutApps, imageApps, textApps);
+                break;
+            case 1:
+                selectItemWithAnimation(layoutSensors, imageSensors, textSensors);
+                break;
+            case 2:
+                selectItemWithAnimation(layoutDeviceInfo, imageDeviceInfo, textDeviceInfo);
+                break;
         }
-        // 设置新的选中状态
-        selectedTab.setBackgroundResource(R.drawable.bg_tab_selected);
-        currentSelectedTab = selectedTab;
     }
 
-    private void loadApps() {
-        PackageManager pm = requireContext().getPackageManager();
-        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
-        
-        AppListAdapter appListAdapter = new AppListAdapter(pm);
-        recyclerView.setAdapter(appListAdapter);
-        appListAdapter.setData(apps);
+    private void selectItemWithAnimation(View layout, ImageView icon, TextView text) {
+        layout.setSelected(true);
+        icon.setSelected(true);
+        text.setSelected(true);
+
+        Animation selectedAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.device_info_item_selected);
+        icon.startAnimation(selectedAnim);
     }
 
-    private void loadSensors() {
-        SensorManager sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        List<String> sensorNames = new ArrayList<>();
-        
-        for (Sensor sensor : sensors) {
-            sensorNames.add(sensor.getName());
+    private void resetItemWithAnimation(View layout, ImageView icon, TextView text) {
+        if (layout.isSelected()) {
+            Animation unselectedAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.device_info_item_unselected);
+            icon.startAnimation(unselectedAnim);
         }
         
-        InfoAdapter infoAdapter = new InfoAdapter();
-        recyclerView.setAdapter(infoAdapter);
-        infoAdapter.setHeaderText(String.format(MainActivity.mContext.getString(R.string.device_do_sensor_num) + "：%d", sensors.size()));
-        infoAdapter.setData(sensorNames);
+        layout.setSelected(false);
+        icon.setSelected(false);
+        text.setSelected(false);
     }
 
-    private void loadDeviceInfo() {
-        List<String> info = new ArrayList<>();
-        
-        // 基本设备信息
-        info.add(getString(R.string.device_info_basic));
-        info.add(getString(R.string.device_brand) + ": " + Build.BRAND);
-        info.add(getString(R.string.device_model) + ": " + Build.MODEL);
-        info.add(getString(R.string.device_manufacturer) + ": " + Build.MANUFACTURER);
-        info.add(getString(R.string.device_product) + ": " + Build.PRODUCT);
-        info.add(getString(R.string.device_code) + ": " + Build.DEVICE);
-        
-        // 系统信息
-        info.add(getString(R.string.device_info_system));
-        info.add(getString(R.string.device_android_version) + ": " + Build.VERSION.RELEASE);
-        info.add(getString(R.string.device_sdk_version) + ": " + Build.VERSION.SDK_INT);
-        info.add(getString(R.string.device_build_version) + ": " + Build.DISPLAY);
-        info.add(getString(R.string.device_radio_version) + ": " + Build.getRadioVersion());
-        info.add(getString(R.string.device_kernel) + ": " + getKernelVersion());
-        info.add(getString(R.string.device_build_time) + ": " + getBuildTime());
-        
-        // 硬件信息
-        info.add(getString(R.string.device_info_hardware));
-        info.add(getString(R.string.device_cpu) + ": " + Build.SUPPORTED_ABIS[0]);
-        info.add(getString(R.string.device_cpu_cores) + ": " + Runtime.getRuntime().availableProcessors());
-        info.add(getString(R.string.device_screen) + ": " + getScreenResolution());
-        info.add(getString(R.string.device_density) + ": " + getScreenDensity());
-        info.add(getString(R.string.device_memory_total) + ": " + getTotalMemory());
-        info.add(getString(R.string.device_memory_available) + ": " + getAvailableMemory());
-        info.add(getString(R.string.device_storage_total) + ": " + getTotalInternalStorage());
-        info.add(getString(R.string.device_storage_available) + ": " + getAvailableInternalStorage());
-        
-        // 网络信息
-        info.add(getString(R.string.device_info_network));
-        info.add(getString(R.string.device_mac) + ": " + getMacAddress());
-        info.add(getString(R.string.device_ip) + ": " + getIPAddress());
-        info.add(getString(R.string.device_network_type) + ": " + getNetworkType());
-        
-        InfoAdapter infoAdapter = new InfoAdapter();
-        recyclerView.setAdapter(infoAdapter);
-        infoAdapter.setData(info);
+    private void switchContent(Runnable loadAction) {
+        recyclerView.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction(() -> {
+                    loadAction.run();
+                    recyclerView.animate()
+                            .alpha(1f)
+                            .setDuration(200)
+                            .start();
+                })
+                .start();
+    }
+
+    private void showAppList() {
+        switchContent(() -> {
+            PackageManager pm = requireContext().getPackageManager();
+            List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+            
+            AppListAdapter appListAdapter = new AppListAdapter(pm);
+            recyclerView.setAdapter(appListAdapter);
+            appListAdapter.setData(apps);
+        });
+    }
+
+    private void showSensorList() {
+        switchContent(() -> {
+            SensorManager sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
+            List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+            List<String> sensorNames = new ArrayList<>();
+            
+            for (Sensor sensor : sensors) {
+                sensorNames.add(sensor.getName());
+            }
+            
+            InfoAdapter infoAdapter = new InfoAdapter();
+            recyclerView.setAdapter(infoAdapter);
+            infoAdapter.setHeaderText(String.format(MainActivity.mContext.getString(R.string.device_do_sensor_num) + "：%d", sensors.size()));
+            infoAdapter.setData(sensorNames);
+        });
+    }
+
+    private void showDeviceInfo() {
+        switchContent(() -> {
+            List<String> info = new ArrayList<>();
+            
+            // 基本设备信息
+            info.add(getString(R.string.device_info_basic));
+            info.add(getString(R.string.device_brand) + ": " + Build.BRAND);
+            info.add(getString(R.string.device_model) + ": " + Build.MODEL);
+            info.add(getString(R.string.device_manufacturer) + ": " + Build.MANUFACTURER);
+            info.add(getString(R.string.device_product) + ": " + Build.PRODUCT);
+            info.add(getString(R.string.device_code) + ": " + Build.DEVICE);
+            
+            // 系统信息
+            info.add(getString(R.string.device_info_system));
+            info.add(getString(R.string.device_android_version) + ": " + Build.VERSION.RELEASE);
+            info.add(getString(R.string.device_sdk_version) + ": " + Build.VERSION.SDK_INT);
+            info.add(getString(R.string.device_build_version) + ": " + Build.DISPLAY);
+            info.add(getString(R.string.device_radio_version) + ": " + Build.getRadioVersion());
+            info.add(getString(R.string.device_kernel) + ": " + getKernelVersion());
+            info.add(getString(R.string.device_build_time) + ": " + getBuildTime());
+            
+            // 硬件信息
+            info.add(getString(R.string.device_info_hardware));
+            info.add(getString(R.string.device_cpu) + ": " + Build.SUPPORTED_ABIS[0]);
+            info.add(getString(R.string.device_cpu_cores) + ": " + Runtime.getRuntime().availableProcessors());
+            info.add(getString(R.string.device_screen) + ": " + getScreenResolution());
+            info.add(getString(R.string.device_density) + ": " + getScreenDensity());
+            info.add(getString(R.string.device_memory_total) + ": " + getTotalMemory());
+            info.add(getString(R.string.device_memory_available) + ": " + getAvailableMemory());
+            info.add(getString(R.string.device_storage_total) + ": " + getTotalInternalStorage());
+            info.add(getString(R.string.device_storage_available) + ": " + getAvailableInternalStorage());
+            
+            // 网络信息
+            info.add(getString(R.string.device_info_network));
+            info.add(getString(R.string.device_mac) + ": " + getMacAddress());
+            info.add(getString(R.string.device_ip) + ": " + getIPAddress());
+            info.add(getString(R.string.device_network_type) + ": " + getNetworkType());
+            
+            InfoAdapter infoAdapter = new InfoAdapter();
+            recyclerView.setAdapter(infoAdapter);
+            infoAdapter.setData(info);
+        });
     }
 
     // 获取内核版本
@@ -309,28 +377,5 @@ public class DeviceInfoFragment extends BaseFragment {
         DisplayMetrics metrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels + " x " + metrics.heightPixels;
-    }
-
-    private void switchContent(Runnable loadAction) {
-        // 创建淡出动画
-        Animation fadeOut = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // 淡出动画结束后，加载新内容并开始淡入动画
-                loadAction.run();
-                Animation fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
-                recyclerView.startAnimation(fadeIn);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        // 开始淡出动画
-        recyclerView.startAnimation(fadeOut);
     }
 } 

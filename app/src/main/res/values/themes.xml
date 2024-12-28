@@ -2,29 +2,50 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- 使用styles.xml中的AppTheme -->
     <style name="PikachuTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#EAE9E7</item>
+        <item name="android:navigationBarColor">#EAD58E</item>
         <item name="android:windowBackground">@drawable/home_gradient_background_pikaqiu</item>
     </style>
 
     <style name="PikachuSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/pikaqiu_splash_background</item>
-        <item name="android:navigationBarColor">@color/pikaqiu_splash_background</item>
+        <item name="android:statusBarColor">#C8D127</item>
+        <item name="android:navigationBarColor">#969C38</item>
+        <item name="android:windowBackground">@drawable/bg_splash_background_pikaqiu</item>
     </style>
 
     <style name="BulbasaurTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#E7E9EA</item>
+        <item name="android:navigationBarColor">#94CEE9</item>
         <item name="android:windowBackground">@drawable/home_gradient_background_bulbasaur</item>
     </style>
 
     <style name="BulbasaurSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/bulbasaur_splash_background</item>
-        <item name="android:navigationBarColor">@color/bulbasaur_splash_background</item>
+        <item name="android:statusBarColor">#12E8FF</item>
+        <item name="android:navigationBarColor">#1BA0AE</item>
+        <item name="android:windowBackground">@drawable/bg_splash_background_bulbasaur</item>
     </style>
 
     <style name="SquirtleTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#E8E9E8</item>
+        <item name="android:navigationBarColor">#AFD0B0</item>
         <item name="android:windowBackground">@drawable/home_gradient_background_squirtle</item>
     </style>
 
     <style name="SquirtleSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/squirtle_splash_background</item>
-        <item name="android:navigationBarColor">@color/squirtle_splash_background</item>
+        <item name="android:statusBarColor">#22E02A</item>
+        <item name="android:navigationBarColor">#118016</item>
+        <item name="android:windowBackground">@drawable/bg_splash_background_squirtle</item>
+    </style>
+
+    <style name="MewTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#EAE9E9</item>
+        <item name="android:navigationBarColor">#E8CAD2</item>
+        <item name="android:windowBackground">@drawable/home_gradient_background_mew</item>
+    </style>
+
+    <style name="MewSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#F3C0CD</item>
+        <item name="android:navigationBarColor">#CF728B</item>
+        <item name="android:windowBackground">@drawable/bg_splash_background_mew</item>
     </style>
 </resources>

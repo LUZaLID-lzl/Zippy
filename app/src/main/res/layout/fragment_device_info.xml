@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
     android:orientation="vertical">
 
     <!-- 引入标题栏布局 -->
@@ -11,111 +11,143 @@
         layout="@layout/layout_page_title"/>
 
     <!-- 内容区域 -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="0dp">
+        android:fillViewport="true">
 
-        <!-- 三个栏目的图片布局 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- 应用列表栏目 -->
-            <LinearLayout
-                android:id="@+id/layout_apps"
-                android:layout_width="0dp"
+            <!-- 功能选择卡片 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_phone"
-                    android:tint="?attr/textColor"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/device_title_app_list"
-                    android:textSize="16sp"
-                    android:textColor="?attr/textColor"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
-            <!-- Sensor列表栏目 -->
-            <LinearLayout
-                android:id="@+id/layout_sensors"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                    <!-- 应用列表栏目 -->
+                    <LinearLayout
+                        android:id="@+id/layout_apps"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/image_apps"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_phone"
+                            android:tint="@color/device_info_icon_color"/>
+
+                        <TextView
+                            android:id="@+id/text_apps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/device_title_app_list"
+                            android:textSize="14sp"
+                            android:textColor="@color/device_info_text_color"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+
+                    <!-- Sensor列表栏目 -->
+                    <LinearLayout
+                        android:id="@+id/layout_sensors"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/image_sensors"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_sensor"
+                            android:tint="@color/device_info_icon_color"/>
+
+                        <TextView
+                            android:id="@+id/text_sensors"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/device_title_sensor"
+                            android:textSize="14sp"
+                            android:textColor="@color/device_info_text_color"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+
+                    <!-- 设备信息栏目 -->
+                    <LinearLayout
+                        android:id="@+id/layout_device_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/image_device_info"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_device_info"
+                            android:tint="@color/device_info_icon_color"/>
+
+                        <TextView
+                            android:id="@+id/text_device_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/device_title_others"
+                            android:textSize="14sp"
+                            android:textColor="@color/device_info_text_color"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 信息显示卡片 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_sensor"
-                    android:tint="?attr/textColor"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:clipToPadding="false"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/device_title_sensor"
-                    android:textSize="16sp"
-                    android:textColor="?attr/textColor"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- 设备信息栏目 -->
-            <LinearLayout
-                android:id="@+id/layout_device_info"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_device_info"
-                    android:tint="?attr/textColor"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/device_title_others"
-                    android:textSize="16sp"
-                    android:textColor="?attr/textColor"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
         </LinearLayout>
 
-        <!-- 信息显示区域 -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"/>
+    </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
 </LinearLayout> 

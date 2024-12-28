@@ -8,7 +8,7 @@
         android:id="@+id/bg_screen_splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_screen_pikaqiu"
+        android:src="@drawable/ic_screen_origin"
         android:scaleType="centerCrop"/>
 
 </FrameLayout> 

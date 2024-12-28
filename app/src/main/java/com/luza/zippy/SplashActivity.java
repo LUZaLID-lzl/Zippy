@@ -3,6 +3,9 @@ package com.luza.zippy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,26 +22,21 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        // 设置全屏
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);  // 去除标题栏
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);  // 设置全屏
+
+        shardPerfenceSetting = ShardPerfenceSetting.getInstance(getApplicationContext());
         util = new Util();
         util.updateTheme(this);
+        util.updateLocale(this);
+
         setContentView(R.layout.activity_splash);
-
         imageView = findViewById(R.id.bg_screen_splash);
-        shardPerfenceSetting = new ShardPerfenceSetting(this);
-        shardPerfenceSetting.update();
-        switch (shardPerfenceSetting.getHomeTheme()){
-            case "pikachu":
-                imageView.setImageResource(R.drawable.ic_screen_pikaqiu);
-                break;
-            case "bulbasaur":
-                imageView.setImageResource(R.drawable.ic_screen_bulbasaur);
-                break;
-            case "squirtle":
-                imageView.setImageResource(R.drawable.ic_screen_squirtle);
-                break;
-        }
 
-        // 使用Handler延迟跳���
+        // 使用Handler延迟跳转
         new Handler().postDelayed(this::startMainActivity, SPLASH_DELAY);
     }
 

@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BatteryInfoAdapter extends RecyclerView.Adapter<BatteryInfoAdapter.ViewHolder> {
-    private List<String> data = new ArrayList<>();
+    private List<String> infoList = new ArrayList<>();
 
-    public void setData(List<String> newData) {
-        this.data.clear();
-        if (newData != null) {
-            this.data.addAll(newData);
+    public void setData(List<String> data) {
+        infoList.clear();
+        if (data != null) {
+            infoList.addAll(data);
         }
         notifyDataSetChanged();
     }
@@ -25,26 +25,26 @@ public class BatteryInfoAdapter extends RecyclerView.Adapter<BatteryInfoAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_battery_info, parent, false);
+                .inflate(R.layout.item_battery_info, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(data.get(position));
+        holder.infoText.setText(infoList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return infoList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView infoText;
 
-        ViewHolder(View view) {
-            super(view);
-            textView = view.findViewById(R.id.text_battery_info);
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            infoText = itemView.findViewById(R.id.text_info);
         }
     }
 } 

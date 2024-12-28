@@ -32,7 +32,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
     ThemeAdapter(List<ThemeItem> themes,Activity activity) {
         this.themes = themes;
         this.mActivity = activity;
-        this.shardPerfenceSetting = new ShardPerfenceSetting(mActivity.getBaseContext());
+        this.shardPerfenceSetting = ShardPerfenceSetting.getInstance(mActivity.getBaseContext());
 
         // 设置shardPerfence开启状态
         for(ThemeItem item:themes){
@@ -93,8 +93,6 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
 
                         // 保存主题设置
                         shardPerfenceSetting.setHomeTheme(theme.description);
-                        shardPerfenceSetting.setSharedPreferences();
-                        shardPerfenceSetting.update();
 
                         // 显示加载对话框
                         Dialog loadingDialog = new Dialog(mActivity, R.style.LoadingDialog);

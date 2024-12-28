@@ -20,14 +20,32 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.fragments.HomeFragment;
+import com.luza.zippy.ui.sidebarList.calendar.CalendarFragment;
 import com.luza.zippy.ui.sidebarList.deviceInformation.DeviceInfoFragment;
 import com.luza.zippy.ui.sidebarList.battery.BatteryFragment;
+import com.luza.zippy.ui.sidebarList.performance.PerformanceFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
+import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
 import com.luza.zippy.ui.sidebarList.todo.TodoFragment;
 import com.luza.zippy.ui.sidebarList.calorie.CalorieFragment;
 
 import java.util.Locale;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import com.luza.zippy.ui.views.LiquidBackgroundView;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.view.PixelCopy;
+import android.view.Window;
+import android.view.WindowManager;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.os.Build;
 
 /**
  * MainActivity作为应用的主入口活动
@@ -35,14 +53,13 @@ import java.util.Locale;
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnTouchListener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Zippy-MainActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private boolean isHome = true; // 添加标记，用于判断是否在首页
     private GestureDetectorCompat gestureDetector;
     public static Context mContext;
     private ShardPerfenceSetting shardPerfenceSetting;
-    public static boolean needRecreate = true;
 
     private Util util;
 
@@ -50,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         // 在 super.onCreate 之前设置主题
         util = new Util();
-        shardPerfenceSetting = new ShardPerfenceSetting(this);
-        shardPerfenceSetting.update();
+        shardPerfenceSetting = ShardPerfenceSetting.getInstance(getApplicationContext());
         
         // 根据保存的主题设置当前主题
         String currentTheme = shardPerfenceSetting.getHomeTheme();
@@ -65,15 +81,101 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case "squirtle":
                 setTheme(R.style.SquirtleTheme);
                 break;
+            case "mew":
+                setTheme(R.style.MewTheme);
+                break;
         }
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 设置背景颜色
+        LiquidBackgroundView liquidBackground = findViewById(R.id.liquidBackground);
+        int[] startColors;
+        int[] endColors;
+        
+        switch (currentTheme) {
+            case "pikachu":
+                startColors = new int[]{
+                    Color.parseColor("#FFC603"),
+                    Color.parseColor("#FFE085"),
+                    Color.parseColor("#FFD44C"),
+                    Color.parseColor("#FFB300")
+                };
+                endColors = new int[]{
+                    Color.parseColor("#FFE085"),
+                    Color.parseColor("#FFD44C"),
+                    Color.parseColor("#FFC603"),
+                    Color.parseColor("#FFD44C")
+                };
+                break;
+            case "bulbasaur":
+                startColors = new int[]{
+                    Color.parseColor("#13B4FC"),
+                    Color.parseColor("#7ED8FA"),
+                    Color.parseColor("#45C7FC"),
+                    Color.parseColor("#0099E5")
+                };
+                endColors = new int[]{
+                    Color.parseColor("#7ED8FA"),
+                    Color.parseColor("#45C7FC"),
+                    Color.parseColor("#13B4FC"),
+                    Color.parseColor("#45C7FC")
+                };
+                break;
+            case "squirtle":
+                startColors = new int[]{
+                    Color.parseColor("#5CB860"),
+                    Color.parseColor("#96D897"),
+                    Color.parseColor("#74C677"),
+                    Color.parseColor("#45A948")
+                };
+                endColors = new int[]{
+                    Color.parseColor("#96D897"),
+                    Color.parseColor("#74C677"),
+                    Color.parseColor("#5CB860"),
+                    Color.parseColor("#74C677")
+                };
+                break;
+            case "mew":
+                startColors = new int[]{
+                    Color.parseColor("#FBA7BD"),
+                    Color.parseColor("#FDD3DE"),
+                    Color.parseColor("#FCC0CE"),
+                    Color.parseColor("#F98DA8")
+                };
+                endColors = new int[]{
+                    Color.parseColor("#FDD3DE"),
+                    Color.parseColor("#FCC0CE"),
+                    Color.parseColor("#FBA7BD"),
+                    Color.parseColor("#FCC0CE")
+                };
+                break;
+            default:
+                startColors = new int[]{
+                    Color.parseColor("#1A1A1A"),
+                    Color.parseColor("#2D2D2D"),
+                    Color.parseColor("#404040"),
+                    Color.parseColor("#333333")
+                };
+                endColors = new int[]{
+                    Color.parseColor("#2D2D2D"),
+                    Color.parseColor("#404040"),
+                    Color.parseColor("#1A1A1A"),
+                    Color.parseColor("#404040")
+                };
+        }
+        liquidBackground.setColors(startColors, endColors);
+
         initViews();
         setupNavigationDrawer();
         setupGestureDetector();
 
+
+        // 3秒后捕获屏幕颜色
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            captureScreenColors();
+        }, 3000);
         if (savedInstanceState == null) {
             loadHomeFragment();
         }
@@ -132,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.setCustomAnimations(
             R.anim.slide_in_right,  // 进入动画
             R.anim.slide_out_left,  // 退出动画
-            R.anim.slide_in_left,   // 返回时进入动画
+            R.anim.slide_in_left,   // 返回时���入动画
             R.anim.slide_out_right  // 返回时退出动画
         );
         transaction.replace(R.id.content_frame, fragment);
@@ -155,9 +257,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new TodoFragment());
         } else if (id == R.id.nav_calorie) {
             loadFragment(new CalorieFragment());
-        }else if (id == R.id .nav_test) {
-            loadFragment(new TestFragment());
+        } else if (id == R.id.nav_calendar) {
+            loadFragment(new CalendarFragment());
+        } else if (id == R.id.nav_performance_test) {
+            loadFragment(new PerformanceFragment());
+        } else if (id == R.id.nav_timer) {
+            loadFragment(new TimerFragment());
         }
+
+//        else if (id == R.id.nav_test){
+//            loadFragment(new TestFragment());
+//        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -232,5 +342,79 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gestureDetector.onTouchEvent(event);
         }
         return false;
+    }
+
+    /**
+     * 获取颜色的ARGB信息
+     */
+    private String getColorInfo(int color) {
+        int alpha = Color.alpha(color);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return String.format("#%02X%02X%02X (A:%d, R:%d, G:%d, B:%d)",
+                red, green, blue, alpha, red, green, blue);
+    }
+
+    /**
+     * 将颜色整数值转换为6位十六进制颜色代码
+     */
+    private String colorToHex(int color) {
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return String.format("#%02X%02X%02X", red, green, blue);
+    }
+
+    /**
+     * 捕获屏幕颜色
+     */
+    private void captureScreenColors() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Window window = getWindow();
+            final Bitmap bitmap = Bitmap.createBitmap(
+                    window.getDecorView().getWidth(),
+                    window.getDecorView().getHeight(),
+                    Bitmap.Config.ARGB_8888);
+
+            // 使用PixelCopy捕获屏幕内容
+            PixelCopy.request(window, bitmap, (copyResult) -> {
+                if (copyResult == PixelCopy.SUCCESS) {
+                    int width = bitmap.getWidth();
+                    int height = bitmap.getHeight();
+
+                    // 获取状态栏高度
+                    int statusBarHeight = 0;
+                    int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+                    if (resourceId > 0) {
+                        statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+                    }
+
+                    // 获取导航栏高度
+                    int navigationBarHeight = 0;
+                    resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+                    if (resourceId > 0) {
+                        navigationBarHeight = getResources().getDimensionPixelSize(resourceId);
+                    }
+
+                    // 向内偏移50px，并避开状态栏和导航栏
+                    int topY = statusBarHeight + 1;
+                    int bottomY = height - navigationBarHeight - 1;
+
+                    // 获取颜色
+                    int topColor = bitmap.getPixel(width/2, topY);
+                    int bottomColor = bitmap.getPixel(width/2, bottomY);
+
+                    // 打印颜色信息
+                    Log.d(TAG, "Screen colors (excluding system bars):");
+                    Log.d(TAG, String.format("Sample positions - Top Y: %d, Bottom Y: %d", topY, bottomY));
+                    Log.d(TAG, "Top color: " + colorToHex(topColor) + " " + getColorInfo(topColor));
+                    Log.d(TAG, "Bottom color: " + colorToHex(bottomColor) + " " + getColorInfo(bottomColor));
+                } else {
+                    Log.e(TAG, "Failed to capture screen content");
+                }
+                bitmap.recycle();
+            }, new Handler(Looper.getMainLooper()));
+        }
     }
 }

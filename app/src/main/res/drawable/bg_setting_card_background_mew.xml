@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="16dp" /> <!-- 设置圆角半径 -->
+    <gradient
+        android:angle="56"
+        android:startColor="#F3C0CD"
+        android:endColor="#CF728B"
+        android:type="linear" />
+</shape>

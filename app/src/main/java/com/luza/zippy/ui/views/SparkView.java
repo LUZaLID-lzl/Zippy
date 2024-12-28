@@ -51,7 +51,7 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
         this.rotation = random.nextFloat() * 360;
         setRotation(rotation);
 
-        shardPerfenceSetting = new ShardPerfenceSetting(context);
+        shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
         switch (shardPerfenceSetting.getHomeTheme()){
             case "pikachu":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));
@@ -61,6 +61,9 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
                 break;
             case "squirtle":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_leaf));
+                break;
+            case "mew":
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_light_particle));
                 break;
             default:
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));

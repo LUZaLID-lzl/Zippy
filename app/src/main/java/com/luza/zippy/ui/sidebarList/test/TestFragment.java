@@ -1,40 +1,35 @@
 package com.luza.zippy.ui.sidebarList.test;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.luza.zippy.R;
 import com.luza.zippy.ui.base.BaseFragment;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.io.IOException;
+import java.util.Random;
+import android.os.AsyncTask;
+import android.util.Log;
 
 public class TestFragment extends BaseFragment {
-    private static final String TAG = "TestFragment";
-    private static final int PERMISSION_REQUEST_CODE = 1001;
+    private Button startButton;
+    private ProgressBar progressBar;
+    private TextView resultText;
+    private IOSpeedTest currentTest;
     
-    private ImageView testImage;
-    private Button saveButton;
-    private Bitmap currentBitmap;
+    private static final int BUFFER_SIZE = 4 * 1024; // 4KB
+    private static final int MIN_CHUNK_SIZE = 10 * 1024; // 10KB
+    private static final int MAX_CHUNK_SIZE = 100 * 1024; // 100KB
+    private static final int MAX_FILE_SIZE = 10 * 1024 * 1024; // 最大文件大小10MB
+    private static final long TEST_DURATION = 30000; // 30秒
+    private static final int UPDATE_INTERVAL = 500; // 每500ms更新一次显示
 
     @Override
     protected String getTitle() {
@@ -48,167 +43,233 @@ public class TestFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-        testImage = view.findViewById(R.id.test_image);
-        saveButton = view.findViewById(R.id.btn_save_image);
+        startButton = view.findViewById(R.id.btn_start_test);
+        progressBar = view.findViewById(R.id.progress_bar);
+        resultText = view.findViewById(R.id.text_result);
 
-        // 从指定路径加载图片
-        String imagePath = "/storage/sdcard0/wallhaven-z827xy.jpg";
-        loadImageFromPath(imagePath);
-
-        saveButton.setOnClickListener(v -> checkPermissionAndSave());
-    }
-
-    private void checkPermissionAndSave() {
-        saveImage();
+        startButton.setOnClickListener(v -> startTest());
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        saveImage();
-    }
-
-    private void saveImage() {
-        Log.e(TAG, "saveImage ");
-        new SaveImageTask().execute();
-    }
-
-    private class SaveImageTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... ignored) {
-            if (currentBitmap == null) {
-                Log.e(TAG, "currentBitmap == null");
-                return false;
-            }
-
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            String fileName = "IMG_" + timeStamp;
-
-            File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), "Zippy");
-            
-            if (!storageDir.exists() && !storageDir.mkdirs()) {
-                Log.e(TAG, "Failed to create directory");
-                return false;
-            }
-
-            File imageFile = new File(storageDir, fileName + ".png");
-            boolean success = false;
-
-            try {
-                FileOutputStream stream = new FileOutputStream(imageFile);
-                try {
-                    success = currentBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                } finally {
-                    stream.flush();
-                    stream.close();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "Error saving image", e);
-            }
-
-            return success;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                Toast.makeText(requireContext(), "图片保存成功", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(requireContext(), "图片保存失败", Toast.LENGTH_SHORT).show();
-            }
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (currentTest != null) {
+            currentTest.cancel(true);
         }
     }
 
-    private void loadImageFromPath(String imagePath) {
-        try {
-            File imageFile = new File(imagePath);
-            Log.e(TAG, "imageFile：" + imageFile);
-            
-            if (!imageFile.exists()) {
-                Log.e(TAG, "Unable to read file: " + imageFile.getAbsolutePath());
-                Toast.makeText(requireContext(), "无法读取图片文件", Toast.LENGTH_SHORT).show();
-                return;
-            }
+    private void startTest() {
+        if (currentTest != null) {
+            currentTest.cancel(true);
+        }
+        startButton.setEnabled(false);  // 禁用按钮
+        progressBar.setVisibility(View.VISIBLE);  // 显示进度条
+        progressBar.setProgress(0);  // 重置进度
+        resultText.setText(getString(R.string.preparing_test));  // 显示准备信息
+        
+        currentTest = new IOSpeedTest();
+        currentTest.execute();
+    }
 
-            // 创建临时文件来保存处理后的图片
-            File cacheDir = requireContext().getCacheDir();
-            File tempFile = new File(cacheDir, "temp_image.png");
-            
-            FileOutputStream outputStream = null;
+    private class IOSpeedTest extends AsyncTask<Void, TestProgress, TestResult> {
+        private long startTestTime;
+        private long lastUpdateTime;
+        private File testFile;
+        private FileInputStream fis;
+        private FileOutputStream fos;
+
+        @Override
+        protected TestResult doInBackground(Void... ignored) {
+            byte[] readBuffer = new byte[BUFFER_SIZE];
+            long totalTime = 0;
+            long totalBytes = 0;
+            int successfulReads = 0;
+            Random random = new Random();
+
             try {
-                // 先将原图片读取为Bitmap
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(imagePath, options);
+                testFile = File.createTempFile("speedtest", null, requireContext().getCacheDir());
+                fos = new FileOutputStream(testFile);
+                fis = new FileInputStream(testFile);
+                
+                startTestTime = System.currentTimeMillis();
+                lastUpdateTime = startTestTime;
+                long fileSize = 0;
 
-                // 计算压缩比例
-                int scaleFactor = calculateInSampleSize(options, 1080, 1080);
-                options.inJustDecodeBounds = false;
-                options.inSampleSize = scaleFactor;
-                
-                currentBitmap = BitmapFactory.decodeFile(imagePath, options);
-                Log.e(TAG, "currentBitmap：" + currentBitmap);
-                
-                if (currentBitmap != null) {
-                    // 将处理后的图片保存到临时文件
-                    outputStream = new FileOutputStream(tempFile);
-                    boolean success = currentBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                    
-                    if (success) {
-                        // 显示图片
-                        testImage.setImageBitmap(currentBitmap);
-                    } else {
-                        Log.e(TAG, "Failed to compress bitmap");
-                        Toast.makeText(requireContext(), "图片处理失败", Toast.LENGTH_SHORT).show();
+                while (!isCancelled() && (System.currentTimeMillis() - startTestTime) < TEST_DURATION) {
+                    // 检查是否取消
+                    if (isCancelled()) {
+                        cleanupResources();
+                        return null;
                     }
-                } else {
-                    Log.e(TAG, "Failed to decode bitmap");
-                    Toast.makeText(requireContext(), "图片解码失败", Toast.LENGTH_SHORT).show();
-                }
-                
-            } catch (Exception e) {
-                Log.e(TAG, "Error processing image: " + e.getMessage());
-                Toast.makeText(requireContext(), "图片处理出错: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            } finally {
-                if (outputStream != null) {
+
+                    // 生成新的随机大小的数据块
+                    if (fileSize < MAX_FILE_SIZE) {
+                        int currentChunkSize = MIN_CHUNK_SIZE + random.nextInt(MAX_CHUNK_SIZE - MIN_CHUNK_SIZE + 1);
+                        byte[] writeBuffer = new byte[currentChunkSize];
+                        random.nextBytes(writeBuffer);
+                        fos.write(writeBuffer);
+                        fos.flush();
+                        fileSize += currentChunkSize;
+                    }
+
                     try {
-                        outputStream.flush();
-                        outputStream.close();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error closing stream: " + e.getMessage());
+                        if (fileSize > BUFFER_SIZE) {
+                            long position = (long) (random.nextDouble() * (fileSize - BUFFER_SIZE));
+                            fis.getChannel().position(position);
+
+                            long readStartTime = System.nanoTime();
+                            int bytesRead = fis.read(readBuffer);
+                            long readEndTime = System.nanoTime();
+
+                            if (bytesRead > 0) {
+                                totalTime += (readEndTime - readStartTime);
+                                totalBytes += bytesRead;
+                                successfulReads++;
+
+                                // 更新进度
+                                long now = System.currentTimeMillis();
+                                if (now - lastUpdateTime >= UPDATE_INTERVAL) {
+                                    if (!isCancelled()) {
+                                        double currentDuration = (now - startTestTime) / 1000.0;
+                                        double currentSpeed = (totalBytes / 1024.0 / 1024.0) / currentDuration;
+                                        double currentLatency = (totalTime / 1_000_000.0) / successfulReads;
+
+                                        publishProgress(new TestProgress(
+                                            (int)((now - startTestTime) * 100 / TEST_DURATION),
+                                            currentSpeed,
+                                            currentLatency,
+                                            successfulReads
+                                        ));
+                                    }
+                                    lastUpdateTime = now;
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        Log.e("IOSpeedTest", "Error during read: " + e.getMessage());
                     }
                 }
-            }
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading image: " + e.getMessage());
-            Toast.makeText(requireContext(), "图片加载出错: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
+                double testDurationSeconds = (System.currentTimeMillis() - startTestTime) / 1000.0;
+                double speedMBps = (totalBytes / 1024.0 / 1024.0) / testDurationSeconds;
+                double avgLatencyMs = (totalTime / 1_000_000.0) / successfulReads;
 
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
+                return new TestResult(speedMBps, avgLatencyMs, testDurationSeconds, successfulReads);
 
-            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
+            } catch (Exception e) {
+                Log.e("IOSpeedTest", "Test failed: " + e.getMessage());
+                return new TestResult(e);
+            } finally {
+                cleanupResources();
             }
         }
 
-        return inSampleSize;
+        private void cleanupResources() {
+            try {
+                if (fis != null) fis.close();
+                if (fos != null) {
+                    fos.flush();
+                    fos.close();
+                }
+                if (testFile != null && testFile.exists()) {
+                    testFile.delete();
+                }
+            } catch (IOException e) {
+                Log.e("IOSpeedTest", "Error cleaning up: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            startButton.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(0);
+            resultText.setText(getString(R.string.preparing_test));
+        }
+
+        @Override
+        protected void onProgressUpdate(TestProgress... values) {
+            if (!isCancelled() && isAdded()) {
+                TestProgress progress = values[0];
+                progressBar.setVisibility(View.VISIBLE);  // 确保进度条可见
+                progressBar.setProgress(progress.progressPercent);
+                resultText.setText(getString(R.string.test_result_realtime,
+                    progress.currentSpeedMBps,
+                    progress.currentLatencyMs,
+                    (System.currentTimeMillis() - startTestTime) / 1000.0,
+                    progress.successfulReads));
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            cleanupResources();
+            if (startButton != null) {
+                startButton.setEnabled(true);
+            }
+            if (progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+            if (resultText != null) {
+                resultText.setText(R.string.test_cancelled);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(TestResult result) {
+            if (isAdded()) {
+                startButton.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
+                
+                if (result.error != null) {
+                    resultText.setText(getString(R.string.test_error, result.error.getMessage()));
+                } else {
+                    resultText.setText(getString(R.string.test_result_extended,
+                        result.speedMBps,
+                        result.avgLatencyMs,
+                        result.testDurationSeconds,
+                        result.successfulReads));
+                }
+            }
+        }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (currentBitmap != null && !currentBitmap.isRecycled()) {
-            currentBitmap.recycle();
-            currentBitmap = null;
+    private static class TestProgress {
+        final int progressPercent;
+        final double currentSpeedMBps;
+        final double currentLatencyMs;
+        final int successfulReads;
+
+        TestProgress(int progressPercent, double currentSpeedMBps, 
+                    double currentLatencyMs, int successfulReads) {
+            this.progressPercent = progressPercent;
+            this.currentSpeedMBps = currentSpeedMBps;
+            this.currentLatencyMs = currentLatencyMs;
+            this.successfulReads = successfulReads;
+        }
+    }
+
+    private static class TestResult {
+        final double speedMBps;
+        final double avgLatencyMs;
+        final double testDurationSeconds;
+        final int successfulReads;
+        final Exception error;
+
+        TestResult(double speedMBps, double avgLatencyMs, double testDurationSeconds, int successfulReads) {
+            this.speedMBps = speedMBps;
+            this.avgLatencyMs = avgLatencyMs;
+            this.testDurationSeconds = testDurationSeconds;
+            this.successfulReads = successfulReads;
+            this.error = null;
+        }
+
+        TestResult(Exception error) {
+            this.speedMBps = 0;
+            this.avgLatencyMs = 0;
+            this.testDurationSeconds = 0;
+            this.successfulReads = 0;
+            this.error = error;
         }
     }
 }

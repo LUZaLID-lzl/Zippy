@@ -19,7 +19,7 @@ public class Util {
     private static final String TAG = "Util";
 
     public void updateLocale(Context context){
-        ShardPerfenceSetting shardPerfenceSetting = new ShardPerfenceSetting(context);
+        ShardPerfenceSetting shardPerfenceSetting = ShardPerfenceSetting.getInstance(context);
         String language = shardPerfenceSetting.getLanguage();
         android.util.Log.d("ShardPerfenceSetting","language: " + language);
         Locale locale = new Locale(language);
@@ -30,7 +30,7 @@ public class Util {
     }
 
     public void updateTheme(Activity activity) {
-        ShardPerfenceSetting shardPerfenceSetting = new ShardPerfenceSetting(activity.getBaseContext());
+        ShardPerfenceSetting shardPerfenceSetting = ShardPerfenceSetting.getInstance(activity.getBaseContext());
         String theme = shardPerfenceSetting.getHomeTheme();
         Log.d(TAG,"activity.getComponentName() : " + activity.getComponentName());
         if (activity.getComponentName().toString().contains("SplashActivity")){
@@ -43,6 +43,9 @@ public class Util {
                     break;
                 case "squirtle":
                     activity.setTheme(R.style.SquirtleSplashTheme);
+                    break;
+                case "mew":
+                    activity.setTheme(R.style.MewSplashTheme);
                     break;
                 default:
             }

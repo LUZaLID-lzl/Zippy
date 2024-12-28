@@ -15,8 +15,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.luza.zippy.R;
+import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.base.BaseFragment;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
 
@@ -26,16 +29,20 @@ import java.util.List;
 public class SettingsFragment extends BaseFragment {
     private static final String PREF_NAME = "zippy_settings";
     private static final String KEY_LANGUAGE = "language";
+    private static final String KEY_HOMEANIMALTIONNUM = "homeAnimationNum";
     private static final String LANGUAGE_EN = "en";
     private static final String LANGUAGE_ZH = "zh";
 
     private static final String KEY_HOMETHEME = "homeTheme";
 
-    private SharedPreferences preferences;
+    private ShardPerfenceSetting shardPerfenceSetting;
     private Util util;
     private SwitchCompat languageSwitch;
     private RecyclerView themeRecyclerView;
     private ThemeAdapter themeAdapter;
+    private SeekBar seekBar;
+    private TextView sliderValueText;
+    private static final String KEY_SLIDER_VALUE = "slider_value";
 
     @Override
     protected String getTitle() {
@@ -46,10 +53,11 @@ public class SettingsFragment extends BaseFragment {
     @Override
     protected void initViews(View view) {
         util = new Util();
-        preferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
 
         loadLanguage(view);
         loadTheme(view);
+        setupSlider(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -57,7 +65,7 @@ public class SettingsFragment extends BaseFragment {
         languageSwitch = view.findViewById(R.id.switch_language);
 
         // 设置当前语言状态
-        String currentLang = preferences.getString(KEY_LANGUAGE, getSystemLanguage());
+        String currentLang = shardPerfenceSetting.getLanguage();
         languageSwitch.setChecked(LANGUAGE_EN.equals(currentLang));
 
         // 监听切换事件
@@ -65,7 +73,7 @@ public class SettingsFragment extends BaseFragment {
             String newLang = isChecked ? LANGUAGE_EN : LANGUAGE_ZH;
             if (!newLang.equals(currentLang)) {
                 android.util.Log.d("ShardPerfenceSetting","newLang : " +newLang);
-                preferences.edit().putString(KEY_LANGUAGE, newLang).apply();
+                shardPerfenceSetting.setLanguage(newLang);
                 showLoading();
                 util.updateLocale(requireContext());
             }
@@ -82,9 +90,10 @@ public class SettingsFragment extends BaseFragment {
 
     private List<ThemeItem> getThemeList() {
         return Arrays.asList(
+                new ThemeItem("Pokemon", "squirtle", R.drawable.squirtle_5, R.drawable.bg_setting_card_background_squirtle),
                 new ThemeItem("Pokemon", "pikachu",  R.drawable.pikaqiu_2, R.drawable.bg_setting_card_background_pikaqiu),
-                new ThemeItem("Pokemon", "bulbasaur", R.drawable.bulbasaur_1, R.drawable.bg_setting_card_background_bulbasaur),
-                new ThemeItem("Pokemon", "squirtle", R.drawable.squirtle_1, R.drawable.bg_setting_card_background_squirtle)
+                new ThemeItem("Pokemon", "bulbasaur", R.drawable.bulbasaur_4, R.drawable.bg_setting_card_background_bulbasaur),
+                new ThemeItem("Pokemon", "mew", R.drawable.mew_1, R.drawable.bg_setting_card_background_mew)
         );
     }
 
@@ -105,6 +114,41 @@ public class SettingsFragment extends BaseFragment {
             loadingDialog.dismiss();
             requireActivity().recreate();
         }, 1000);
+    }
+
+    private void setupSlider(View view) {
+        seekBar = view.findViewById(R.id.seekbar);
+        sliderValueText = view.findViewById(R.id.slider_value);
+        
+        // 获取保存的值
+        int savedValue = shardPerfenceSetting.getHomeAnimationNum();
+        android.util.Log.d("liziluo","savedValue: " + savedValue);
+        seekBar.setProgress(savedValue);
+        updateSliderText(savedValue);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                updateSliderText(progress);
+                // 保存当前值
+                android.util.Log.d("liziluo","ShardPerfenceSetting: " + progress);
+                shardPerfenceSetting.setHomeAnimationNum(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // 开始拖动时的操作（如果需要）
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 停止拖动时的操作（如果需要）
+            }
+        });
+    }
+
+    private void updateSliderText(int value) {
+        sliderValueText.setText(String.format(getString(R.string.homeAnimationNum_current_num) + "%d", value));
     }
 
     @Override

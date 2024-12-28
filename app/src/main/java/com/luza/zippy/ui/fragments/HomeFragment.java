@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.luza.zippy.R;
 import com.luza.zippy.setting.ShardPerfenceSetting;
+import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
 import com.luza.zippy.ui.views.SparkView;
 import com.luza.zippy.ui.sidebarList.settings.SettingsFragment;
 import android.os.Handler;
@@ -32,12 +33,11 @@ public class HomeFragment extends Fragment {
     private boolean isGeneratingSparks = true;
     private ImageView lightningImage;
     private ShardPerfenceSetting shardPerfenceSetting;
+    private int animationNum;
     private final int[] pikachuImages = {
-        R.drawable.pikaqiu_1,
         R.drawable.pikaqiu_2,
         R.drawable.pikaqiu_3,
         R.drawable.pikaqiu_4,
-        R.drawable.pikaqiu_5,
         R.drawable.pikaqiu_6,
         R.drawable.pikaqiu_7
     };
@@ -51,14 +51,21 @@ public class HomeFragment extends Fragment {
     };
 
     private final int[] squirtleImages = {
-            R.drawable.squirtle_1,
-            R.drawable.squirtle_2,
-            R.drawable.squirtle_3,
-            R.drawable.squirtle_4,
-            R.drawable.squirtle_5,
-            R.drawable.squirtle_6,
-            R.drawable.squirtle_7,
+        R.drawable.squirtle_1,
+        R.drawable.squirtle_2,
+        R.drawable.squirtle_3,
+        R.drawable.squirtle_4,
+        R.drawable.squirtle_5,
+        R.drawable.squirtle_6,
+        R.drawable.squirtle_7,
+    };
 
+    private final int[] mewImages = {
+        R.drawable.mew_1,
+        R.drawable.mew_2,
+        R.drawable.mew_3,
+        R.drawable.mew_4,
+        R.drawable.mew_5,
     };
 
     @Nullable
@@ -66,7 +73,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        shardPerfenceSetting = new ShardPerfenceSetting(getContext());
+        shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
+        animationNum = shardPerfenceSetting.getHomeAnimationNum();
         // 设置闪电动画
         lightningImage = view.findViewById(R.id.lightning_image);
         
@@ -101,10 +109,17 @@ public class HomeFragment extends Fragment {
         // 开始按钮点击事件
         view.findViewById(R.id.btn_left).setOnClickListener(v -> {
             if (getActivity() != null) {
-                Intent factoryTestIntent = new Intent();
-                factoryTestIntent.setComponent(new android.content.ComponentName("com.sagereal.update","com.sagereal.update.GoogleOtaClient"));
-                factoryTestIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(factoryTestIntent);
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in_right,
+                                    R.anim.slide_out_left
+                            )
+                            .replace(R.id.content_frame, new TimerFragment() )
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
 
@@ -121,7 +136,8 @@ public class HomeFragment extends Fragment {
         // 随机显示皮卡丘图片
 
         int[] currentImages;
-        shardPerfenceSetting.update();
+        animationNum = shardPerfenceSetting.getHomeAnimationNum();
+
         switch (shardPerfenceSetting.getHomeTheme()){
             case "pikachu":
                 currentImages = pikachuImages;
@@ -131,6 +147,9 @@ public class HomeFragment extends Fragment {
                 break;
             case "squirtle":
                 currentImages = squirtleImages;
+                break;
+            case "mew":
+                currentImages = mewImages;
                 break;
             default:
                 currentImages = pikachuImages;
@@ -183,7 +202,9 @@ public class HomeFragment extends Fragment {
                             ViewGroup.LayoutParams.WRAP_CONTENT));
                     
                     // 随机间隔后生成下一个闪电
-                    handler.postDelayed(this, 100 + random.nextInt(200));
+
+                    int delayMills = (int) (100 + (100 - 300) * ((animationNum - 10) / (float) (100 - 10))) * 10;
+                    handler.postDelayed(this, delayMills);
                 }
             }
         });

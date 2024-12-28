@@ -6,7 +6,7 @@
         <!-- 主要菜单项 -->
         <item
             android:id="@+id/nav_subscriptions"
-            android:icon="@drawable/ic_star"
+            android:icon="@drawable/ic_device"
             android:title="@string/menu_device_info"/>
 
         <item
@@ -25,8 +25,23 @@
             android:title="@string/menu_calorie"/>
 
         <item
-            android:id="@+id/nav_test"
-            android:icon="@drawable/ic_test"
-            android:title="@string/menu_test"/>
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/menu_calendar"/>
+
+        <item
+            android:id="@+id/nav_performance_test"
+            android:icon="@drawable/ic_performance"
+            android:title="@string/menu_performance_test"/>
+
+        <item
+            android:id="@+id/nav_timer"
+            android:icon="@drawable/ic_timer"
+            android:title="@string/menu_timer"/>
+
+<!--        <item-->
+<!--            android:id="@+id/nav_test"-->
+<!--            android:icon="@drawable/ic_test"-->
+<!--            android:title="@string/menu_test"/>-->
     </group>
 </menu> 

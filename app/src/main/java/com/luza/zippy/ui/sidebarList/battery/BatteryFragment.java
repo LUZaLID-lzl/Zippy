@@ -9,13 +9,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.luza.zippy.R;
 import com.luza.zippy.ui.base.BaseFragment;
-import com.luza.zippy.ui.sidebarList.battery.BatteryInfoAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class BatteryFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private BatteryInfoAdapter infoAdapter;
     private BroadcastReceiver batteryReceiver;
+    private TextView batteryLevelText;
+    private ProgressBar batteryProgress;
 
     @Nullable
     @Override
@@ -37,10 +40,13 @@ public class BatteryFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
+        // 初始化视图
         recyclerView = view.findViewById(R.id.recycler_view);
+        batteryLevelText = view.findViewById(R.id.text_battery_level);
+        batteryProgress = view.findViewById(R.id.progress_battery);
+
+        // 设置 RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        
-        // 初始化适配器
         infoAdapter = new BatteryInfoAdapter();
         recyclerView.setAdapter(infoAdapter);
         
@@ -79,7 +85,10 @@ public class BatteryFragment extends BaseFragment {
             int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
             float batteryPct = level * 100 / (float)scale;
-            info.add(String.format(getString(R.string.battery_current_level), batteryPct));
+            
+            // 更新电池电量显示
+            batteryLevelText.setText(String.format(getString(R.string.battery_level_percent), batteryPct));
+            batteryProgress.setProgress((int)batteryPct);
             
             // 获取充电状态
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
@@ -99,7 +108,6 @@ public class BatteryFragment extends BaseFragment {
                     break;
             }
             info.add(String.format(getString(R.string.battery_charging_status), statusText));
-            android.util.Log.d("liziluo","UpdateLight red steady: " + statusText);
             
             // 获取充电类型
             int chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);

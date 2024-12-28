@@ -9,9 +9,23 @@
 
     <!-- 主要内容布局 -->
     <FrameLayout
-        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <!-- 动态背景 -->
+        <com.luza.zippy.ui.views.LiquidBackgroundView
+            android:id="@+id/liquidBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- 内容容器 -->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#88FFFFFF"/>
+
+    </FrameLayout>
 
     <!-- 侧边栏导航视图 -->
     <com.google.android.material.navigation.NavigationView
