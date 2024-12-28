@@ -307,4 +307,14 @@
     <string name="timer_stats_stopwatch">Stopwatch Statistics</string>
     <string name="timer_stats_countdown">Countdown Statistics</string>
     <string name="timer_stats_no_records">No Records</string>
+
+    <!-- Activation -->
+    <string name="activation_title">Activation</string>
+    <string name="activation_hint">Enter activation code</string>
+    <string name="activation_button">Activate</string>
+    <string name="activation_description">Please enter a valid activation code to unlock full features</string>
+    <string name="activation_success">Activation successful</string>
+    <string name="activation_failed">Activation failed</string>
+    <string name="activation_status_activated">Activated</string>
+    <string name="activation_status_not_activated">Not activated</string>
 </resources> 

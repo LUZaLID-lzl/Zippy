@@ -307,4 +307,13 @@
     <string name="timer_stats_countdown">倒计时统计</string>
     <string name="timer_stats_no_records">暂无记录</string>
 
+    <!-- 激活相关 -->
+    <string name="activation_title">激活信息</string>
+    <string name="activation_hint">请输入激活码</string>
+    <string name="activation_button">确认激活</string>
+    <string name="activation_description">请输入有效的激活码以解锁完整功能</string>
+    <string name="activation_success">激活成功</string>
+    <string name="activation_failed">激活失败</string>
+    <string name="activation_status_activated">已激活</string>
+    <string name="activation_status_not_activated">未激活</string>
 </resources>

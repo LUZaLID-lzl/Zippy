@@ -15,11 +15,13 @@ public class ShardPerfenceSetting {
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_HOMETHEM = "homeTheme";
     private static final String KEY_HOMEANIMATIONNUM = "homeAnimationNum";
+    private static final String KEY_ACTIVATE = "activate";
 
     // 实际数据
     private String language;        //en - zh
     private String homeTheme;       //pikachu - bulbasaur - squirtle - mew
     private int homeAnimationNum;   //10 -> 100
+    private boolean activate;
 
     public ShardPerfenceSetting(Context context) {
         //构造函数
@@ -31,6 +33,7 @@ public class ShardPerfenceSetting {
         language = sharedPreferences.getString(KEY_LANGUAGE, "en");
         homeTheme = sharedPreferences.getString(KEY_HOMETHEM, "squirtle");
         homeAnimationNum = sharedPreferences.getInt(KEY_HOMEANIMATIONNUM, 45);
+        activate = sharedPreferences.getBoolean(KEY_ACTIVATE, false);
         logToString();
     }
 
@@ -71,11 +74,22 @@ public class ShardPerfenceSetting {
         editor.apply();
     }
 
+    public Boolean getActivate() {
+        return activate;
+    }
+
+    public void setActivate(Boolean activate) {
+        this.activate = activate;
+        editor.putBoolean(KEY_ACTIVATE, activate);
+        editor.apply();
+    }
+
     public void logToString() {
         String log =  "ShardPerfenceSetting{" +
                 "language='" + language + '\'' +
                 ", homeTheme='" + homeTheme + '\'' +
                 ", homeAnimationNum='" + homeAnimationNum + '\'' +
+                ", activate='" + activate + '\'' +
                 '}';
         android.util.Log.d(TAG,log);
     }

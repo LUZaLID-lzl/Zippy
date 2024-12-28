@@ -13,8 +13,11 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -161,73 +165,145 @@ public class DeviceInfoFragment extends BaseFragment {
 
     private void showAppList() {
         switchContent(() -> {
-            PackageManager pm = requireContext().getPackageManager();
-            List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+            // 创建一个新的Handler用于主线程更新UI
+            Handler mainHandler = new Handler(Looper.getMainLooper());
             
-            AppListAdapter appListAdapter = new AppListAdapter(pm);
-            recyclerView.setAdapter(appListAdapter);
-            appListAdapter.setData(apps);
+            // 在子线程中加载应用列表
+            new Thread(() -> {
+                try {
+                    PackageManager pm = requireContext().getPackageManager();
+                    List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+                    
+                    // 在主线程中更新UI
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {  // 确保Fragment仍然有效
+                            AppListAdapter appListAdapter = new AppListAdapter(pm);
+                            recyclerView.setAdapter(appListAdapter);
+                            appListAdapter.setData(apps);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("DeviceInfoFragment", "Error loading app list", e);
+                    // 在主线程中显示错误信息
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {
+                            Toast.makeText(requireContext(), 
+                                "加载应用列表失败", 
+                                Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).start();
         });
     }
 
     private void showSensorList() {
         switchContent(() -> {
-            SensorManager sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
-            List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
-            List<String> sensorNames = new ArrayList<>();
+            // 创建一个新的Handler用于主线程更新UI
+            Handler mainHandler = new Handler(Looper.getMainLooper());
             
-            for (Sensor sensor : sensors) {
-                sensorNames.add(sensor.getName());
-            }
-            
-            InfoAdapter infoAdapter = new InfoAdapter();
-            recyclerView.setAdapter(infoAdapter);
-            infoAdapter.setHeaderText(String.format(MainActivity.mContext.getString(R.string.device_do_sensor_num) + "：%d", sensors.size()));
-            infoAdapter.setData(sensorNames);
+            // 在子线程中加载传感器列表
+            new Thread(() -> {
+                try {
+                    SensorManager sensorManager = (SensorManager) requireContext()
+                        .getSystemService(Context.SENSOR_SERVICE);
+                    List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+                    List<String> sensorNames = new ArrayList<>();
+                    
+                    for (Sensor sensor : sensors) {
+                        sensorNames.add(sensor.getName());
+                    }
+                    
+                    // 在主线程中更新UI
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {  // 确保Fragment仍然有效
+                            InfoAdapter infoAdapter = new InfoAdapter();
+                            recyclerView.setAdapter(infoAdapter);
+                            infoAdapter.setHeaderText(String.format(
+                                MainActivity.mContext.getString(R.string.device_do_sensor_num) + "：%d", 
+                                sensors.size()));
+                            infoAdapter.setData(sensorNames);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("DeviceInfoFragment", "Error loading sensor list", e);
+                    // 在主线程中显示错误信息
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {
+                            Toast.makeText(requireContext(), 
+                                "加载传感器列表失败", 
+                                Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).start();
         });
     }
 
     private void showDeviceInfo() {
         switchContent(() -> {
-            List<String> info = new ArrayList<>();
+            // 创建一个新的Handler用于主线程更新UI
+            Handler mainHandler = new Handler(Looper.getMainLooper());
             
-            // 基本设备信息
-            info.add(getString(R.string.device_info_basic));
-            info.add(getString(R.string.device_brand) + ": " + Build.BRAND);
-            info.add(getString(R.string.device_model) + ": " + Build.MODEL);
-            info.add(getString(R.string.device_manufacturer) + ": " + Build.MANUFACTURER);
-            info.add(getString(R.string.device_product) + ": " + Build.PRODUCT);
-            info.add(getString(R.string.device_code) + ": " + Build.DEVICE);
-            
-            // 系统信息
-            info.add(getString(R.string.device_info_system));
-            info.add(getString(R.string.device_android_version) + ": " + Build.VERSION.RELEASE);
-            info.add(getString(R.string.device_sdk_version) + ": " + Build.VERSION.SDK_INT);
-            info.add(getString(R.string.device_build_version) + ": " + Build.DISPLAY);
-            info.add(getString(R.string.device_radio_version) + ": " + Build.getRadioVersion());
-            info.add(getString(R.string.device_kernel) + ": " + getKernelVersion());
-            info.add(getString(R.string.device_build_time) + ": " + getBuildTime());
-            
-            // 硬件信息
-            info.add(getString(R.string.device_info_hardware));
-            info.add(getString(R.string.device_cpu) + ": " + Build.SUPPORTED_ABIS[0]);
-            info.add(getString(R.string.device_cpu_cores) + ": " + Runtime.getRuntime().availableProcessors());
-            info.add(getString(R.string.device_screen) + ": " + getScreenResolution());
-            info.add(getString(R.string.device_density) + ": " + getScreenDensity());
-            info.add(getString(R.string.device_memory_total) + ": " + getTotalMemory());
-            info.add(getString(R.string.device_memory_available) + ": " + getAvailableMemory());
-            info.add(getString(R.string.device_storage_total) + ": " + getTotalInternalStorage());
-            info.add(getString(R.string.device_storage_available) + ": " + getAvailableInternalStorage());
-            
-            // 网络信息
-            info.add(getString(R.string.device_info_network));
-            info.add(getString(R.string.device_mac) + ": " + getMacAddress());
-            info.add(getString(R.string.device_ip) + ": " + getIPAddress());
-            info.add(getString(R.string.device_network_type) + ": " + getNetworkType());
-            
-            InfoAdapter infoAdapter = new InfoAdapter();
-            recyclerView.setAdapter(infoAdapter);
-            infoAdapter.setData(info);
+            // 在子线程中收集设备信息
+            new Thread(() -> {
+                try {
+                    List<String> info = new ArrayList<>();
+                    
+                    // 基本设备信息
+                    info.add(getString(R.string.device_info_basic));
+                    info.add(getString(R.string.device_brand) + ": " + Build.BRAND);
+                    info.add(getString(R.string.device_model) + ": " + Build.MODEL);
+                    info.add(getString(R.string.device_manufacturer) + ": " + Build.MANUFACTURER);
+                    info.add(getString(R.string.device_product) + ": " + Build.PRODUCT);
+                    info.add(getString(R.string.device_code) + ": " + Build.DEVICE);
+                    
+                    // 系统信息
+                    info.add(getString(R.string.device_info_system));
+                    info.add(getString(R.string.device_android_version) + ": " + Build.VERSION.RELEASE);
+                    info.add(getString(R.string.device_sdk_version) + ": " + Build.VERSION.SDK_INT);
+                    info.add(getString(R.string.device_build_version) + ": " + Build.DISPLAY);
+                    info.add(getString(R.string.device_radio_version) + ": " + Build.getRadioVersion());
+                    info.add(getString(R.string.device_kernel) + ": " + getKernelVersion());
+                    info.add(getString(R.string.device_build_time) + ": " + getBuildTime());
+                    
+                    // 硬件信息
+                    info.add(getString(R.string.device_info_hardware));
+                    info.add(getString(R.string.device_cpu) + ": " + Build.SUPPORTED_ABIS[0]);
+                    info.add(getString(R.string.device_cpu_cores) + ": " + Runtime.getRuntime().availableProcessors());
+                    info.add(getString(R.string.device_screen) + ": " + getScreenResolution());
+                    info.add(getString(R.string.device_density) + ": " + getScreenDensity());
+                    info.add(getString(R.string.device_memory_total) + ": " + getTotalMemory());
+                    info.add(getString(R.string.device_memory_available) + ": " + getAvailableMemory());
+                    info.add(getString(R.string.device_storage_total) + ": " + getTotalInternalStorage());
+                    info.add(getString(R.string.device_storage_available) + ": " + getAvailableInternalStorage());
+                    
+                    // 网络信息
+                    info.add(getString(R.string.device_info_network));
+                    info.add(getString(R.string.device_mac) + ": " + getMacAddress());
+                    info.add(getString(R.string.device_ip) + ": " + getIPAddress());
+                    info.add(getString(R.string.device_network_type) + ": " + getNetworkType());
+                    
+                    // 在主线程中更新UI
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {  // 确保Fragment仍然有效
+                            InfoAdapter infoAdapter = new InfoAdapter();
+                            recyclerView.setAdapter(infoAdapter);
+                            infoAdapter.setData(info);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("DeviceInfoFragment", "Error loading device info", e);
+                    // 在主线程中显示错误信息
+                    mainHandler.post(() -> {
+                        if (isAdded() && !isDetached()) {
+                            Toast.makeText(requireContext(), 
+                                "加载设备信息失败", 
+                                Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).start();
         });
     }
 

@@ -14,7 +14,7 @@
 
         <!-- 动态背景 -->
         <com.luza.zippy.ui.views.LiquidBackgroundView
-            android:id="@+id/liquidBackground"
+            android:id="@+id/liquid_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

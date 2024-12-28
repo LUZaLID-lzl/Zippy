@@ -109,17 +109,7 @@ public class HomeFragment extends Fragment {
         // 开始按钮点击事件
         view.findViewById(R.id.btn_left).setOnClickListener(v -> {
             if (getActivity() != null) {
-                if (getActivity() != null) {
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .setCustomAnimations(
-                                    R.anim.slide_in_right,
-                                    R.anim.slide_out_left
-                            )
-                            .replace(R.id.content_frame, new TimerFragment() )
-                            .addToBackStack(null)
-                            .commit();
-                }
+                //TODO
             }
         });
 

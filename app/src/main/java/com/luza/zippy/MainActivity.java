@@ -46,6 +46,7 @@ import android.view.WindowManager;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.view.Menu;
 
 /**
  * MainActivity作为应用的主入口活动
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = "Zippy-MainActivity";
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    public NavigationView navigationView;
     private boolean isHome = true; // 添加标记，用于判断是否在首页
     private GestureDetectorCompat gestureDetector;
     public static Context mContext;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // 设置背景颜色
-        LiquidBackgroundView liquidBackground = findViewById(R.id.liquidBackground);
+        LiquidBackgroundView liquidBackgroundView = findViewById(R.id.liquid_background);
         int[] startColors;
         int[] endColors;
         
@@ -165,12 +166,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Color.parseColor("#404040")
                 };
         }
-        liquidBackground.setColors(startColors, endColors);
+        liquidBackgroundView.setColors(startColors, endColors);
 
         initViews();
         setupNavigationDrawer();
         setupGestureDetector();
 
+        // 检查激活状态并控制计时器菜单项的显示
+        Menu navMenu = navigationView.getMenu();
+        MenuItem timerItem = navMenu.findItem(R.id.nav_timer);
+        Boolean activationCode = shardPerfenceSetting.getActivate();
+        timerItem.setVisible(activationCode);
 
         // 3秒后捕获屏幕颜色
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -234,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.setCustomAnimations(
             R.anim.slide_in_right,  // 进入动画
             R.anim.slide_out_left,  // 退出动画
-            R.anim.slide_in_left,   // 返回时���入动画
+            R.anim.slide_in_left,   // 返回时入动画
             R.anim.slide_out_right  // 返回时退出动画
         );
         transaction.replace(R.id.content_frame, fragment);
@@ -370,19 +376,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 捕获屏幕颜色
      */
     private void captureScreenColors() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Window window = getWindow();
-            final Bitmap bitmap = Bitmap.createBitmap(
-                    window.getDecorView().getWidth(),
-                    window.getDecorView().getHeight(),
-                    Bitmap.Config.ARGB_8888);
-
-            // 使用PixelCopy捕获屏幕内容
-            PixelCopy.request(window, bitmap, (copyResult) -> {
-                if (copyResult == PixelCopy.SUCCESS) {
-                    int width = bitmap.getWidth();
-                    int height = bitmap.getHeight();
-
+        // 确保窗口已经准备好
+        View decorView = getWindow().getDecorView();
+        decorView.post(() -> {
+            if (!isFinishing() && decorView.isAttachedToWindow()) {
+                try {
                     // 获取状态栏高度
                     int statusBarHeight = 0;
                     int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -397,24 +395,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         navigationBarHeight = getResources().getDimensionPixelSize(resourceId);
                     }
 
-                    // 向内偏移50px，并避开状态栏和导航栏
-                    int topY = statusBarHeight + 1;
-                    int bottomY = height - navigationBarHeight - 1;
+                    // 创建位图
+                    Bitmap bitmap = Bitmap.createBitmap(
+                            decorView.getWidth(),
+                            decorView.getHeight(),
+                            Bitmap.Config.ARGB_8888
+                    );
 
-                    // 获取颜色
-                    int topColor = bitmap.getPixel(width/2, topY);
-                    int bottomColor = bitmap.getPixel(width/2, bottomY);
+                    // 计算采样位置（避开状态栏和导航栏）
+                    int[] samplePoints = {
+                            statusBarHeight + 50,  // 顶部位置
+                            decorView.getHeight() - navigationBarHeight - 50  // 底部位置
+                    };
 
-                    // 打印颜色信息
-                    Log.d(TAG, "Screen colors (excluding system bars):");
-                    Log.d(TAG, String.format("Sample positions - Top Y: %d, Bottom Y: %d", topY, bottomY));
-                    Log.d(TAG, "Top color: " + colorToHex(topColor) + " " + getColorInfo(topColor));
-                    Log.d(TAG, "Bottom color: " + colorToHex(bottomColor) + " " + getColorInfo(bottomColor));
-                } else {
-                    Log.e(TAG, "Failed to capture screen content");
+                    // 使用 PixelCopy API 捕获屏幕
+                    PixelCopy.request(
+                            getWindow(),
+                            bitmap,
+                            (copyResult) -> {
+                                if (copyResult == PixelCopy.SUCCESS) {
+                                    // 分析颜色
+                                    int topColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[0]);
+                                    int bottomColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[1]);
+
+                                    // 更新背景颜色
+                                    LiquidBackgroundView liquidBackground = findViewById(R.id.liquid_background);
+                                    if (liquidBackground != null) {
+                                        liquidBackground.setColors(
+                                                new int[]{topColor},
+                                                new int[]{bottomColor}
+                                        );
+                                    }
+
+                                    Log.d("MainActivity", String.format(
+                                            "Captured colors - Top: #%06X, Bottom: #%06X",
+                                            (0xFFFFFF & topColor),
+                                            (0xFFFFFF & bottomColor)
+                                    ));
+                                }
+                                // 回收位图
+                                bitmap.recycle();
+                            },
+                            new Handler(Looper.getMainLooper())
+                    );
+                } catch (Exception e) {
+                    Log.e("MainActivity", "Error capturing screen colors", e);
                 }
-                bitmap.recycle();
-            }, new Handler(Looper.getMainLooper()));
-        }
+            }
+        });
     }
 }
