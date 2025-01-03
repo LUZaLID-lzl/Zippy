@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.sidebarList.turntable.TurntablePresupposeFragment">
+
+    <!-- 引入标题栏布局 -->
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_page_title"/>
+
+    <!-- 添加 ScrollView -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 预设列表卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 预设列表标题和添加按钮 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/menu_turntable_presuppose"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/blue_500"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_add_presuppose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/turntable_presuppose_add"
+                            android:textColor="@color/black"
+                            app:icon="@drawable/ic_add"
+                            app:iconTint="@color/black"
+                            app:cornerRadius="24dp"
+                            android:paddingHorizontal="16dp"
+                            app:strokeColor="@color/blue_500"
+                            app:strokeWidth="1dp"
+                            app:backgroundTint="@color/white"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    </LinearLayout>
+
+                    <!-- 预设列表 -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_presuppose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingBottom="8dp"/>
+
+                    <!-- 空状态提示 -->
+                    <TextView
+                        android:id="@+id/text_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/turntable_presuppose_empty"
+                        android:textSize="16sp"
+                        android:textColor="@color/gray_500"
+                        android:gravity="center"
+                        android:padding="32dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

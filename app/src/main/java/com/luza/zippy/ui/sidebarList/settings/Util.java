@@ -47,6 +47,12 @@ public class Util {
                 case "mew":
                     activity.setTheme(R.style.MewSplashTheme);
                     break;
+                case "karsa":
+                    activity.setTheme(R.style.KarsaSplashTheme);
+                    break;
+                case "capoo":
+                    activity.setTheme(R.style.CapooSplashTheme);
+                    break;
                 default:
             }
         }

@@ -39,6 +39,16 @@
             android:icon="@drawable/ic_timer"
             android:title="@string/menu_timer"/>
 
+        <item
+            android:id="@+id/nav_pyp"
+            android:icon="@drawable/ic_pyp"
+            android:title="@string/menu_pyp"/>
+
+        <item
+            android:id="@+id/nav_turntable"
+            android:icon="@drawable/ic_turntable"
+            android:title="@string/menu_turntable"/>
+
 <!--        <item-->
 <!--            android:id="@+id/nav_test"-->
 <!--            android:icon="@drawable/ic_test"-->

@@ -29,6 +29,12 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
 
     private ShardPerfenceSetting shardPerfenceSetting;
 
+    public int[] capooSpark = {
+            R.drawable.ic_hamburg,
+            R.drawable.ic_cola,
+            R.drawable.ic_fries
+    };
+
     private static class Point {
         float x, y;
         Point(float x, float y) {
@@ -43,7 +49,7 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
         this.screenHeight = screenHeight;
         this.centerX = screenWidth / 2;
         this.centerY = screenHeight / 4;
-        
+        android.util.Log.d("liziluo","test_log: ");
         // 设置Z轴层级高于按钮
         setZ(10f);
         
@@ -64,6 +70,13 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
                 break;
             case "mew":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_light_particle));
+                break;
+            case "karsa":
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_peach));
+                break;
+            case "capoo":
+                int randomIndex = random.nextInt(capooSpark.length);
+                setImageDrawable(ContextCompat.getDrawable(context, capooSpark[randomIndex]));
                 break;
             default:
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));

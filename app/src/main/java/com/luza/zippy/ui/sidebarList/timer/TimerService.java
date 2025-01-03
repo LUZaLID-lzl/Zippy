@@ -12,6 +12,7 @@ public class TimerService extends Service {
     private final IBinder binder = new TimerBinder();
     private final Handler handler = new Handler(Looper.getMainLooper());
     private long startTime = 0L;
+    private long pausedTime = 0L;  // 记录暂停时的时间
     private long countdownTime = 0L;
     private boolean isRunning = false;
     private boolean isCountdown = false;
@@ -41,6 +42,7 @@ public class TimerService extends Service {
         } else {
             startTime = SystemClock.elapsedRealtime();
         }
+        pausedTime = 0L;  // 重置暂停时间
         isRunning = true;
         handler.post(updateTimerThread);
     }
@@ -48,6 +50,17 @@ public class TimerService extends Service {
     public void pauseTimer() {
         isRunning = false;
         handler.removeCallbacks(updateTimerThread);
+        // 记录暂停时的时间
+        pausedTime = SystemClock.elapsedRealtime() - startTime;
+    }
+
+    public void resumeTimer() {
+        if (pausedTime > 0) {
+            // 调整开始时间,使计时从暂停的位置继续
+            startTime = SystemClock.elapsedRealtime() - pausedTime;
+            isRunning = true;
+            handler.post(updateTimerThread);
+        }
     }
 
     public void stopTimer() {
@@ -57,6 +70,7 @@ public class TimerService extends Service {
             listener.onTimerStop(isCountdown ? countdownTime - (SystemClock.elapsedRealtime() - startTime) : 
                                SystemClock.elapsedRealtime() - startTime);
         }
+        pausedTime = 0L;  // 重置暂停时间
     }
 
     private final Runnable updateTimerThread = new Runnable() {

@@ -24,6 +24,7 @@ import com.luza.zippy.ui.sidebarList.calendar.CalendarFragment;
 import com.luza.zippy.ui.sidebarList.deviceInformation.DeviceInfoFragment;
 import com.luza.zippy.ui.sidebarList.battery.BatteryFragment;
 import com.luza.zippy.ui.sidebarList.performance.PerformanceFragment;
+import com.luza.zippy.ui.sidebarList.pyprender.PyprenderFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
 import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
@@ -33,6 +34,10 @@ import com.luza.zippy.ui.sidebarList.calorie.CalorieFragment;
 import java.util.Locale;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+
+import com.luza.zippy.ui.sidebarList.turntable.TurntableFragment;
+import com.luza.zippy.ui.sidebarList.turntable.TurntablePresupposeFragment;
+import com.luza.zippy.ui.utils.ColorCalibration;
 import com.luza.zippy.ui.views.LiquidBackgroundView;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -85,98 +90,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case "mew":
                 setTheme(R.style.MewTheme);
                 break;
+            case "karsa":
+                setTheme(R.style.KarsaTheme);
+                break;
+            case "capoo":
+                setTheme(R.style.CapooTheme);
+                break;
         }
-        
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // 设置背景颜色
-        LiquidBackgroundView liquidBackgroundView = findViewById(R.id.liquid_background);
-        int[] startColors;
-        int[] endColors;
-        
-        switch (currentTheme) {
-            case "pikachu":
-                startColors = new int[]{
-                    Color.parseColor("#FFC603"),
-                    Color.parseColor("#FFE085"),
-                    Color.parseColor("#FFD44C"),
-                    Color.parseColor("#FFB300")
-                };
-                endColors = new int[]{
-                    Color.parseColor("#FFE085"),
-                    Color.parseColor("#FFD44C"),
-                    Color.parseColor("#FFC603"),
-                    Color.parseColor("#FFD44C")
-                };
-                break;
-            case "bulbasaur":
-                startColors = new int[]{
-                    Color.parseColor("#13B4FC"),
-                    Color.parseColor("#7ED8FA"),
-                    Color.parseColor("#45C7FC"),
-                    Color.parseColor("#0099E5")
-                };
-                endColors = new int[]{
-                    Color.parseColor("#7ED8FA"),
-                    Color.parseColor("#45C7FC"),
-                    Color.parseColor("#13B4FC"),
-                    Color.parseColor("#45C7FC")
-                };
-                break;
-            case "squirtle":
-                startColors = new int[]{
-                    Color.parseColor("#5CB860"),
-                    Color.parseColor("#96D897"),
-                    Color.parseColor("#74C677"),
-                    Color.parseColor("#45A948")
-                };
-                endColors = new int[]{
-                    Color.parseColor("#96D897"),
-                    Color.parseColor("#74C677"),
-                    Color.parseColor("#5CB860"),
-                    Color.parseColor("#74C677")
-                };
-                break;
-            case "mew":
-                startColors = new int[]{
-                    Color.parseColor("#FBA7BD"),
-                    Color.parseColor("#FDD3DE"),
-                    Color.parseColor("#FCC0CE"),
-                    Color.parseColor("#F98DA8")
-                };
-                endColors = new int[]{
-                    Color.parseColor("#FDD3DE"),
-                    Color.parseColor("#FCC0CE"),
-                    Color.parseColor("#FBA7BD"),
-                    Color.parseColor("#FCC0CE")
-                };
-                break;
-            default:
-                startColors = new int[]{
-                    Color.parseColor("#1A1A1A"),
-                    Color.parseColor("#2D2D2D"),
-                    Color.parseColor("#404040"),
-                    Color.parseColor("#333333")
-                };
-                endColors = new int[]{
-                    Color.parseColor("#2D2D2D"),
-                    Color.parseColor("#404040"),
-                    Color.parseColor("#1A1A1A"),
-                    Color.parseColor("#404040")
-                };
-        }
-        liquidBackgroundView.setColors(startColors, endColors);
 
         initViews();
         setupNavigationDrawer();
         setupGestureDetector();
-
-        // 检查激活状态并控制计时器菜单项的显示
-        Menu navMenu = navigationView.getMenu();
-        MenuItem timerItem = navMenu.findItem(R.id.nav_timer);
-        Boolean activationCode = shardPerfenceSetting.getActivate();
-        timerItem.setVisible(activationCode);
 
         // 3秒后捕获屏幕颜色
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -197,6 +124,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mContext = this;
         
         drawerLayout.setOnTouchListener(this);
+
+        // 检查激活状态并控制计时器菜单项的显示
+        Menu navMenu = navigationView.getMenu();
+        MenuItem timerItem = navMenu.findItem(R.id.nav_timer);
+        Boolean activationCode = shardPerfenceSetting.getActivate();
+        timerItem.setVisible(activationCode);
     }
 
     /**
@@ -269,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new PerformanceFragment());
         } else if (id == R.id.nav_timer) {
             loadFragment(new TimerFragment());
+        } else if (id == R.id.nav_pyp) {
+            loadFragment(new PyprenderFragment());
+        } else if (id == R.id.nav_turntable) {
+            loadFragment(new TurntableFragment());
         }
 
 //        else if (id == R.id.nav_test){
@@ -312,6 +249,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
         util.updateLocale(this);
+        
+        // 获取当前主题
+        String currentTheme = shardPerfenceSetting.getHomeTheme();
+        Log.d("MainActivity", "当前主题: " + currentTheme);
+        
+        // 设置背景颜色
+        LiquidBackgroundView liquidBackgroundView = findViewById(R.id.liquid_background);
+        if (liquidBackgroundView != null) {
+            int[] startColors = ColorCalibration.judgeColor(currentTheme, 0);
+            int[] endColors = ColorCalibration.judgeColor(currentTheme, 1);
+            Log.d("MainActivity", "设置背景颜色");
+            liquidBackgroundView.setColors(startColors, endColors);
+        } else {
+            Log.e("MainActivity", "liquidBackgroundView is null");
+        }
     }
 
     private void setupGestureDetector() {
@@ -376,6 +328,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 捕获屏幕颜色
      */
     private void captureScreenColors() {
+
+        ColorCalibration.calculateGradientColors("#21FAD7");
         // 确保窗口已经准备好
         View decorView = getWindow().getDecorView();
         decorView.post(() -> {
@@ -409,35 +363,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     };
 
                     // 使用 PixelCopy API 捕获屏幕
-                    PixelCopy.request(
-                            getWindow(),
-                            bitmap,
-                            (copyResult) -> {
-                                if (copyResult == PixelCopy.SUCCESS) {
-                                    // 分析颜色
-                                    int topColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[0]);
-                                    int bottomColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[1]);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        PixelCopy.request(
+                                getWindow(),
+                                bitmap,
+                                (copyResult) -> {
+                                    if (copyResult == PixelCopy.SUCCESS) {
+                                        // 分析颜色
+                                        int topColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[0]);
+                                        int bottomColor = bitmap.getPixel(bitmap.getWidth() / 2, samplePoints[1]);
 
-                                    // 更新背景颜色
-                                    LiquidBackgroundView liquidBackground = findViewById(R.id.liquid_background);
-                                    if (liquidBackground != null) {
-                                        liquidBackground.setColors(
-                                                new int[]{topColor},
-                                                new int[]{bottomColor}
-                                        );
+                                        // 更新背景颜色
+                                        LiquidBackgroundView liquidBackground = findViewById(R.id.liquid_background);
+                                        if (liquidBackground != null) {
+                                            liquidBackground.setColors(
+                                                    new int[]{topColor},
+                                                    new int[]{bottomColor}
+                                            );
+                                        }
+
+                                        Log.d("MainActivity", String.format(
+                                                "Captured colors - Top: #%06X, Bottom: #%06X",
+                                                (0xFFFFFF & topColor),
+                                                (0xFFFFFF & bottomColor)
+                                        ));
                                     }
-
-                                    Log.d("MainActivity", String.format(
-                                            "Captured colors - Top: #%06X, Bottom: #%06X",
-                                            (0xFFFFFF & topColor),
-                                            (0xFFFFFF & bottomColor)
-                                    ));
-                                }
-                                // 回收位图
-                                bitmap.recycle();
-                            },
-                            new Handler(Looper.getMainLooper())
-                    );
+                                    // 回收位图
+                                    bitmap.recycle();
+                                },
+                                new Handler(Looper.getMainLooper())
+                        );
+                    }
                 } catch (Exception e) {
                     Log.e("MainActivity", "Error capturing screen colors", e);
                 }

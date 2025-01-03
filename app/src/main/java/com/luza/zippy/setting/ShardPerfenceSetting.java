@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class ShardPerfenceSetting {
-    private static final String TAG = "ShardPerfenceSetting";
+    private static final String TAG = "ShardPerfenceSetting_settings";
     private static final String PREF_NAME = "zippy_settings";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -16,12 +16,36 @@ public class ShardPerfenceSetting {
     private static final String KEY_HOMETHEM = "homeTheme";
     private static final String KEY_HOMEANIMATIONNUM = "homeAnimationNum";
     private static final String KEY_ACTIVATE = "activate";
+    private static final String KEY_ACTIVATE_NAME = "activeName";
+    private static final String KEY_LAUNCH_NUM = "launchNum";
 
     // 实际数据
     private String language;        //en - zh
-    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew
+    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew - karsa - capoo
     private int homeAnimationNum;   //10 -> 100
     private boolean activate;
+    private String activeName;
+    private int launchNum;
+
+    public int getLaunchNum() {
+        return launchNum;
+    }
+
+    public void addLaunchNum() {
+        this.launchNum++;
+        editor.putInt(KEY_LAUNCH_NUM, launchNum);
+        editor.apply();
+    }
+
+    public String getActiveName() {
+        return activeName;
+    }
+
+    public void setActiveName(String activeName) {
+        this.activeName = activeName;
+        editor.putString(KEY_ACTIVATE_NAME, activeName);
+        editor.apply();
+    }
 
     public ShardPerfenceSetting(Context context) {
         //构造函数
@@ -30,10 +54,12 @@ public class ShardPerfenceSetting {
         editor = sharedPreferences.edit();
 
         //初始化时读取 SharedPreferences 中的数据
-        language = sharedPreferences.getString(KEY_LANGUAGE, "en");
-        homeTheme = sharedPreferences.getString(KEY_HOMETHEM, "squirtle");
-        homeAnimationNum = sharedPreferences.getInt(KEY_HOMEANIMATIONNUM, 45);
+        language = sharedPreferences.getString(KEY_LANGUAGE, "zh");
+        homeTheme = sharedPreferences.getString(KEY_HOMETHEM, "mew");
+        homeAnimationNum = sharedPreferences.getInt(KEY_HOMEANIMATIONNUM, 38);
         activate = sharedPreferences.getBoolean(KEY_ACTIVATE, false);
+        activeName = sharedPreferences.getString(KEY_ACTIVATE_NAME, "none");
+        launchNum = sharedPreferences.getInt(KEY_LAUNCH_NUM, 0);
         logToString();
     }
 
@@ -90,6 +116,7 @@ public class ShardPerfenceSetting {
                 ", homeTheme='" + homeTheme + '\'' +
                 ", homeAnimationNum='" + homeAnimationNum + '\'' +
                 ", activate='" + activate + '\'' +
+                ", acticeName='" + activeName + '\'' +
                 '}';
         android.util.Log.d(TAG,log);
     }

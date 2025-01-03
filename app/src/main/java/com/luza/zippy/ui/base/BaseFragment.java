@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.luza.zippy.R;
 import com.luza.zippy.ui.fragments.HomeFragment;
@@ -36,9 +37,12 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-
-
     // 子类必须实现的方法
     protected abstract String getTitle();
     protected abstract void initViews(View view);
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
 } 

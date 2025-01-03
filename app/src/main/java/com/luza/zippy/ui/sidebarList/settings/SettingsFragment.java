@@ -26,9 +26,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import com.luza.zippy.MainActivity;
 import com.luza.zippy.R;
+import com.luza.zippy.SplashActivity;
 import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.base.BaseFragment;
+import com.luza.zippy.ui.fragments.HomeFragment;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
+import com.luza.zippy.ui.utils.ImageProcess;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +60,10 @@ public class SettingsFragment extends BaseFragment {
     private MaterialButton activationButton;
     private TextInputLayout activationInputLayout;
 
+    private List<String> activeList = Arrays.asList(
+            "LUZaLID"
+    );
+
     @Override
     protected String getTitle() {
         return getString(R.string.settings);
@@ -72,6 +79,7 @@ public class SettingsFragment extends BaseFragment {
         loadTheme(view);
         setupSlider(view);
         setupActivation(view);
+        setupVersionInfo(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -104,10 +112,12 @@ public class SettingsFragment extends BaseFragment {
 
     private List<ThemeItem> getThemeList() {
         return Arrays.asList(
-                new ThemeItem("Pokemon", "squirtle", R.drawable.squirtle_5, R.drawable.bg_setting_card_background_squirtle),
-                new ThemeItem("Pokemon", "pikachu",  R.drawable.pikaqiu_2, R.drawable.bg_setting_card_background_pikaqiu),
-                new ThemeItem("Pokemon", "bulbasaur", R.drawable.bulbasaur_4, R.drawable.bg_setting_card_background_bulbasaur),
-                new ThemeItem("Pokemon", "mew", R.drawable.mew_1, R.drawable.bg_setting_card_background_mew)
+                new ThemeItem("Pokemon", "squirtle", SplashActivity.squirtleImages[3], R.drawable.bg_setting_card_background_squirtle),
+                new ThemeItem("Cutey", "capoo", SplashActivity.capooImages[2], R.drawable.bg_setting_card_background_capoo),
+                new ThemeItem("Pokemon", "pikachu", SplashActivity.pikachuImages[1], R.drawable.bg_setting_card_background_pikaqiu),
+                new ThemeItem("Pokemon", "bulbasaur", SplashActivity.bulbasaurImages[2], R.drawable.bg_setting_card_background_bulbasaur),
+                new ThemeItem("Pokemon", "mew", SplashActivity.mewImages[0], R.drawable.bg_setting_card_background_mew),
+                new ThemeItem("Legends", "karsa", SplashActivity.karsaImages[5], R.drawable.bg_setting_card_background_karsa)
         );
     }
 
@@ -176,7 +186,7 @@ public class SettingsFragment extends BaseFragment {
             // 已激活状态
             updateActivationUI(true);
             activationInput.setText("XXXXX");  // 使用掩码显示
-            Toast.makeText(requireContext(), getString(R.string.activation_status_activated), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(requireContext(), getString(R.string.activation_status_activated), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -201,12 +211,13 @@ public class SettingsFragment extends BaseFragment {
             }
             activationInputLayout.setError(null);
 
-            if ("LUZaLID".equals(activationCode)){
+            if (activeList.contains(activationCode)){
                 Toast.makeText(requireContext(), getString(R.string.activation_success), Toast.LENGTH_SHORT).show();
                 updateActivationUI(true);
                 activationInput.setText("XXXXX");  // 激活成功后使用掩码显示
 
                 shardPerfenceSetting.setActivate(true);
+                shardPerfenceSetting.setActiveName(activationCode);
                 // 更新导航菜单中计时器的显示状态
                 MainActivity activity = (MainActivity) requireActivity();
                 Menu navMenu = activity.navigationView.getMenu();
@@ -238,6 +249,15 @@ public class SettingsFragment extends BaseFragment {
             activationButton.setAlpha(1.0f);
             activationButton.setText(getString(R.string.activation_button));
         }
+    }
+
+    private void setupVersionInfo(View view) {
+        TextView versionInfoText = view.findViewById(R.id.text_version_info);
+        TextView versionCodeText = view.findViewById(R.id.text_version_code);
+
+        // 直接使用AndroidManifest.xml中定义的版本号
+        versionInfoText.setText(String.format(getString(R.string.version_description), "1.0.13"));
+        versionCodeText.setText(String.format(getString(R.string.version_code), "13"));
     }
 
     @Override

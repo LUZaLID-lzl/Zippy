@@ -71,6 +71,13 @@
         <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
     </style>
 
+    <style name="CustomWindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
     </style>
@@ -121,6 +128,14 @@
         <item name="android:minHeight">48dp</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- 对话框主题 -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources> 

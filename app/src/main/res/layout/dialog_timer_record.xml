@@ -36,7 +36,7 @@
 
     <!-- 选项组 -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="24dp"
@@ -44,46 +44,46 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/checkbox_option1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/timer_option1"
             android:textColor="@color/black"
             android:layout_marginEnd="8dp"
-            app:chipIcon="@drawable/ic_hand"
+            app:chipIcon="@drawable/ic_spark"
             app:chipIconEnabled="true"
             app:chipIconSize="24dp"
             app:chipBackgroundColor="@color/chip_background_color"
-            app:chipStrokeWidth="1dp"
+            app:chipStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/checkbox_option2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/timer_option2"
             android:textColor="@color/black"
             android:layout_marginEnd="8dp"
-            app:chipIcon="@drawable/ic_cups"
+            app:chipIcon="@drawable/ic_leaf"
             app:chipIconEnabled="true"
             app:chipIconSize="24dp"
             app:chipBackgroundColor="@color/chip_background_color"
-            app:chipStrokeWidth="1dp"
+            app:chipStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/checkbox_option3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/timer_option3"
             android:textColor="@color/black"
-            app:chipIcon="@drawable/ic_bed"
+            app:chipIcon="@drawable/ic_peach"
             app:chipIconEnabled="true"
             app:chipIconSize="24dp"
             app:chipBackgroundColor="@color/chip_background_color"
-            app:chipStrokeWidth="1dp"
+            app:chipStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
     </LinearLayout>

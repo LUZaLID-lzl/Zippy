@@ -17,6 +17,9 @@
     <string name="menu_calendar">Calendar</string>
     <string name="menu_performance_test">Performance Test</string>
     <string name="menu_timer">Timer</string>
+    <string name="menu_pyp">Pyp Render</string>
+    <string name="menu_turntable">Turntable</string>
+    <string name="menu_turntable_presuppose">Turntable - Presuppose</string>
 
     <string name="menu_example">example</string>
 
@@ -31,6 +34,7 @@
     <string name="delete">Delete</string>
     <string name="back">Back</string>
     <string name="empty_todo_list">No todo items</string>
+    <string name="delete_confirm">Are you sure to delete "%s"?</string>
 
     <!-- Battery Management -->
     <string name="battery_level">Battery Level</string>
@@ -277,6 +281,7 @@
     <!-- Timer related -->
     <string name="timer_start">Start</string>
     <string name="timer_pause">Pause</string>
+    <string name="timer_resume">Resume</string>
     <string name="timer_stop">Stop</string>
     <string name="timer_reset">Reset</string>
     <string name="timer_mode_countdown">Countdown</string>
@@ -284,9 +289,9 @@
     <string name="timer_record_title">Timer Record</string>
     <string name="timer_record_time">Duration: %s</string>
     <string name="timer_record_timestamp">Record Time: %s</string>
-    <string name="timer_option1">Type 1</string>
-    <string name="timer_option2">Type 2</string>
-    <string name="timer_option3">Type 3</string>
+    <string name="timer_option1">-</string>
+    <string name="timer_option2">-</string>
+    <string name="timer_option3">-</string>
     <string name="timer_save">Save</string>
     <string name="timer_cancel">Cancel</string>
     <string name="timer_input_minutes">Enter minutes</string>
@@ -317,4 +322,54 @@
     <string name="activation_failed">Activation failed</string>
     <string name="activation_status_activated">Activated</string>
     <string name="activation_status_not_activated">Not activated</string>
+
+    <!-- Picture in Picture Rendering -->
+    <string name="pyp_import">Import Image</string>
+    <string name="pyp_export">Export Image</string>
+    <string name="pyp_preview">Image Preview</string>
+    <string name="pyp_outer_settings">External Image Settings</string>
+    <string name="pyp_inner_settings">Internal Image Settings</string>
+    <string name="pyp_blur">Blur</string>
+    <string name="pyp_brightness">Brightness</string>
+    <string name="pyp_margin">Margin</string>
+    <string name="pyp_contrast">Contrast</string>
+    <string name="pyp_import_failed">Failed to load image</string>
+    <string name="pyp_export_failed">Export failed: %s</string>
+    <string name="pyp_export_success">Image saved to gallery</string>
+    <string name="pyp_no_image">Please import an image first</string>
+    <string name="pyp_corner_radius">Corner Radius</string>
+    <string name="pyp_saturation">Saturation</string>
+    <string name="pyp_color_temp">Color Temperature</string>
+    <string name="pyp_elevation">Shadow Range</string>
+    <string name="pyp_elevation_alpha">Shadow Intensity</string>
+
+    <!-- Versions -->
+    <string name="version_title">Version Info</string>
+    <string name="version_description">Current Version：%s</string>
+    <string name="version_code">Version：%s</string>
+
+    <!-- Turntable related -->
+    <string name="turntable_title">Turntable</string>
+    <string name="turntable_start">Start</string>
+    <string name="turntable_stop">Stop</string>
+    <string name="turntable_add">Add Option</string>
+    <string name="turntable_edit">Edit Options</string>
+    <string name="turntable_delete">Delete Option</string>
+    <string name="turntable_input_hint">Enter option content</string>
+    <string name="turntable_empty">No options available</string>
+    <string name="turntable_max_options">Maximum 12 options allowed</string>
+    <string name="turntable_min_options">Minimum 2 options required</string>
+    <string name="turntable_result">Congratulations: %s</string>
+
+    <!-- Turntable Presuppose -->
+    <string name="turntable_presuppose_add">Add Preset</string>
+    <string name="turntable_presuppose_edit">Edit Preset</string>
+    <string name="turntable_presuppose_delete">Delete Preset</string>
+    <string name="turntable_presuppose_name">Preset Name</string>
+    <string name="turntable_presuppose_options">Preset Options</string>
+    <string name="turntable_presuppose_add_option">Add Option</string>
+    <string name="turntable_presuppose_edit_option">Edit Option</string>
+    <string name="turntable_presuppose_delete_option">Delete Option</string>
+    <string name="turntable_presuppose_option_name">Option Name</string>
+    <string name="turntable_presuppose_empty">No Presets</string>
 </resources> 

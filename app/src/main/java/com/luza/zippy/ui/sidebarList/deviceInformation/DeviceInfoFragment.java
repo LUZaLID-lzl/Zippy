@@ -86,27 +86,24 @@ public class DeviceInfoFragment extends BaseFragment {
         textDeviceInfo = view.findViewById(R.id.text_device_info);
 
         // 设置点击事件
-        layoutApps.setOnClickListener(v -> {
+        layoutDeviceInfo.setOnClickListener(v -> {
             updateSelection(0);
-            // 显示应用列表
+            showDeviceInfo();
+        });
+
+        layoutApps.setOnClickListener(v -> {
+            updateSelection(1);
             showAppList();
         });
 
         layoutSensors.setOnClickListener(v -> {
-            updateSelection(1);
-            // 显示传感器列表
+            updateSelection(2);
             showSensorList();
         });
 
-        layoutDeviceInfo.setOnClickListener(v -> {
-            updateSelection(2);
-            // 显示设备信息
-            showDeviceInfo();
-        });
-
-        // 默认选中设备信息
+        // 默认选中其他信息
         updateSelection(0);
-        showAppList();
+        showDeviceInfo();
     }
 
     private void updateSelection(int selectedIndex) {
@@ -118,13 +115,13 @@ public class DeviceInfoFragment extends BaseFragment {
         // 设置选中项的状态并播放动画
         switch (selectedIndex) {
             case 0:
-                selectItemWithAnimation(layoutApps, imageApps, textApps);
+                selectItemWithAnimation(layoutDeviceInfo, imageDeviceInfo, textDeviceInfo);
                 break;
             case 1:
-                selectItemWithAnimation(layoutSensors, imageSensors, textSensors);
+                selectItemWithAnimation(layoutApps, imageApps, textApps);
                 break;
             case 2:
-                selectItemWithAnimation(layoutDeviceInfo, imageDeviceInfo, textDeviceInfo);
+                selectItemWithAnimation(layoutSensors, imageSensors, textSensors);
                 break;
         }
     }

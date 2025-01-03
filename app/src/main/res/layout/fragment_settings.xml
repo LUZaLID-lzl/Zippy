@@ -22,6 +22,171 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- 主题设置卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <!-- 原有的主题设置内容 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 主题设置标题 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_500"
+                        android:layout_marginBottom="16dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/theme_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:padding="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- 激活信息卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 激活信息标题 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activation_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_500"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 激活码输入框 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/activation_input_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxStrokeColor="@color/blue_500"
+                        app:hintTextColor="@color/blue_500"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/activation_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/activation_hint"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:imeOptions="actionDone"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/gray_500"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 确认按钮 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/activation_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activation_button"
+                        android:textColor="@color/black"
+                        app:backgroundTint="@color/white"
+                        app:strokeColor="@color/blue_500"
+                        app:strokeWidth="1dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 说明文本 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/activation_description"
+                        android:textSize="14sp"
+                        android:textColor="#99000000"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 滑动条设置卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <!-- 原有的滑动条设置内容 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 滑动条标题 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/homeAnimationNum_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_500"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 显示当前值的文本 -->
+                    <TextView
+                        android:id="@+id/slider_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="?attr/textColor"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- 滑动条 -->
+                    <SeekBar
+                        android:id="@+id/seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:min="10"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- 说明文本 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/homeAnimationNum_description"
+                        android:textSize="14sp"
+                        android:textColor="#99000000"
+                        android:layout_marginTop="8dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <!-- 语言设置卡片 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -94,7 +259,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 主题设置卡片 -->
+            <!-- 版本信息卡片 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,157 +267,37 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <!-- 原有的主题设置内容 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- 主题设置标题 -->
+                    <!-- 版本信息标题 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme_title"
+                        android:text="@string/version_title"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/blue_500"
                         android:layout_marginBottom="16dp"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/theme_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:padding="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- 滑动条设置卡片 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <!-- 原有的滑动条设置内容 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- 滑动条标题 -->
+                    <!-- 版本号信息 -->
                     <TextView
+                        android:id="@+id/text_version_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/homeAnimationNum_title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/blue_500"
-                        android:layout_marginBottom="16dp"/>
+                        android:textSize="14sp"
+                        android:textColor="?attr/textColor"/>
 
-                    <!-- 显示当前值的文本 -->
                     <TextView
-                        android:id="@+id/slider_value"
+                        android:id="@+id/text_version_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textColor="?attr/textColor"
-                        android:layout_marginBottom="8dp"/>
-
-                    <!-- 滑动条 -->
-                    <SeekBar
-                        android:id="@+id/seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:max="100"
-                        android:min="10"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"/>
-
-                    <!-- 说明文本 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/homeAnimationNum_description"
-                        android:textSize="14sp"
-                        android:textColor="#99000000"
-                        android:layout_marginTop="8dp"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- 激活信息卡片 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- 激活信息标题 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activation_title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/blue_500"
-                        android:layout_marginBottom="16dp"/>
-
-                    <!-- 激活码输入框 -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/activation_input_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        app:boxStrokeColor="@color/blue_500"
-                        app:hintTextColor="@color/blue_500"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/activation_input"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/activation_hint"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:imeOptions="actionDone"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/gray_500"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- 确认按钮 -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/activation_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activation_button"
-                        android:textColor="@color/black"
-                        app:backgroundTint="@color/white"
-                        app:strokeColor="@color/blue_500"
-                        app:strokeWidth="1dp"
-                        android:layout_marginBottom="16dp"/>
-
-                    <!-- 说明文本 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activation_description"
-                        android:textSize="14sp"
-                        android:textColor="#99000000"/>
+                        android:layout_marginTop="4dp"/>
 
                 </LinearLayout>
 

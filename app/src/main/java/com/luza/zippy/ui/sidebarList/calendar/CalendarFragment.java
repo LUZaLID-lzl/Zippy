@@ -227,11 +227,16 @@ public class CalendarFragment extends BaseFragment {
                     if (birthday.isLunar()) {
                         // 农历生日：使用保存的农历月日计算当年对应的公历日期
                         int[] solarDate = PaseDateUtil.lunarToSolar(
-                            currentYear,        // 使用当前年份
+                            birthday.getYear(),        // 使用当前年份
                             birthday.getLunarMonth(),  // 使用保存的农历月
                             birthday.getLunarDay(),    // 使用保存的农历日
                             false  // 非闰月
                         );
+                        android.util.Log.d("liziluo","birthday.getLunarMonth(): " + birthday.getLunarMonth());
+                        android.util.Log.d("liziluo","birthday.getLunarDay(): " + birthday.getLunarDay());
+
+                        android.util.Log.d("liziluo","currentMonth: " + solarDate[1]);
+                        android.util.Log.d("liziluo","dayBirthdays: " + solarDate[2]);
                         
                         if (solarDate != null && solarDate[1] == currentMonth) {
                             List<Birthday> dayBirthdays = null;
@@ -590,10 +595,8 @@ public class CalendarFragment extends BaseFragment {
                    .append(birthday.getDay())
                    .append(context.getString(R.string.day));
             
-            if (birthday.isLunar()) {
-                dateText.append(" (")
-                       .append(context.getString(R.string.lunar_mark))
-                       .append(")");
+            if (!birthday.isLunar()) {
+                //nothing to do
             } else {
                 // 如果是公历生日，显示对应的农历日期
                 int[] lunarDate = PaseDateUtil.solarToLunar(
@@ -604,9 +607,9 @@ public class CalendarFragment extends BaseFragment {
                 if (lunarDate != null) {
                     dateText.append("\n")
                            .append(context.getString(R.string.corresponding_lunar))
-                           .append(lunarDate[1])
+                           .append(birthday.getLunarMonth())
                            .append(context.getString(R.string.month))
-                           .append(getLunarDayText(lunarDate[2]));
+                           .append(getLunarDayText(birthday.getLunarDay()));
                 }
             }
             

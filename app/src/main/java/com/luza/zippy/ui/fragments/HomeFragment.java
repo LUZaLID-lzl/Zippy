@@ -1,5 +1,6 @@
 package com.luza.zippy.ui.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.luza.zippy.R;
+import com.luza.zippy.SplashActivity;
 import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
+import com.luza.zippy.ui.utils.ImageProcess;
 import com.luza.zippy.ui.views.SparkView;
 import com.luza.zippy.ui.sidebarList.settings.SettingsFragment;
 import android.os.Handler;
@@ -33,46 +36,21 @@ public class HomeFragment extends Fragment {
     private boolean isGeneratingSparks = true;
     private ImageView lightningImage;
     private ShardPerfenceSetting shardPerfenceSetting;
+    private ImageProcess imageProcess;
     private int animationNum;
-    private final int[] pikachuImages = {
-        R.drawable.pikaqiu_2,
-        R.drawable.pikaqiu_3,
-        R.drawable.pikaqiu_4,
-        R.drawable.pikaqiu_6,
-        R.drawable.pikaqiu_7
-    };
 
-    private final int[] bulbasaurImages = {
-        R.drawable.bulbasaur_1,
-        R.drawable.bulbasaur_2,
-        R.drawable.bulbasaur_3,
-        R.drawable.bulbasaur_4,
-        R.drawable.bulbasaur_5,
-    };
-
-    private final int[] squirtleImages = {
-        R.drawable.squirtle_1,
-        R.drawable.squirtle_2,
-        R.drawable.squirtle_3,
-        R.drawable.squirtle_4,
-        R.drawable.squirtle_5,
-        R.drawable.squirtle_6,
-        R.drawable.squirtle_7,
-    };
-
-    private final int[] mewImages = {
-        R.drawable.mew_1,
-        R.drawable.mew_2,
-        R.drawable.mew_3,
-        R.drawable.mew_4,
-        R.drawable.mew_5,
-    };
+    public static Bitmap[] pikachuImages;
+    public static Bitmap[] bulbasaurImages;
+    public static Bitmap[] squirtleImages;
+    public static Bitmap[] mewImages;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        imageProcess = new ImageProcess();
+        procesImage();
         shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
         animationNum = shardPerfenceSetting.getHomeAnimationNum();
         // 设置闪电动画
@@ -120,36 +98,46 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    public void procesImage(){
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         // 随机显示皮卡丘图片
 
-        int[] currentImages;
+        Bitmap[] currentImages;
         animationNum = shardPerfenceSetting.getHomeAnimationNum();
 
         switch (shardPerfenceSetting.getHomeTheme()){
             case "pikachu":
-                currentImages = pikachuImages;
+                currentImages = SplashActivity.pikachuImages;
                 break;
             case "bulbasaur":
-                currentImages = bulbasaurImages;
+                currentImages = SplashActivity.bulbasaurImages;
                 break;
             case "squirtle":
-                currentImages = squirtleImages;
+                currentImages = SplashActivity.squirtleImages;
                 break;
             case "mew":
-                currentImages = mewImages;
+                currentImages = SplashActivity.mewImages;
+                break;
+            case "karsa":
+                currentImages = SplashActivity.karsaImages;
+                break;
+            case "capoo":
+                currentImages = SplashActivity.capooImages;
                 break;
             default:
-                currentImages = pikachuImages;
+                currentImages = SplashActivity.squirtleImages;
                 break;
         }
 
 
         if (lightningImage != null) {
             int randomIndex = new Random().nextInt(currentImages.length);
-            lightningImage.setImageResource(currentImages[randomIndex]);
+            lightningImage.setImageBitmap(currentImages[randomIndex]);
         }
         
         // 如果已经有动画在运行，就不需要重新启动

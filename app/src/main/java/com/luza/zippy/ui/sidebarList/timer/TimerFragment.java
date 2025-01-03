@@ -231,31 +231,41 @@ public class TimerFragment extends BaseFragment implements TimerService.TimerLis
     }
 
     private void startTimer() {
-        if (isCountdownMode) {
-            String minutesStr = editMinutes.getText().toString();
-            if (minutesStr.isEmpty()) {
-                editMinutes.setError(getString(R.string.timer_input_minutes));
-                return;
+        if (!isRunning) {
+            if (startButton.getText().toString().equals(getString(R.string.timer_resume))) {
+                // 继续计时
+                timerService.resumeTimer();
+            } else {
+                // 开始新计时
+                if (isCountdownMode) {
+                    String minutesStr = editMinutes.getText().toString();
+                    if (minutesStr.isEmpty()) {
+                        editMinutes.setError(getString(R.string.timer_input_minutes));
+                        return;
+                    }
+                    float minutes = Float.parseFloat(minutesStr);
+                    long milliseconds = (long) (minutes * 60 * 1000);
+                    timerService.startTimer(true, milliseconds);
+                } else {
+                    timerService.startTimer(false, 0);
+                }
             }
-            float minutes = Float.parseFloat(minutesStr);
-            long milliseconds = (long) (minutes * 60 * 1000);
-            timerService.startTimer(true, milliseconds);
+            isRunning = true;
+            startButton.setText(R.string.timer_pause);
+            stopButton.setVisibility(View.VISIBLE);
+            switchButton.setEnabled(false);
+            switchButton.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_gray)));
+            inputLayoutMinutes.setEnabled(false);
         } else {
-            timerService.startTimer(false, 0);
+            pauseTimer();
         }
-        isRunning = true;
-        startButton.setText(R.string.timer_pause);
-        stopButton.setVisibility(View.VISIBLE);
-        switchButton.setEnabled(false);
-        switchButton.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_gray)));
-        inputLayoutMinutes.setEnabled(false);
     }
 
     private void pauseTimer() {
         if (timerService != null) {
             timerService.pauseTimer();
             isRunning = false;
-            startButton.setText(R.string.timer_start);
+            startButton.setText(R.string.timer_resume);
         }
     }
 

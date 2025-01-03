@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_material">
+
+    <!-- 预设名称输入框 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:boxStrokeColor="@color/blue_500"
+        app:hintTextColor="@color/blue_500"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/turntable_presuppose_name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:imeOptions="actionNext"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 选项标题和添加按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/turntable_presuppose_options"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue_500"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/turntable_presuppose_add_option"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/black"
+            app:cornerRadius="24dp"
+            android:paddingHorizontal="16dp"
+            app:strokeColor="@color/blue_500"
+            app:strokeWidth="1dp"
+            app:backgroundTint="@color/white"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    </LinearLayout>
+
+    <!-- 选项列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        android:maxHeight="300dp"/>
+
+</LinearLayout> 

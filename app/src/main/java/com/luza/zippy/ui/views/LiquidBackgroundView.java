@@ -128,15 +128,29 @@ public class LiquidBackgroundView extends View {
     }
 
     private void updateGradient() {
-        if (getWidth() > 0 && getHeight() > 0) {
-            RadialGradient gradient = new RadialGradient(
-                    getWidth()/2f, getHeight()/2f, 
-                    Math.max(getWidth(), getHeight())/1.5f,
-                    currentColors,
-                    null,
-                    Shader.TileMode.CLAMP);
-            paint.setShader(gradient);
+        if (currentColors == null || currentColors.length < 2) {
+            Log.e(TAG, "Invalid colors array");
+            return;
         }
+        
+        int width = getWidth();
+        int height = getHeight();
+        
+        if (width <= 0 || height <= 0) {
+            Log.e(TAG, "Invalid dimensions: width=" + width + ", height=" + height);
+            return;
+        }
+        
+        // 使用径向渐变
+        RadialGradient gradient = new RadialGradient(
+            width/2f, height/2f,
+            Math.max(width, height)/1.5f,
+            currentColors,
+            null,
+            Shader.TileMode.CLAMP
+        );
+        
+        paint.setShader(gradient);
     }
 
     @Override
@@ -172,20 +186,17 @@ public class LiquidBackgroundView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         
-        // 首次绘制时打印颜色信息
-        if (isFirstDraw) {
-            isFirstDraw = false;
-            Log.d(TAG, "Initial colors:");
-            Log.d(TAG, "Top color: " + getTopColor() + " " + getColorInfo(currentColors[0]));
-            Log.d(TAG, "Bottom color: " + getBottomColor() + " " + getColorInfo(currentColors[currentColors.length - 1]));
-            Log.d(TAG, "All colors:");
-            for (int i = 0; i < currentColors.length; i++) {
-                Log.d(TAG, "Color " + (i + 1) + ": " + colorToHex(currentColors[i]) + " " + getColorInfo(currentColors[i]));
-            }
-        }
-
         int width = getWidth();
         int height = getHeight();
+
+        // 确保画笔和渐变是正确设置的
+        if (paint == null) {
+            paint = new Paint();
+            paint.setAntiAlias(true);
+        }
+        
+        // 更新渐变
+        updateGradient();
 
         path.reset();
         path.moveTo(0, 0);
@@ -210,21 +221,25 @@ public class LiquidBackgroundView extends View {
         path.lineTo(0, height);
         path.close();
 
+        // 使用渐变色绘制路径
         canvas.drawPath(path, paint);
         
         // 渐变叠加层
         Paint overlayPaint = new Paint();
         overlayPaint.setShader(new LinearGradient(
-                0, 0, width, height,
-                new int[]{
-                        Color.argb(50, 0, 0, 0),
-                        Color.argb(30, 0, 0, 0),
-                        Color.argb(50, 0, 0, 0)
-                },
-                null,
-                Shader.TileMode.CLAMP
+            0, 0, width, height,
+            new int[]{
+                Color.argb(50, 255, 255, 255),
+                Color.argb(30, 255, 255, 255),
+                Color.argb(50, 255, 255, 255)
+            },
+            null,
+            Shader.TileMode.CLAMP
         ));
         canvas.drawRect(0, 0, width, height, overlayPaint);
+        
+        // 打印当前颜色信息
+        logCurrentColors();
     }
 
     @Override
@@ -242,12 +257,47 @@ public class LiquidBackgroundView extends View {
     }
 
     public void setColors(int[] newStartColors, int[] newEndColors) {
+        Log.d(TAG, "setColors called");
         if (newStartColors != null && newStartColors.length == 4 &&
             newEndColors != null && newEndColors.length == 4) {
+            
+            // 打印新的颜色值
+            Log.d(TAG, "Setting new colors:");
+            Log.d(TAG, "Start colors:");
+            for (int i = 0; i < newStartColors.length; i++) {
+                Log.d(TAG, "Color " + i + ": " + colorToHex(newStartColors[i]));
+            }
+            Log.d(TAG, "End colors:");
+            for (int i = 0; i < newEndColors.length; i++) {
+                Log.d(TAG, "Color " + i + ": " + colorToHex(newEndColors[i]));
+            }
+
             System.arraycopy(newStartColors, 0, startColors, 0, 4);
             System.arraycopy(newEndColors, 0, endColors, 0, 4);
             System.arraycopy(startColors, 0, currentColors, 0, 4);
+            
+            // 更新渐变
             updateGradient();
+            
+            // 重启动画
+            if (colorAnimator != null) {
+                colorAnimator.cancel();
+                colorAnimator.start();
+            }
+            if (waveAnimator != null) {
+                waveAnimator.cancel();
+                waveAnimator.start();
+            }
+            
+            // 强制重绘
+            invalidate();
+        } else {
+            Log.e(TAG, "Invalid color arrays provided");
+            if (newStartColors == null || newEndColors == null) {
+                Log.e(TAG, "Color arrays are null");
+            } else {
+                Log.e(TAG, "Color arrays length: start=" + newStartColors.length + ", end=" + newEndColors.length);
+            }
         }
     }
 } 

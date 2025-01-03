@@ -17,6 +17,9 @@
     <string name="menu_calendar">日历</string>
     <string name="menu_performance_test">性能测试</string>
     <string name="menu_timer">计时器</string>
+    <string name="menu_pyp">画中画渲染</string>
+    <string name="menu_turntable">大大大转盘</string>
+    <string name="menu_turntable_presuppose">大大大转盘 - 预设</string>
 
     <string name="menu_example">举例</string>
 
@@ -32,6 +35,7 @@
     <string name="back">返回</string>
     <string name="unknow">未知</string>
     <string name="empty_todo_list">暂无待办事项</string>
+    <string name="delete_confirm">确定要删除"%s"吗？</string>
 
     <!-- 电池管理 -->
     <string name="battery_level">电量</string>
@@ -140,7 +144,7 @@
     <string name="device_do_sensor_num">可用传感器数量</string>
     <string name="device_title_app_list">应用列表</string>
     <string name="device_title_sensor">传感器</string>
-    <string name="device_title_others">其他信息</string>
+    <string name="device_title_others">基本信息</string>
 
     <!-- 设置页面主题 -->
     <string name="language_title">语言设置</string>
@@ -276,6 +280,7 @@
     <!-- 计时器相关 -->
     <string name="timer_start">开始</string>
     <string name="timer_pause">暂停</string>
+    <string name="timer_resume">继续</string>
     <string name="timer_stop">结束</string>
     <string name="timer_reset">重置</string>
     <string name="timer_mode_countdown">倒计时</string>
@@ -283,9 +288,9 @@
     <string name="timer_record_title">计时记录</string>
     <string name="timer_record_time">计时时长：%s</string>
     <string name="timer_record_timestamp">记录时间：%s</string>
-    <string name="timer_option1">类型一</string>
-    <string name="timer_option2">类型二</string>
-    <string name="timer_option3">类型三</string>
+    <string name="timer_option1">-</string>
+    <string name="timer_option2">-</string>
+    <string name="timer_option3">-</string>
     <string name="timer_save">保存</string>
     <string name="timer_cancel">取消</string>
     <string name="timer_input_minutes">输入分钟数</string>
@@ -316,4 +321,58 @@
     <string name="activation_failed">激活失败</string>
     <string name="activation_status_activated">已激活</string>
     <string name="activation_status_not_activated">未激活</string>
+
+    <!-- 画中画渲染相关 -->
+    <string name="pyp_import">导入图片</string>
+    <string name="pyp_export">导出图片</string>
+    <string name="pyp_preview">图片预览</string>
+    <string name="pyp_outer_settings">外部图片设置</string>
+    <string name="pyp_inner_settings">内部图片设置</string>
+    <string name="pyp_blur">模糊度</string>
+    <string name="pyp_brightness">亮度</string>
+    <string name="pyp_margin">边距</string>
+    <string name="pyp_contrast">对比度</string>
+    <string name="pyp_import_failed">加载图片失败</string>
+    <string name="pyp_export_failed">导出失败: %s</string>
+    <string name="pyp_export_success">图片已保存到相册</string>
+    <string name="pyp_no_image">请先导入图片</string>
+    <string name="pyp_corner_radius">圆角半径</string>
+    <string name="pyp_saturation">饱和度</string>
+    <string name="pyp_color_temp">色温</string>
+    <string name="pyp_elevation">阴影范围</string>
+    <string name="pyp_elevation_alpha">阴影浓度</string>
+
+    <!-- 版本信息 -->
+    <string name="version_title">版本信息</string>
+    <string name="version_description">当前版本：%s</string>
+    <string name="version_code">版本号：%s</string>
+
+    <!-- 大转盘相关 -->
+    <string name="turntable_start">开始</string>
+    <string name="turntable_stop">停止</string>
+    <string name="turntable_add">添加选项</string>
+    <string name="turntable_edit">编辑选项</string>
+    <string name="turntable_delete">删除选项</string>
+    <string name="turntable_input_hint">请输入选项内容</string>
+    <string name="turntable_empty">暂无选项</string>
+    <string name="turntable_max_options">最多添加12个选项</string>
+    <string name="turntable_min_options">至少需要2个选项</string>
+    <string name="turntable_result">恭喜抽中：%s</string>
+    <string name="turntable_current_presuppose">当前预设：%s</string>
+    <string name="turntable_select_presuppose">选择预设</string>
+    <string name="turntable_edit_presuppose">编辑预设</string>
+    <string name="turntable_no_presuppose">未选择预设</string>
+    <string name="turntable_select_title">选择预设</string>
+
+    <!-- 转盘预设相关 -->
+    <string name="turntable_presuppose_add">添加预设</string>
+    <string name="turntable_presuppose_edit">编辑预设</string>
+    <string name="turntable_presuppose_delete">删除预设</string>
+    <string name="turntable_presuppose_name">预设名称</string>
+    <string name="turntable_presuppose_options">预设选项</string>
+    <string name="turntable_presuppose_add_option">添加选项</string>
+    <string name="turntable_presuppose_edit_option">编辑选项</string>
+    <string name="turntable_presuppose_delete_option">删除选项</string>
+    <string name="turntable_presuppose_option_name">选项名称</string>
+    <string name="turntable_presuppose_empty">暂无预设</string>
 </resources>

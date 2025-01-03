@@ -126,7 +126,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
         void bind(ThemeItem theme) {
             nameText.setText(theme.name);
             descriptionText.setText(theme.description);
-            themeImage.setImageResource(theme.imageRes);
+            themeImage.setImageBitmap(theme.imageRes);
             cardView.setBackgroundResource(theme.backgroundColor);
 
             // 只需要更新开关状态，不需要添加监听器
