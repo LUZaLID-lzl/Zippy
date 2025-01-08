@@ -65,123 +65,88 @@ public class ColorCalibration {
         }
     }
 
-    public static int[] judgeColor(String theme,int position){
-        int[] startColors;
-        int[] endColors;
-
-        Log.d("ColorCalibration", "当前主题: " + theme + ", position: " + position);
-
+    public static int[] judgeColor(String theme, int position) {
+        String baseColor;
+        
+        // 为每个主题定义基准色
         switch (theme) {
             case "pikachu":
-                startColors = new int[]{
-                        Color.parseColor("#FFC603"),
-                        Color.parseColor("#FFE085"),
-                        Color.parseColor("#FFD44C"),
-                        Color.parseColor("#FFB300")
-                };
-                endColors = new int[]{
-                        Color.parseColor("#FFE085"),
-                        Color.parseColor("#FFD44C"),
-                        Color.parseColor("#FFC603"),
-                        Color.parseColor("#FFD44C")
-                };
+                baseColor = "#FFC603";  // 皮卡丘黄色
                 break;
             case "bulbasaur":
-                startColors = new int[]{
-                        Color.parseColor("#13B4FC"),
-                        Color.parseColor("#7ED8FA"),
-                        Color.parseColor("#45C7FC"),
-                        Color.parseColor("#0099E5")
-                };
-                endColors = new int[]{
-                        Color.parseColor("#7ED8FA"),
-                        Color.parseColor("#45C7FC"),
-                        Color.parseColor("#13B4FC"),
-                        Color.parseColor("#45C7FC")
-                };
+                baseColor = "#13B4FC";  // 妙蛙种子蓝色
                 break;
             case "squirtle":
-                startColors = new int[]{
-                        Color.parseColor("#5CB860"),
-                        Color.parseColor("#96D897"),
-                        Color.parseColor("#74C677"),
-                        Color.parseColor("#45A948")
-                };
-                endColors = new int[]{
-                        Color.parseColor("#96D897"),
-                        Color.parseColor("#74C677"),
-                        Color.parseColor("#5CB860"),
-                        Color.parseColor("#74C677")
-                };
+                baseColor = "#5CB860";  // 杰尼龟绿色
                 break;
             case "mew":
-                startColors = new int[]{
-                        Color.parseColor("#FBA7BD"),
-                        Color.parseColor("#FDD3DE"),
-                        Color.parseColor("#FCC0CE"),
-                        Color.parseColor("#F98DA8")
-                };
-                endColors = new int[]{
-                        Color.parseColor("#FDD3DE"),
-                        Color.parseColor("#FCC0CE"),
-                        Color.parseColor("#FBA7BD"),
-                        Color.parseColor("#FCC0CE")
-                };
+                baseColor = "#FBA7BD";  // 梦幻粉色
                 break;
             case "karsa":
-                startColors = new int[]{
-                        Color.parseColor("#EAB1F4"),  // 基准色
-                        Color.parseColor("#F2CCF8"),  // 最浅色 (+15%)
-                        Color.parseColor("#EEBEF6"),  // 中间偏浅 (+10%)
-                        Color.parseColor("#E6A4F2")   // 中间偏深 (-10%)
-                };
-                endColors = new int[]{
-                        Color.parseColor("#F2CCF8"),  // 最浅色
-                        Color.parseColor("#EEBEF6"),  // 中间偏浅
-                        Color.parseColor("#EAB1F4"),  // 基准色
-                        Color.parseColor("#EEBEF6")   // 中间偏浅
-                };
+                baseColor = "#EAB1F4";  // karsa紫色
                 break;
             case "capoo":
-                startColors = new int[]{
-                        Color.parseColor("#21FAD7"),  // 基准色
-                        Color.parseColor("#25FFF7"),  // 最浅色 (+15%)
-                        Color.parseColor("#24FFEC"),  // 中间偏浅 (+10%)
-                        Color.parseColor("#1DE1C1")   // 中间偏深 (-10%)
-                };
-                endColors = new int[]{
-                        Color.parseColor("#25FFF7"),  // 最浅色
-                        Color.parseColor("#24FFEC"),  // 中间偏浅
-                        Color.parseColor("#21FAD7"),  // 基准色
-                        Color.parseColor("#24FFEC")   // 中间偏浅
-                };
+                baseColor = "#21FAD7";  // capoo青色
+                break;
+            case "maple":
+                baseColor = "#D8420C";  // maple橙色
                 break;
             default:
-                startColors = new int[]{
-                        Color.parseColor("#1A1A1A"),
-                        Color.parseColor("#2D2D2D"),
-                        Color.parseColor("#404040"),
-                        Color.parseColor("#333333")
-                };
-                endColors = new int[]{
-                        Color.parseColor("#2D2D2D"),
-                        Color.parseColor("#404040"),
-                        Color.parseColor("#1A1A1A"),
-                        Color.parseColor("#404040")
-                };
+                baseColor = "#1A1A1A";  // 默认深灰色
         }
 
-        int[] result = position == 0 ? startColors : endColors;
-        
-        // 打印颜色值
+        // 解析基准色
+        int color = Color.parseColor(baseColor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+
+        // 计算渐变色系列
+        int[] startColors = new int[4];
+        int[] endColors = new int[4];
+
+        // 计算各个亮度的颜色
+        int[] lightestRGB = calculateAdjustedColor(red, green, blue, 1.15f);  // +15%
+        int[] lighterRGB = calculateAdjustedColor(red, green, blue, 1.10f);   // +10%
+        int[] darkerRGB = calculateAdjustedColor(red, green, blue, 0.90f);    // -10%
+
+        // 设置startColors
+        startColors[0] = color;  // 基准色
+        startColors[1] = Color.rgb(lightestRGB[0], lightestRGB[1], lightestRGB[2]);  // 最浅色
+        startColors[2] = Color.rgb(lighterRGB[0], lighterRGB[1], lighterRGB[2]);     // 中间偏浅
+        startColors[3] = Color.rgb(darkerRGB[0], darkerRGB[1], darkerRGB[2]);       // 中间偏深
+
+        // 设置endColors
+        endColors[0] = startColors[1];  // 最浅色
+        endColors[1] = startColors[2];  // 中间偏浅
+        endColors[2] = startColors[0];  // 基准色
+        endColors[3] = startColors[2];  // 中间偏浅
+
+        // 打印日志
+        logColorArray(theme, position, position == 0 ? startColors : endColors);
+
+        return position == 0 ? startColors : endColors;
+    }
+
+    // 新增：计算调整后的RGB颜色值
+    private static int[] calculateAdjustedColor(int red, int green, int blue, float factor) {
+        return new int[]{
+            Math.min(255, (int)(red * factor)),
+            Math.min(255, (int)(green * factor)),
+            Math.min(255, (int)(blue * factor))
+        };
+    }
+
+    // 新增：打印颜色数组日志
+    private static void logColorArray(String theme, int position, int[] colors) {
         StringBuilder colorLog = new StringBuilder();
-        colorLog.append("返回的颜色数组: [");
-        for (int color : result) {
+        colorLog.append("主题: ").append(theme)
+               .append(", position: ").append(position)
+               .append(", 颜色数组: [");
+        for (int color : colors) {
             colorLog.append(String.format("#%06X, ", (0xFFFFFF & color)));
         }
         colorLog.append("]");
         Log.d("ColorCalibration", colorLog.toString());
-
-        return result;
     }
 }

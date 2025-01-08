@@ -22,6 +22,152 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- 语言设置卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- 语言设置标题 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_title"
+                        android:textSize="16sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue_500" />
+
+
+                    <!-- 原有的语言设置内容 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp"
+                        android:padding="16dp">
+
+                        <!-- 语言切换开关 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="8dp"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_language"
+                                app:tint="?attr/textColor" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/english"
+                                    android:textSize="16sp"
+                                    android:textColor="?attr/textColor"
+                                    />
+
+                                <!-- 当前语言说明 -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/language_description"
+                                    android:textColor="#99000000"
+                                    android:maxLength="25"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_language"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:scaleX="1.2"
+                                android:scaleY="1.2"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 标题栏布局设置内容 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- 布局方向切换开关 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="8dp"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_arrnage"
+                                app:tint="?attr/textColor" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="16dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/title_layout_horizontal"
+                                    android:textSize="16sp"
+                                    android:textColor="?attr/textColor" />
+
+                                <!-- 说明文本 -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/title_layout_description"
+                                    android:textSize="12sp"
+                                    android:maxLength="25"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:textColor="#99000000" />
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_title_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:scaleX="1.2"
+                                android:scaleY="1.2"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
             <!-- 主题设置卡片 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -78,32 +224,32 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="@string/activation_title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/blue_500"
-                        android:layout_marginBottom="16dp"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <!-- 激活码输入框 -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/activation_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         app:boxStrokeColor="@color/blue_500"
-                        app:hintTextColor="@color/blue_500"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="@color/blue_500">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activation_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/activation_hint"
+                            android:imeOptions="actionDone"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:imeOptions="actionDone"
                             android:textColor="@color/black"
-                            android:textColorHint="@color/gray_500"/>
+                            android:textColorHint="@color/gray_500" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,20 +258,20 @@
                         android:id="@+id/activation_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="@string/activation_button"
                         android:textColor="@color/black"
                         app:backgroundTint="@color/white"
                         app:strokeColor="@color/blue_500"
-                        app:strokeWidth="1dp"
-                        android:layout_marginBottom="16dp"/>
+                        app:strokeWidth="1dp" />
 
                     <!-- 说明文本 -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/activation_description"
-                        android:textSize="14sp"
-                        android:textColor="#99000000"/>
+                        android:textColor="#99000000"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -183,78 +329,6 @@
                         android:textSize="14sp"
                         android:textColor="#99000000"
                         android:layout_marginTop="8dp"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- 语言设置卡片 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <!-- 原有的语言设置内容 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- 语言设置标题 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/language_title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/blue_500"
-                        android:layout_marginBottom="16dp"/>
-
-                    <!-- 语言切换开关 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="8dp"
-                        android:background="?attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_language"
-                            app:tint="?attr/textColor" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
-                            android:text="@string/english"
-                            android:textSize="16sp"
-                            android:textColor="?attr/textColor"
-                            android:layout_marginStart="16dp"/>
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switch_language"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:scaleX="1.2"
-                            android:scaleY="1.2"/>
-
-                    </LinearLayout>
-
-                    <!-- 当前语言说明 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/language_description"
-                        android:textSize="14sp"
-                        android:textColor="#99000000"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginStart="4dp"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

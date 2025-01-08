@@ -49,6 +49,11 @@
             android:icon="@drawable/ic_turntable"
             android:title="@string/menu_turntable"/>
 
+        <item
+            android:id="@+id/nav_food_record"
+            android:icon="@drawable/ic_food_record"
+            android:title="@string/menu_food_record"/>
+
 <!--        <item-->
 <!--            android:id="@+id/nav_test"-->
 <!--            android:icon="@drawable/ic_test"-->

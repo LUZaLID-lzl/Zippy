@@ -129,6 +129,9 @@ public class HomeFragment extends Fragment {
             case "capoo":
                 currentImages = SplashActivity.capooImages;
                 break;
+            case "maple":
+                currentImages = SplashActivity.mapleImages;
+                break;
             default:
                 currentImages = SplashActivity.squirtleImages;
                 break;

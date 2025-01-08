@@ -27,6 +27,7 @@ import java.util.List;
  */
 public class TurntablePresupposeFragment extends BaseFragment {
     private RecyclerView recyclerPresuppose;
+    private RecyclerView recyclerOptions;
     private TextView textEmpty;
     private MaterialButton btnAddPresuppose;
     private PresupposeAdapter presupposeAdapter;
@@ -79,7 +80,7 @@ public class TurntablePresupposeFragment extends BaseFragment {
     private void showEditDialog(TurntablePresuppose presuppose) {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_presuppose_edit, null);
         TextInputEditText inputName = dialogView.findViewById(R.id.input_name);
-        RecyclerView recyclerOptions = dialogView.findViewById(R.id.recycler_options);
+        recyclerOptions = dialogView.findViewById(R.id.recycler_options);
         MaterialButton btnAddOption = dialogView.findViewById(R.id.btn_add_option);
 
         // 设置选项列表
@@ -227,6 +228,7 @@ public class TurntablePresupposeFragment extends BaseFragment {
     // 选项适配器
     private class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
         private List<String> options = new ArrayList<>();
+        private int newItemPosition = -1;  // 新添加项的位置
 
         @NonNull
         @Override
@@ -238,10 +240,24 @@ public class TurntablePresupposeFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            // 移除之前的文本监听器
+            holder.inputOption.removeTextChangedListener(holder.textWatcher);
+            
+            // 设置当前位置的文本
             holder.inputOption.setText(options.get(position));
-
-            // 添加文本变化监听器
-            holder.inputOption.addTextChangedListener(new android.text.TextWatcher() {
+            
+            // 如果是新添加的项，请求焦点
+            if (position == newItemPosition) {
+                holder.inputOption.post(() -> {
+                    holder.inputOption.requestFocus();
+                    // 将光标移到文本末尾
+                    holder.inputOption.setSelection(holder.inputOption.length());
+                });
+                newItemPosition = -1;  // 重置标记
+            }
+            
+            // 创建并设置新的文本监听器
+            holder.textWatcher = new android.text.TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -250,17 +266,21 @@ public class TurntablePresupposeFragment extends BaseFragment {
 
                 @Override
                 public void afterTextChanged(android.text.Editable s) {
-                    if (position < options.size()) {
-                        options.set(position, s.toString());
+                    int adapterPosition = holder.getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < options.size()) {
+                        options.set(adapterPosition, s.toString());
                     }
                 }
-            });
+            };
+            holder.inputOption.addTextChangedListener(holder.textWatcher);
 
             // 删除按钮
             holder.btnDelete.setOnClickListener(v -> {
-                if (options.size() > 1) {  // 至少保留一个选项
-                    options.remove(position);
-                    notifyDataSetChanged();
+                int adapterPosition = holder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION && options.size() > 1) {
+                    options.remove(adapterPosition);
+                    notifyItemRemoved(adapterPosition);
+                    notifyItemRangeChanged(adapterPosition, options.size());
                 }
             });
         }
@@ -270,9 +290,9 @@ public class TurntablePresupposeFragment extends BaseFragment {
             return options.size();
         }
 
-        void setOptions(List<String> options) {
-            this.options = new ArrayList<>(options);
-            if (this.options.isEmpty()) {  // 确保至少有一个选项
+        void setOptions(List<String> newOptions) {
+            this.options = new ArrayList<>(newOptions);
+            if (this.options.isEmpty()) {
                 this.options.add("");
             }
             notifyDataSetChanged();
@@ -290,8 +310,23 @@ public class TurntablePresupposeFragment extends BaseFragment {
         }
 
         void addOption(String option) {
+            newItemPosition = options.size();  // 记录新项的位置
             options.add(option);
-            notifyItemInserted(options.size() - 1);
+            notifyItemInserted(newItemPosition);
+            // 使用外部类的recyclerOptions变量
+            if (recyclerOptions != null) {
+                recyclerOptions.post(() -> {
+                    // 确保位置有效且RecyclerView已经完成布局
+                    if (newItemPosition >= 0 && newItemPosition < options.size()) {
+                        try {
+                            recyclerOptions.smoothScrollToPosition(newItemPosition);
+                        } catch (IllegalArgumentException e) {
+                            // 如果滚动失败，尝试使用scrollToPosition
+                            recyclerOptions.scrollToPosition(newItemPosition);
+                        }
+                    }
+                });
+            }
         }
 
         String getCurrentOptionText() {
@@ -304,6 +339,7 @@ public class TurntablePresupposeFragment extends BaseFragment {
         class ViewHolder extends RecyclerView.ViewHolder {
             TextInputEditText inputOption;
             ImageButton btnDelete;
+            android.text.TextWatcher textWatcher;
 
             ViewHolder(View itemView) {
                 super(itemView);

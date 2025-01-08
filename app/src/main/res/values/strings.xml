@@ -20,6 +20,8 @@
     <string name="menu_pyp">画中画渲染</string>
     <string name="menu_turntable">大大大转盘</string>
     <string name="menu_turntable_presuppose">大大大转盘 - 预设</string>
+    <string name="menu_food_record">饕餮饮食记录</string>
+
 
     <string name="menu_example">举例</string>
 
@@ -148,6 +150,7 @@
 
     <!-- 设置页面主题 -->
     <string name="language_title">语言设置</string>
+    <string name="common_title">通用设置</string>
     <string name="theme_title">主题设置</string>
     <string name="language_description">开启为英文，关闭为中文</string>
     <string name="theme_description">点击切换主题</string>
@@ -375,4 +378,61 @@
     <string name="turntable_presuppose_delete_option">删除选项</string>
     <string name="turntable_presuppose_option_name">选项名称</string>
     <string name="turntable_presuppose_empty">暂无预设</string>
+
+    <!-- 标题栏布局相关 -->
+    <string name="title_layout_title">标题栏布局</string>
+    <string name="title_layout_horizontal">横向布局</string>
+    <string name="title_layout_description">切换标题栏的显示方向，重启应用后生效</string>
+    <string name="restart_confirm">是否立即重启应用以应用更改？</string>
+    <string name="restart_now">立即重启</string>
+    <string name="restart_later">稍后重启</string>
+
+    <!-- 食物记录相关 -->
+    <string name="food_record_title">饕餮记录</string>
+    <string name="food_add">添加食物</string>
+    <string name="food_history">历史记录</string>
+    <string name="food_name">食物名称</string>
+    <string name="food_calories">卡路里</string>
+    <string name="food_date">食用日期</string>
+    <string name="food_time">食用时间</string>
+    <string name="food_notes">备注</string>
+    <string name="food_save">保存</string>
+    <string name="food_cancel">取消</string>
+    <string name="food_delete">删除</string>
+    <string name="food_edit">编辑</string>
+    <string name="food_empty">暂无记录</string>
+    <string name="food_add_success">添加成功</string>
+    <string name="food_delete_success">删除成功</string>
+    <string name="food_edit_success">修改成功</string>
+    <string name="food_name_empty">请输入食物名称</string>
+    <string name="food_calories_empty">请输入卡路里</string>
+    <string name="food_delete_confirm">确定要删除这条记录吗？</string>
+
+    <!-- 食物记录相关 -->
+    <string name="food_preset_add">添加预设食物</string>
+    <string name="food_preset_edit">编辑预设食物</string>
+    <string name="food_preset_delete">删除预设食物</string>
+    <string name="food_preset_empty">暂无预设食物</string>
+    <string name="food_preset_select">选择预设食物</string>
+    <string name="food_preset_calories">每份卡路里</string>
+    <string name="food_servings">份数</string>
+    <string name="food_preset_add_success">预设食物添加成功</string>
+    <string name="food_preset_delete_success">预设食物删除成功</string>
+    <string name="food_preset_edit_success">预设食物修改成功</string>
+    <string name="food_servings_empty">请输入份数</string>
+
+    <string name="food_preset_manage">管理预设食物</string>
+    <string name="food_preset_delete_confirm">确定要删除预设食物"%s"吗？</string>
+    <string name="food_preset_name">预设名称</string>
+
+    <!-- 食物记录相关 -->
+    <string name="food_record_save">保存记录</string>
+    <string name="food_record_history">查看历史</string>
+    <string name="food_record_name">记录名称</string>
+    <string name="food_record_name_empty">请输入记录名称</string>
+    <string name="food_record_save_success">保存成功</string>
+    <string name="food_record_save_empty">没有可保存的记录</string>
+    <string name="food_record_history_empty">暂无历史记录</string>
+    <string name="food_record_history_title">历史记录</string>
+    <string name="food_record_close">关闭</string>
 </resources>

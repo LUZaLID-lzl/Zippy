@@ -72,4 +72,16 @@
         <item name="android:navigationBarColor">#0CAC93</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_capoo</item>
     </style>
+
+    <style name="MapleTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:navigationBarColor">#F1BCA9</item>
+        <item name="android:windowBackground">@drawable/bg_card_background_maple</item>
+    </style>
+
+    <style name="MapleSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#E76D40</item>
+        <item name="android:navigationBarColor">#B73607</item>
+        <item name="android:windowBackground">@drawable/bg_setting_card_background_maple</item>
+    </style>
 </resources>

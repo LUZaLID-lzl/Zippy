@@ -18,14 +18,26 @@ public class ShardPerfenceSetting {
     private static final String KEY_ACTIVATE = "activate";
     private static final String KEY_ACTIVATE_NAME = "activeName";
     private static final String KEY_LAUNCH_NUM = "launchNum";
+    private static final String KEY_ARRANGE = "arrange";
 
     // 实际数据
     private String language;        //en - zh
-    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew - karsa - capoo
+    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew - karsa - capoo - maple
     private int homeAnimationNum;   //10 -> 100
-    private boolean activate;
+    private boolean activate;       //true - false
     private String activeName;
-    private int launchNum;
+    private int launchNum;          // 0 ->
+    private boolean arrange;        //true -> horizontal  false -> vertical
+
+    public Boolean getArrange() {
+        return arrange;
+    }
+
+    public void setArrange(Boolean arrange) {
+        this.arrange = arrange;
+        editor.putBoolean(KEY_ARRANGE, arrange);
+        editor.apply();
+    }
 
     public int getLaunchNum() {
         return launchNum;
@@ -60,6 +72,7 @@ public class ShardPerfenceSetting {
         activate = sharedPreferences.getBoolean(KEY_ACTIVATE, false);
         activeName = sharedPreferences.getString(KEY_ACTIVATE_NAME, "none");
         launchNum = sharedPreferences.getInt(KEY_LAUNCH_NUM, 0);
+        arrange = sharedPreferences.getBoolean(KEY_ARRANGE, true);
         logToString();
     }
 
@@ -117,6 +130,8 @@ public class ShardPerfenceSetting {
                 ", homeAnimationNum='" + homeAnimationNum + '\'' +
                 ", activate='" + activate + '\'' +
                 ", acticeName='" + activeName + '\'' +
+                ", launchNum='" + launchNum + '\'' +
+                ", arrange='" + arrange + '\'' +
                 '}';
         android.util.Log.d(TAG,log);
     }

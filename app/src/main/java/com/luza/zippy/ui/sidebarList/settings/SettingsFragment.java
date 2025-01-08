@@ -1,21 +1,32 @@
 package com.luza.zippy.ui.sidebarList.settings;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.SeekBar;
@@ -37,16 +48,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SettingsFragment extends BaseFragment {
-    private static final String PREF_NAME = "zippy_settings";
-    private static final String KEY_LANGUAGE = "language";
-    private static final String KEY_HOMEANIMALTIONNUM = "homeAnimationNum";
     private static final String LANGUAGE_EN = "en";
     private static final String LANGUAGE_ZH = "zh";
-
-    private static final String KEY_HOMETHEME = "homeTheme";
-    private static final String KEY_ACTIVATION_STATUS = "activation_status";
-    private static final String KEY_ACTIVATION_CODE = "activation_code";
-
     private ShardPerfenceSetting shardPerfenceSetting;
     private Util util;
     private SwitchCompat languageSwitch;
@@ -54,8 +57,6 @@ public class SettingsFragment extends BaseFragment {
     private ThemeAdapter themeAdapter;
     private SeekBar seekBar;
     private TextView sliderValueText;
-    private static final String KEY_SLIDER_VALUE = "slider_value";
-
     private TextInputEditText activationInput;
     private MaterialButton activationButton;
     private TextInputLayout activationInputLayout;
@@ -63,6 +64,8 @@ public class SettingsFragment extends BaseFragment {
     private List<String> activeList = Arrays.asList(
             "LUZaLID"
     );
+
+    private SwitchCompat titleLayoutSwitch;
 
     @Override
     protected String getTitle() {
@@ -75,11 +78,26 @@ public class SettingsFragment extends BaseFragment {
         util = new Util();
         shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
 
+        loadTitleLayout(view);
         loadLanguage(view);
         loadTheme(view);
         setupSlider(view);
         setupActivation(view);
         setupVersionInfo(view);
+    }
+
+    public void loadTitleLayout(View view) {
+        titleLayoutSwitch = view.findViewById(R.id.switch_title_layout);
+
+        // 设置当前布局状态
+        Boolean isHorizontal = shardPerfenceSetting.getArrange();
+        titleLayoutSwitch.setChecked(isHorizontal);
+
+        // 监听切换事件
+        titleLayoutSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            shardPerfenceSetting.setArrange(isChecked);
+            showLoading();
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -113,6 +131,7 @@ public class SettingsFragment extends BaseFragment {
     private List<ThemeItem> getThemeList() {
         return Arrays.asList(
                 new ThemeItem("Pokemon", "squirtle", SplashActivity.squirtleImages[3], R.drawable.bg_setting_card_background_squirtle),
+                new ThemeItem("Character", "maple", SplashActivity.mapleImages[2], R.drawable.bg_setting_card_background_maple),
                 new ThemeItem("Cutey", "capoo", SplashActivity.capooImages[2], R.drawable.bg_setting_card_background_capoo),
                 new ThemeItem("Pokemon", "pikachu", SplashActivity.pikachuImages[1], R.drawable.bg_setting_card_background_pikaqiu),
                 new ThemeItem("Pokemon", "bulbasaur", SplashActivity.bulbasaurImages[2], R.drawable.bg_setting_card_background_bulbasaur),
@@ -133,10 +152,15 @@ public class SettingsFragment extends BaseFragment {
         loadingDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         loadingDialog.show();
 
-        // 1秒后关闭加载对话框并切换语言
+        // 1秒后关闭加载对话框并刷新页面
         new Handler().postDelayed(() -> {
             loadingDialog.dismiss();
-            requireActivity().recreate();
+            // 创建新的Fragment实例
+            Fragment newFragment = new SettingsFragment();
+            // 替换当前Fragment
+            FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+            ft.replace(((View) getView().getParent()).getId(), newFragment);
+            ft.commit();
         }, 1000);
     }
 
@@ -255,9 +279,21 @@ public class SettingsFragment extends BaseFragment {
         TextView versionInfoText = view.findViewById(R.id.text_version_info);
         TextView versionCodeText = view.findViewById(R.id.text_version_code);
 
-        // 直接使用AndroidManifest.xml中定义的版本号
-        versionInfoText.setText(String.format(getString(R.string.version_description), "1.0.13"));
-        versionCodeText.setText(String.format(getString(R.string.version_code), "13"));
+        try {
+            PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            String versionName = packageInfo.versionName;  // 版本名称
+            String versionCode = ""; // 版本号
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                versionCode = String.valueOf(packageInfo.getLongVersionCode());
+            }
+
+            // 直接使用AndroidManifest.xml中定义的版本号
+            versionInfoText.setText(String.format(getString(R.string.version_description), versionName));
+            versionCodeText.setText(String.format(getString(R.string.version_code), versionCode));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -53,6 +53,9 @@ public class Util {
                 case "capoo":
                     activity.setTheme(R.style.CapooSplashTheme);
                     break;
+                case "maple":
+                    activity.setTheme(R.style.MapleSplashTheme);
+                    break;
                 default:
             }
         }

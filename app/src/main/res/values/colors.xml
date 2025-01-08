@@ -11,7 +11,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="light_gray">#BBB6B5</color>
-    <color name="background_light">#FFFFFF</color>
+    <color name="background_light">#F5F5F5</color>
     <color name="background_dark">#121212</color>
     <color name="text_light">#000000</color>
     <color name="text_dark">#FFFFFF</color>
@@ -23,8 +23,8 @@
     <color name="squirtle_splash_background">#5CB860</color>
     <color name="mew_splash_background">#FBA7BD</color>
     <color name="icon_background">#FFFFFF</color>
-    <color name="text_primary">#DE000000</color>
-    <color name="text_secondary">#99000000</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
     <color name="divider">#1F000000</color>
     <color name="ripple">#1F000000</color>
     <color name="text_error">#F44336</color>
@@ -38,4 +38,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="gray_500">#9E9E9E</color>
     <color name="green_500">#4CAF50</color>
+    <color name="stroke_color">#E0E0E0</color>
+    <color name="ripple_color">#1F000000</color>
+    <color name="button_background">#F5F5F5</color>
 </resources>

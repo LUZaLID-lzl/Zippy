@@ -40,6 +40,7 @@ public class TodoFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_todo, container, false);
     }
 
+
     @Override
     protected void initViews(View view) {
         // 设置Toolbar

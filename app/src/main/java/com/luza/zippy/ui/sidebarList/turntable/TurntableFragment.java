@@ -45,6 +45,7 @@ public class TurntableFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_turntable, container, false);
     }
 
+
     @Override
     protected void initViews(View view) {
         turntableView = view.findViewById(R.id.turntable_view);

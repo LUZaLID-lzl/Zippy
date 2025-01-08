@@ -220,18 +220,20 @@ public class CalendarFragment extends BaseFragment {
                     .getAll();
                 
                 Map<Integer, List<Birthday>> birthdayMap = new HashMap<>();
+                int currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH);
                 int currentMonth = currentCalendar.get(Calendar.MONTH) + 1;
                 int currentYear = currentCalendar.get(Calendar.YEAR);
 
                 for (Birthday birthday : allBirthdays) {
                     if (birthday.isLunar()) {
-                        // 农历生日：使用保存的农历月日计算当年对应的公历日期
+                        // 农历生日：使用当前年份和保存的农历月日计算对应的公历日期
                         int[] solarDate = PaseDateUtil.lunarToSolar(
-                            birthday.getYear(),        // 使用当前年份
-                            birthday.getLunarMonth(),  // 使用保存的农历月
-                            birthday.getLunarDay(),    // 使用保存的农历日
+                            currentCalendar.get(Calendar.YEAR),  // 使用当前年份
+                            birthday.getLunarMonth(),            // 使用保存的农历月
+                            birthday.getLunarDay(),              // 使用保存的农历日
                             false  // 非闰月
                         );
+                        android.util.Log.d("liziluo","current year: " + currentCalendar.get(Calendar.YEAR));
                         android.util.Log.d("liziluo","birthday.getLunarMonth(): " + birthday.getLunarMonth());
                         android.util.Log.d("liziluo","birthday.getLunarDay(): " + birthday.getLunarDay());
 
@@ -766,4 +768,5 @@ public class CalendarFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
+
 } 

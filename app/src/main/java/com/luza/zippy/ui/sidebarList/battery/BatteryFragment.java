@@ -33,6 +33,7 @@ public class BatteryFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_battery, container, false);
     }
 
+
     @Override
     protected String getTitle() {
         return getString(R.string.menu_battery);

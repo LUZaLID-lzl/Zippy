@@ -149,7 +149,7 @@ public class TurntableDbHelper extends SQLiteOpenHelper {
             // 添加默认数据：今天玩什么
             ContentValues gameValues = new ContentValues();
             gameValues.put(COLUMN_NAME, "今天玩什么");
-            gameValues.put(COLUMN_OPTIONS, "王者荣耀,和平精英,原神,崩坏:星穹铁道,英雄联盟,守望先锋,我的世界,阴阳师,金铲铲之战");
+            gameValues.put(COLUMN_OPTIONS, "王者荣耀,和平精英,原神,崩坏:星穹铁道,英雄联盟,守望先锋,我的世界,阴阳师,金铲铲之战,黑神话悟空,宇宙机器人,超级无敌牛皮,撒大声地,大叔大婶大所大所多撒");
             db.insert(TABLE_PRESUPPOSE, null, gameValues);
         }
     }

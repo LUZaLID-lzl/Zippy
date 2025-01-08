@@ -20,6 +20,7 @@
     <string name="menu_pyp">Pyp Render</string>
     <string name="menu_turntable">Turntable</string>
     <string name="menu_turntable_presuppose">Turntable - Presuppose</string>
+    <string name="menu_food_record">Diet Record</string>
 
     <string name="menu_example">example</string>
 
@@ -151,6 +152,7 @@
 
     <!-- Settings Page Details -->
     <string name="language_title">Language Settings</string>
+    <string name="common_title">Common Settings</string>
     <string name="theme_title">Theme Settings</string>
     <string name="language_description">Turn on for English, turn off for Chinese</string>
     <string name="theme_description">Click to switch theme</string>
@@ -349,7 +351,6 @@
     <string name="version_code">Version：%s</string>
 
     <!-- Turntable related -->
-    <string name="turntable_title">Turntable</string>
     <string name="turntable_start">Start</string>
     <string name="turntable_stop">Stop</string>
     <string name="turntable_add">Add Option</string>
@@ -372,4 +373,61 @@
     <string name="turntable_presuppose_delete_option">Delete Option</string>
     <string name="turntable_presuppose_option_name">Option Name</string>
     <string name="turntable_presuppose_empty">No Presets</string>
+
+    <!-- Title Bar Layout -->
+    <string name="title_layout_title">Title Bar Layout</string>
+    <string name="title_layout_horizontal">Horizontal Layout</string>
+    <string name="title_layout_description">Change title bar display direction, effective after app restart</string>
+    <string name="restart_confirm">Restart app now to apply changes?</string>
+    <string name="restart_now">Restart Now</string>
+    <string name="restart_later">Later</string>
+
+    <!-- Food Record -->
+    <string name="food_record_title">Food Record</string>
+    <string name="food_add">Add Food</string>
+    <string name="food_history">History</string>
+    <string name="food_name">Food Name</string>
+    <string name="food_calories">Calories</string>
+    <string name="food_date">Date</string>
+    <string name="food_time">Time</string>
+    <string name="food_notes">Notes</string>
+    <string name="food_save">Save</string>
+    <string name="food_cancel">Cancel</string>
+    <string name="food_delete">Delete</string>
+    <string name="food_edit">Edit</string>
+    <string name="food_empty">No Records</string>
+    <string name="food_add_success">Added Successfully</string>
+    <string name="food_delete_success">Deleted Successfully</string>
+    <string name="food_edit_success">Updated Successfully</string>
+    <string name="food_name_empty">Please enter food name</string>
+    <string name="food_calories_empty">Please enter calories</string>
+    <string name="food_delete_confirm">Are you sure to delete this record?</string>
+
+    <!-- Food preset related -->
+    <string name="food_preset_add">Add Preset Food</string>
+    <string name="food_preset_edit">Edit Preset Food</string>
+    <string name="food_preset_delete">Delete Preset Food</string>
+    <string name="food_preset_empty">No Preset Foods</string>
+    <string name="food_preset_select">Select Preset Food</string>
+    <string name="food_preset_calories">Calories per Serving</string>
+    <string name="food_servings">Servings</string>
+    <string name="food_preset_add_success">Preset Food Added</string>
+    <string name="food_preset_delete_success">Preset Food Deleted</string>
+    <string name="food_preset_edit_success">Preset Food Updated</string>
+    <string name="food_servings_empty">Please enter servings</string>
+
+    <string name="food_preset_manage">Manage Preset Foods</string>
+    <string name="food_preset_delete_confirm">Are you sure to delete preset food "%s"?</string>
+    <string name="food_preset_name">Preset Name</string>
+
+    <!-- Food record history related -->
+    <string name="food_record_save">Save Record</string>
+    <string name="food_record_history">View History</string>
+    <string name="food_record_name">Record Name</string>
+    <string name="food_record_name_empty">Please enter record name</string>
+    <string name="food_record_save_success">Saved Successfully</string>
+    <string name="food_record_save_empty">No records to save</string>
+    <string name="food_record_history_empty">No History Records</string>
+    <string name="food_record_history_title">History Records</string>
+    <string name="food_record_close">Close</string>
 </resources> 

@@ -10,7 +10,7 @@ import android.util.Log;
 public class ImageProcess {
     private static final String TAG = "ImageProcess";
     private static int maxWidthNum = 16;
-    private static int maxHeightNum = 6;
+    private static int maxHeightNum = 7;
     
     /**
      * 创建默认的空白图片

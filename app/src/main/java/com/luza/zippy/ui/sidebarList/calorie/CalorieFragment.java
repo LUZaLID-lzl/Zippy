@@ -76,4 +76,5 @@ public class CalorieFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calorie, container, false);
     }
+
 } 

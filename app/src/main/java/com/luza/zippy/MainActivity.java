@@ -23,6 +23,7 @@ import com.luza.zippy.ui.fragments.HomeFragment;
 import com.luza.zippy.ui.sidebarList.calendar.CalendarFragment;
 import com.luza.zippy.ui.sidebarList.deviceInformation.DeviceInfoFragment;
 import com.luza.zippy.ui.sidebarList.battery.BatteryFragment;
+import com.luza.zippy.ui.sidebarList.foodRecord.FoodRecordFragment;
 import com.luza.zippy.ui.sidebarList.performance.PerformanceFragment;
 import com.luza.zippy.ui.sidebarList.pyprender.PyprenderFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
@@ -95,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case "capoo":
                 setTheme(R.style.CapooTheme);
+                break;
+            case "maple":
+                setTheme(R.style.MapleTheme);
                 break;
         }
 
@@ -206,6 +210,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new PyprenderFragment());
         } else if (id == R.id.nav_turntable) {
             loadFragment(new TurntableFragment());
+        } else if (id == R.id.nav_food_record) {
+            loadFragment(new FoodRecordFragment());
         }
 
 //        else if (id == R.id.nav_test){
@@ -329,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void captureScreenColors() {
 
-        ColorCalibration.calculateGradientColors("#21FAD7");
+        //ColorCalibration.calculateGradientColors("#D76000");
         // 确保窗口已经准备好
         View decorView = getWindow().getDecorView();
         decorView.post(() -> {

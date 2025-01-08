@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import java.util.ArrayList;
@@ -207,9 +208,30 @@ public class TurntableView extends View {
 
             // 绘制文字
             paint.setColor(Color.BLACK);
-            paint.setTextSize(24);
+            float textSize = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP,
+                16f, // 基准文字大小为16sp
+                getResources().getDisplayMetrics()
+            );
+            paint.setTextSize(textSize);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setFakeBoldText(true);
+
+            // 计算每个扇形可用的最大宽度（弧长）
+            float arcLength = (float) (2 * Math.PI * textRadius * sweepAngle / 360);
+            String text = options.get(i);
+            float textWidth = paint.measureText(text);
+
+            // 如果文字宽度超过可用宽度，截断文字并添加省略号
+            if (textWidth > arcLength * 0.8f) { // 留出20%的边距
+                float ellipsisWidth = paint.measureText("...");
+                float availableWidth = arcLength * 0.8f - ellipsisWidth;
+                int length = text.length();
+                while (length > 0 && paint.measureText(text.substring(0, length)) > availableWidth) {
+                    length--;
+                }
+                text = text.substring(0, length) + "...";
+            }
 
             float angle = (float) Math.toRadians((i * sweepAngle) + (sweepAngle / 2));
             float x = rectF.centerX() + (float) (textRadius * Math.cos(angle));
@@ -218,7 +240,7 @@ public class TurntableView extends View {
             canvas.save();
             float textRotation = i * sweepAngle + (sweepAngle / 2) + 90;
             canvas.rotate(textRotation, x, y);
-            canvas.drawText(options.get(i), x, y, paint);
+            canvas.drawText(text, x, y, paint);
             canvas.restore();
         }
 
@@ -267,7 +289,12 @@ public class TurntableView extends View {
         // 只在非旋转状态显示"开始"文字
         if (!isRotating()) {
             paint.setColor(Color.WHITE);
-            paint.setTextSize(40);
+            float textSize1 = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP,
+                16f, // 基准文字大小为16sp
+                getResources().getDisplayMetrics()
+            );
+            paint.setTextSize(textSize1);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setFakeBoldText(true);
             float textY = rectF.centerY() + paint.getTextSize() / 3;
@@ -276,10 +303,15 @@ public class TurntableView extends View {
 
         // 在转盘底部绘制当前选项文本
         paint.setColor(Color.BLACK);
-        paint.setTextSize(48);
+        float textSize2 = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            32f, // 基准文字大小为16sp
+            getResources().getDisplayMetrics()
+        );
+        paint.setTextSize(textSize2);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setFakeBoldText(true);
-        float bottomTextY = rectF.bottom + 80;
+        float bottomTextY = rectF.bottom + 100;
 
         // 绘制渐出的上一个选项
         if (textAnimator != null && textAnimator.isRunning() && !previousPassingOption.isEmpty()) {

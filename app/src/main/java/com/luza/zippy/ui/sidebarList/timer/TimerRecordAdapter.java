@@ -48,11 +48,11 @@ public class TimerRecordAdapter extends RecyclerView.Adapter<TimerRecordAdapter.
         
         // 设置类型图标
         if (record.isOption1()) {
-            holder.typeImage.setImageResource(R.drawable.ic_hand);
+            holder.typeImage.setImageResource(R.drawable.ic_spark);
         } else if (record.isOption2()) {
-            holder.typeImage.setImageResource(R.drawable.ic_cups);
+            holder.typeImage.setImageResource(R.drawable.ic_leaf);
         } else if (record.isOption3()) {
-            holder.typeImage.setImageResource(R.drawable.ic_bed);
+            holder.typeImage.setImageResource(R.drawable.ic_peach);
         }
 
         // 格式化时长

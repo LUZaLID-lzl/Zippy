@@ -3,6 +3,7 @@ package com.luza.zippy.ui.base;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.luza.zippy.R;
+import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.fragments.HomeFragment;
 
 public abstract class BaseFragment extends Fragment {
@@ -19,6 +21,9 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // 设置布局状态
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.btn_back).getParent();
 
         // 设置标题
         TextView titleText = view.findViewById(R.id.tv_title);
@@ -32,9 +37,22 @@ public abstract class BaseFragment extends Fragment {
             }
         });
 
+        ShardPerfenceSetting setting = new ShardPerfenceSetting(getContext());
+        if (setting.getArrange()) {
+            //HORIZONTAL
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            layout.setPadding(0, 16, 16, 16);
+            titleText.setPadding(0,16,16,0);
+        } else {
+            //VERTICAL
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setPadding(16, 16, 0, 0);
+            titleText.setPadding(32,16,0,0);
+            titleText.setTextSize(40);
+        }
+
         // 初始化视图
         initViews(view);
-
     }
 
     // 子类必须实现的方法

@@ -3,6 +3,10 @@ package com.luza.zippy;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.luza.zippy.setting.ShardPerfenceSetting;
@@ -22,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
     private static final long SPLASH_DELAY = 0; // 1.5秒的延迟
     private ShardPerfenceSetting shardPerfenceSetting;
     private ImageView imageView;
+    private ProgressBar loadingProgress;
     private Util util;
     private TurntableDbHelper dbHelper;
 
@@ -31,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
     public static Bitmap[] mewImages;
     public static Bitmap[] karsaImages;
     public static Bitmap[] capooImages;
+    public static Bitmap[] mapleImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +55,13 @@ public class SplashActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
         imageView = findViewById(R.id.bg_screen_splash);
+        loadingProgress = findViewById(R.id.loading_progress);
 
         // 等待imageView显示完成后再执行后续操作
         imageView.post(() -> {
+            // 显示加载动画
+            loadingProgress.setVisibility(View.VISIBLE);
+            
             // 在新线程中执行图片转换
             Thread convertThread = new Thread(){
                 @Override
@@ -65,12 +76,17 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     // 等待转换线程结束
                     convertThread.join();
+                    // 隐藏加载动画
+                    runOnUiThread(() -> loadingProgress.setVisibility(View.GONE));
                     // 延迟启动MainActivity
                     runOnUiThread(() -> new Handler().postDelayed(this::startMainActivity, SPLASH_DELAY));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    // 如果线程被中断，直接启动MainActivity
-                    runOnUiThread(this::startMainActivity);
+                    // 如果线程被中断，隐藏加载动画并直接启动MainActivity
+                    runOnUiThread(() -> {
+                        loadingProgress.setVisibility(View.GONE);
+                        startMainActivity();
+                    });
                 }
             }).start();
         });
@@ -98,5 +114,6 @@ public class SplashActivity extends AppCompatActivity {
         mewImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,3,5);
         karsaImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,4,9);
         capooImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,5,16);
+        mapleImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,6,8);
     }
 } 
