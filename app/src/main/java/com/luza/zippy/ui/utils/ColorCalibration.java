@@ -91,6 +91,9 @@ public class ColorCalibration {
             case "maple":
                 baseColor = "#D8420C";  // maple橙色
                 break;
+            case "winter":
+                baseColor = "#C6DEDD";  // winter淡灰色
+                break;
             default:
                 baseColor = "#1A1A1A";  // 默认深灰色
         }

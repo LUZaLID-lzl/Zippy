@@ -523,11 +523,11 @@ public class TimerFragment extends BaseFragment implements TimerService.TimerLis
                         if (statsText.length() > 0) {
                             statsText.append("\n\n"); // 在不同类型之间添加额外的空行
                         }
-                        statsText.append(String.format(Locale.getDefault(), 
-                            "【%s】", 
-                            getString(optionType == 1 ? R.string.timer_option1 : 
-                                    optionType == 2 ? R.string.timer_option2 : 
-                                    R.string.timer_option3)));
+                        // 根据类型添加对应图标名称
+                        String iconName = optionType == 1 ? "⚡" :  // 用 ⚡ 代表 ic_spark
+                                    optionType == 2 ? "🍃" :  // 用 🍃 代表 ic_leaf
+                                    "🍑";  // 用 🍑 代表 ic_peach
+                        statsText.append(String.format(Locale.getDefault(), "%s ", iconName));
                         
                         long longest = dao.getLongestDurationByOption(true, optionType);
                         long shortest = dao.getShortestDurationByOption(true, optionType);

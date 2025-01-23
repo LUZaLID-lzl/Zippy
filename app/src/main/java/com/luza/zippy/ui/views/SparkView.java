@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 import com.luza.zippy.R;
 import com.luza.zippy.setting.ShardPerfenceSetting;
+import com.luza.zippy.ui.fragments.HomeFragment;
 
 import android.animation.ValueAnimator;
 import android.view.ViewGroup;
@@ -74,11 +75,13 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_peach));
                 break;
             case "capoo":
-                int randomIndex = random.nextInt(capooSpark.length);
-                setImageDrawable(ContextCompat.getDrawable(context, capooSpark[randomIndex]));
+                setImageDrawable(ContextCompat.getDrawable(context, HomeFragment.capoo));
                 break;
             case "maple":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_maple));
+                break;
+            case "winter":
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_snowflake2));
                 break;
             default:
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));

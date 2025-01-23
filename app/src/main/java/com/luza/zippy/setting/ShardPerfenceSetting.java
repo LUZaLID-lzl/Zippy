@@ -22,8 +22,8 @@ public class ShardPerfenceSetting {
 
     // 实际数据
     private String language;        //en - zh
-    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew - karsa - capoo - maple
-    private int homeAnimationNum;   //10 -> 100
+    private String homeTheme;       //pikachu - bulbasaur - squirtle - mew - karsa - capoo - maple - winter
+    private int homeAnimationNum;   //0 -> 100
     private boolean activate;       //true - false
     private String activeName;
     private int launchNum;          // 0 ->

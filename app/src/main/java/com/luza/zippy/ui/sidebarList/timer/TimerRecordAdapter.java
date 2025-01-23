@@ -75,6 +75,7 @@ public class TimerRecordAdapter extends RecyclerView.Adapter<TimerRecordAdapter.
         timeBuilder.append(String.format(Locale.getDefault(), "%03d", milliseconds)).append("毫秒");
         
         holder.durationText.setText(timeBuilder.toString());
+        holder.durationText.setTextSize(16);
 
         // 格式化时间戳
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());

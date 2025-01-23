@@ -21,6 +21,9 @@
     <string name="menu_turntable">Turntable</string>
     <string name="menu_turntable_presuppose">Turntable - Presuppose</string>
     <string name="menu_food_record">Diet Record</string>
+    <string name="menu_intonation">Intonation</string>
+    <string name="menu_scrummage">Scrummage Planer</string>
+    <string name="menu_scrummage_setting">Scrummage Planer - Setting</string>
 
     <string name="menu_example">example</string>
 

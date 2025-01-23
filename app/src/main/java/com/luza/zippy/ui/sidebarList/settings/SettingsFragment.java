@@ -131,6 +131,7 @@ public class SettingsFragment extends BaseFragment {
     private List<ThemeItem> getThemeList() {
         return Arrays.asList(
                 new ThemeItem("Pokemon", "squirtle", SplashActivity.squirtleImages[3], R.drawable.bg_setting_card_background_squirtle),
+                new ThemeItem("Character", "winter", SplashActivity.winterImages[0], R.drawable.bg_setting_card_background_winter),
                 new ThemeItem("Character", "maple", SplashActivity.mapleImages[2], R.drawable.bg_setting_card_background_maple),
                 new ThemeItem("Cutey", "capoo", SplashActivity.capooImages[2], R.drawable.bg_setting_card_background_capoo),
                 new ThemeItem("Pokemon", "pikachu", SplashActivity.pikachuImages[1], R.drawable.bg_setting_card_background_pikaqiu),

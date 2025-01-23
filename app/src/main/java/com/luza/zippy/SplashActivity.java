@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.luza.zippy.setting.ShardPerfenceSetting;
+import com.luza.zippy.ui.sidebarList.scrummage.ScrummageFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
 import com.luza.zippy.ui.sidebarList.turntable.TurntableDbHelper;
 import com.luza.zippy.ui.utils.ImageProcess;
@@ -38,6 +39,9 @@ public class SplashActivity extends AppCompatActivity {
     public static Bitmap[] karsaImages;
     public static Bitmap[] capooImages;
     public static Bitmap[] mapleImages;
+    public static Bitmap[] winterImages;
+
+    public static final boolean isDebug = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,39 +61,45 @@ public class SplashActivity extends AppCompatActivity {
         imageView = findViewById(R.id.bg_screen_splash);
         loadingProgress = findViewById(R.id.loading_progress);
 
-        // 等待imageView显示完成后再执行后续操作
-        imageView.post(() -> {
-            // 显示加载动画
-            loadingProgress.setVisibility(View.VISIBLE);
-            
-            // 在新线程中执行图片转换
-            Thread convertThread = new Thread(){
-                @Override
-                public void run(){
-                    super.run();
-                    convertPicture();
-                }
-            };
-            convertThread.start();
-            
-            new Thread(() -> {
-                try {
-                    // 等待转换线程结束
-                    convertThread.join();
-                    // 隐藏加载动画
-                    runOnUiThread(() -> loadingProgress.setVisibility(View.GONE));
-                    // 延迟启动MainActivity
-                    runOnUiThread(() -> new Handler().postDelayed(this::startMainActivity, SPLASH_DELAY));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    // 如果线程被中断，隐藏加载动画并直接启动MainActivity
-                    runOnUiThread(() -> {
-                        loadingProgress.setVisibility(View.GONE);
-                        startMainActivity();
-                    });
-                }
-            }).start();
-        });
+        if (isDebug){
+            startMainActivity();
+        }else{
+            // 等待imageView显示完成后再执行后续操作
+            imageView.post(() -> {
+                // 显示加载动画
+                loadingProgress.setVisibility(View.VISIBLE);
+
+                // 在新线程中执行图片转换
+                Thread convertThread = new Thread(){
+                    @Override
+                    public void run(){
+                        super.run();
+                        convertPicture();
+                    }
+                };
+                convertThread.start();
+
+                new Thread(() -> {
+                    try {
+                        // 等待转换线程结束
+                        convertThread.join();
+                        // 隐藏加载动画
+                        runOnUiThread(() -> loadingProgress.setVisibility(View.GONE));
+                        // 延迟启动MainActivity
+                        runOnUiThread(() -> new Handler().postDelayed(this::startMainActivity, SPLASH_DELAY));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        // 如果线程被中断，隐藏加载动画并直接启动MainActivity
+                        runOnUiThread(() -> {
+                            loadingProgress.setVisibility(View.GONE);
+                            startMainActivity();
+                        });
+                    }
+                }).start();
+            });
+        }
+
+
     }
 
     private void startMainActivity() {
@@ -115,5 +125,6 @@ public class SplashActivity extends AppCompatActivity {
         karsaImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,4,9);
         capooImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,5,16);
         mapleImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,6,8);
+        winterImages = ImageProcess.splitImageByRow(this,R.drawable.home_display,7,10);
     }
 } 

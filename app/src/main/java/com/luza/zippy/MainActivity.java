@@ -24,8 +24,10 @@ import com.luza.zippy.ui.sidebarList.calendar.CalendarFragment;
 import com.luza.zippy.ui.sidebarList.deviceInformation.DeviceInfoFragment;
 import com.luza.zippy.ui.sidebarList.battery.BatteryFragment;
 import com.luza.zippy.ui.sidebarList.foodRecord.FoodRecordFragment;
+import com.luza.zippy.ui.sidebarList.intonation.IntonationFragment;
 import com.luza.zippy.ui.sidebarList.performance.PerformanceFragment;
 import com.luza.zippy.ui.sidebarList.pyprender.PyprenderFragment;
+import com.luza.zippy.ui.sidebarList.scrummage.ScrummageFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
 import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
@@ -100,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case "maple":
                 setTheme(R.style.MapleTheme);
                 break;
+            case "winter":
+                setTheme(R.style.WinterTheme);
+                break;
         }
 
         super.onCreate(savedInstanceState);
@@ -115,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, 3000);
         if (savedInstanceState == null) {
             loadHomeFragment();
+        }
+
+        if (SplashActivity.isDebug){
+            loadFragment(new ScrummageFragment());
         }
     }
 
@@ -155,9 +164,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void loadHomeFragment() {
         // 清空回退栈
         FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(
+            R.anim.slide_in_left,  // 返回时，上一个Fragment进入动画
+            R.anim.slide_out_right  // 返回时，当前Fragment退出动画
+        );
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, new HomeFragment());
         transaction.commit();
         isHome = true;
@@ -212,7 +224,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new TurntableFragment());
         } else if (id == R.id.nav_food_record) {
             loadFragment(new FoodRecordFragment());
+        }  else if (id == R.id.nav_scrummage) {
+            loadFragment(new ScrummageFragment());
         }
+
+//        else if (id == R.id.nav_intonation) {
+//            loadFragment(new IntonationFragment());
+//        }
 
 //        else if (id == R.id.nav_test){
 //            loadFragment(new TestFragment());
@@ -230,10 +248,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fm = getSupportFragmentManager();
             if (fm.getBackStackEntryCount() > 1) {
                 // 如果回退栈中有多个Fragment，弹出顶部的Fragment
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_left,  // 返回时，上一个Fragment进入动画
+                    R.anim.slide_out_right  // 返回时，当前Fragment退出动画
+                );
                 fm.popBackStack();
+                transaction.commit();
             } else if (fm.getBackStackEntryCount() == 1) {
                 // 如果只剩一个Fragment，清空回退栈并加载首页
-                loadHomeFragment();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_left,  // 返回时，上一个Fragment进入动画
+                    R.anim.slide_out_right  // 返回时，当前Fragment退出动画
+                );
+                transaction.replace(R.id.content_frame, new HomeFragment());
+                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                transaction.commit();
+                isHome = true;
             } else {
                 super.onBackPressed();
             }

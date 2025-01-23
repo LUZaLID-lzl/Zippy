@@ -17,11 +17,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
 import android.view.Window;
 import android.view.WindowManager;
+import android.util.DisplayMetrics;
+import android.os.Handler;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,11 +34,15 @@ import com.luza.zippy.ui.sidebarList.foodRecord.data.entity.FoodPreset;
 import com.luza.zippy.ui.sidebarList.foodRecord.data.entity.FoodRecord;
 import com.luza.zippy.ui.base.BaseFragment;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.luza.zippy.ui.sidebarList.foodRecord.data.entity.FoodRecordHistory;
 
 public class FoodRecordFragment extends BaseFragment {
     private FoodRecordViewModel viewModel;
@@ -284,10 +291,17 @@ public class FoodRecordFragment extends BaseFragment {
         RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_view_presets);
         Button addButton = dialogView.findViewById(R.id.btn_add);
 
-        AlertDialog presetDialog = builder.create(); // 先创建对话框
+        // 设置RecyclerView的最大高度
+        ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int maxHeight = (int) (displayMetrics.heightPixels * 0.6); // 设置为屏幕高度的60%
+        layoutParams.height = Math.min(maxHeight, getResources().getDimensionPixelSize(R.dimen.preset_list_max_height));
+        recyclerView.setLayoutParams(layoutParams);
+
+        AlertDialog presetDialog = builder.create();
 
         if (presets.isEmpty()) {
-            emptyText.setText(R.string.food_preset_empty);
             emptyText.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -342,6 +356,7 @@ public class FoodRecordFragment extends BaseFragment {
     }
 
     private void showAddPresetDialog() {
+        AlertDialog addDialog = null;  // 声明对话框变量
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_preset, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.RoundedDialog);
         builder.setView(dialogView);
@@ -358,10 +373,12 @@ public class FoodRecordFragment extends BaseFragment {
         positiveButton.setText(R.string.confirm);
         negativeButton.setText(R.string.cancel);
 
-        AlertDialog dialog = builder.create();
+        addDialog = builder.create();
+        AlertDialog finalAddDialog = addDialog;  // 创建final副本用于内部类
 
         // 设置按钮点击事件
         positiveButton.setOnClickListener(v -> {
+            positiveButton.setEnabled(false);  // 禁用按钮防止多次点击
             String name = input.getText().toString().trim();
             if (!name.isEmpty()) {
                 // 检查是否已存在相同名称的预设
@@ -380,11 +397,17 @@ public class FoodRecordFragment extends BaseFragment {
 
                         if (isDuplicate) {
                             Toast.makeText(requireContext(), "已存在相同名称的预设", Toast.LENGTH_SHORT).show();
+                            positiveButton.setEnabled(true);  // 重新启用按钮
                         } else {
                             viewModel.insertPreset(new FoodPreset(name));
-                            dialog.dismiss();
+                            finalAddDialog.dismiss();
                             viewModel.triggerReload();
-                            showPresetManageDialog();
+                            // 延迟刷新预设列表，确保数据已更新
+                            new Handler().postDelayed(() -> {
+                                if (isAdded()) {  // 确保Fragment仍然附加到Activity
+                                    showPresetManageDialog();
+                                }
+                            }, 100);
                         }
                     }
                 });
@@ -392,13 +415,13 @@ public class FoodRecordFragment extends BaseFragment {
         });
 
         negativeButton.setOnClickListener(v -> {
-            dialog.dismiss();
+            finalAddDialog.dismiss();
             showPresetManageDialog();
         });
 
         // 设置窗口大小和动画
-        dialog.setOnShowListener(dialogInterface -> {
-            Window window = dialog.getWindow();
+        finalAddDialog.setOnShowListener(dialogInterface -> {
+            Window window = finalAddDialog.getWindow();
             if (window != null) {
                 window.setLayout(
                     WindowManager.LayoutParams.MATCH_PARENT,
@@ -409,7 +432,7 @@ public class FoodRecordFragment extends BaseFragment {
             }
         });
 
-        dialog.show();
+        finalAddDialog.show();
 
         // 自动显示软键盘
         input.requestFocus();
@@ -472,6 +495,101 @@ public class FoodRecordFragment extends BaseFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         HistoryAdapter adapter = new HistoryAdapter();
+        adapter.setOnHistoryClickListener(new HistoryAdapter.OnHistoryClickListener() {
+            @Override
+            public void onHistoryLongClick(FoodRecordHistory history) {
+                AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(requireContext(), R.style.RoundedDialog);
+                View deleteDialogView = getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
+                deleteBuilder.setView(deleteDialogView);
+                
+                TextView deleteTitleView = deleteDialogView.findViewById(R.id.dialog_title);
+                TextView deleteMessageView = deleteDialogView.findViewById(R.id.dialog_message);
+                Button deletePositiveButton = deleteDialogView.findViewById(R.id.btn_positive);
+                Button deleteNegativeButton = deleteDialogView.findViewById(R.id.btn_negative);
+                
+                deleteTitleView.setText(R.string.food_record_delete_history);
+                deleteMessageView.setText(R.string.food_record_delete_history_confirm);
+                deletePositiveButton.setText(R.string.confirm);
+                deleteNegativeButton.setText(R.string.cancel);
+                
+                AlertDialog deleteDialog = deleteBuilder.create();
+                
+                deletePositiveButton.setOnClickListener(v -> {
+                    viewModel.deleteHistory(history);
+                    Toast.makeText(requireContext(), 
+                        R.string.food_record_delete_success, 
+                        Toast.LENGTH_SHORT).show();
+                    deleteDialog.dismiss();
+                });
+                
+                deleteNegativeButton.setOnClickListener(v -> deleteDialog.dismiss());
+                
+                deleteDialog.setOnShowListener(dialogInterface -> {
+                    Window window = deleteDialog.getWindow();
+                    if (window != null) {
+                        window.setLayout(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.WRAP_CONTENT
+                        );
+                        window.setBackgroundDrawableResource(android.R.color.transparent);
+                    }
+                });
+                
+                deleteDialog.show();
+            }
+
+            @Override
+            public void onHistoryClick(FoodRecordHistory history) {
+                // 显示完整列表对话框
+                AlertDialog.Builder detailBuilder = new AlertDialog.Builder(requireContext(), R.style.RoundedDialog);
+                View detailDialogView = getLayoutInflater().inflate(R.layout.dialog_history_detail, null);
+                detailBuilder.setView(detailDialogView);
+
+                TextView detailTitleView = detailDialogView.findViewById(R.id.dialog_title);
+                TextView detailDateView = detailDialogView.findViewById(R.id.text_date);
+                TextView detailListView = detailDialogView.findViewById(R.id.text_food_list);
+                Button closeButton = detailDialogView.findViewById(R.id.btn_close);
+
+                detailTitleView.setText(history.getName());
+                detailDateView.setText(history.getRecordDate());
+
+                // 解析JSON并生成完整列表
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<FoodRecord>>(){}.getType();
+                List<FoodRecord> records = gson.fromJson(history.getFoodRecords(), listType);
+
+                StringBuilder fullList = new StringBuilder();
+                for (int i = 0; i < records.size(); i++) {
+                    FoodRecord record = records.get(i);
+                    fullList.append("• ")
+                           .append(record.getFoodName())
+                           .append("  ×")
+                           .append(record.getServings())
+                           .append(" 份");
+                    if (i < records.size() - 1) {
+                        fullList.append("\n");
+                    }
+                }
+                detailListView.setText(fullList);
+
+                AlertDialog detailDialog = detailBuilder.create();
+                closeButton.setOnClickListener(v -> detailDialog.dismiss());
+
+                // 设置窗口大小和动画
+                detailDialog.setOnShowListener(dialogInterface -> {
+                    Window window = detailDialog.getWindow();
+                    if (window != null) {
+                        window.setLayout(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.WRAP_CONTENT
+                        );
+                        window.setBackgroundDrawableResource(android.R.color.transparent);
+                    }
+                });
+
+                detailDialog.show();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         AlertDialog dialog = builder.create();

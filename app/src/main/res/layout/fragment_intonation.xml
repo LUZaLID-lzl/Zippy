@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.sidebarList.intonation.IntonationFragment">
+
+    <!-- 引入标题栏布局 -->
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_page_title"/>
+
+    <!-- 音高显示视图 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.luza.zippy.ui.views.PitchDisplayView
+            android:id="@+id/pitch_display_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <SeekBar
+            android:id="@+id/seekbar_pitch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:rotation="270"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/seekbar_thumb"/>
+    </LinearLayout>
+
+    <!-- 当前音高显示 -->
+    <TextView
+        android:id="@+id/tv_current_pitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:textColor="#CCCCCC"
+        android:padding="16dp"
+        tools:text="当前音高: A4 (440Hz)"/>
+
+</LinearLayout>

@@ -4,13 +4,21 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 
 public class ImageProcess {
     private static final String TAG = "ImageProcess";
-    private static int maxWidthNum = 16;
-    private static int maxHeightNum = 7;
+    private static int maxWidthNum = 16;    // 最大宽度数量
+    private static int maxHeightNum = 8;    // 最大高度数量
+    private static final int EDGE_TRIM = 4;         // 边缘裁剪像素数（8px）
     
     /**
      * 创建默认的空白图片
@@ -48,10 +56,15 @@ public class ImageProcess {
         int height = source.getHeight();
         Log.d(TAG, "Original image size: " + width + "x" + height);
 
-        // 计算每个网格的实际大小
+        // 精确计算网格大小
         int gridWidth = width / maxWidthNum;
         int gridHeight = height / maxHeightNum;
-        Log.d(TAG, "Grid size: " + gridWidth + "x" + gridHeight);
+        // 计算实际保留的尺寸（去除边缘）
+        int trimmedWidth = gridWidth - (EDGE_TRIM * 2);
+        int trimmedHeight = gridHeight - (EDGE_TRIM * 2);
+
+        Log.d(TAG, String.format("Grid size: %dx%d, Trimmed size: %dx%d", 
+            gridWidth, gridHeight, trimmedWidth, trimmedHeight));
 
         // 检查行索引是否有效
         if (rowIndex < 0 || rowIndex >= maxHeightNum) {
@@ -64,27 +77,54 @@ public class ImageProcess {
         Bitmap[] results = new Bitmap[actualLimit];
 
         try {
-            // 计算当前行的起始Y坐标
+            // 精确计算当前行的起始Y坐标
             int startY = rowIndex * gridHeight;
             
             // 对当前行进行切割
             for (int col = 0; col < actualLimit; col++) {
                 int startX = col * gridWidth;
                 
-                // 创建新的Bitmap，保持原始大小
-                Bitmap bitmap = Bitmap.createBitmap(gridWidth, gridHeight, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
+                // 创建临时Bitmap，包含完整的网格
+                Bitmap tempBitmap = Bitmap.createBitmap(gridWidth, gridHeight, Bitmap.Config.ARGB_8888);
+                Canvas tempCanvas = new Canvas(tempBitmap);
                 
-                // 定义源矩形和目标矩形
+                // 创建带抗锯齿的画笔
+                Paint paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                
+                // 绘制完整网格
                 Rect srcRect = new Rect(startX, startY, startX + gridWidth, startY + gridHeight);
-                Rect dstRect = new Rect(0, 0, gridWidth, gridHeight);
+                Rect dstRect = new Rect(0, 0, tempBitmap.getWidth(), tempBitmap.getHeight());
                 
-                // 将对应部分绘制到新的Bitmap上
-                canvas.drawBitmap(source, srcRect, dstRect, null);
-                results[col] = bitmap;
+                tempCanvas.drawBitmap(source, srcRect, dstRect, paint);
                 
-                Log.d(TAG, String.format("Created grid at (%d,%d) with size %dx%d", 
-                    startX, startY, gridWidth, gridHeight));
+                // 裁剪边缘，创建最终的Bitmap
+                try {
+                    Bitmap trimmedBitmap = Bitmap.createBitmap(
+                        tempBitmap,
+                        EDGE_TRIM,                // 左边缘
+                        EDGE_TRIM,                // 上边缘
+                        trimmedWidth,             // 裁剪后的宽度
+                        trimmedHeight             // 裁剪后的高度
+                    );
+                    results[col] = trimmedBitmap;
+                    
+                    // 回收临时Bitmap
+                    if (tempBitmap != null && !tempBitmap.isRecycled()) {
+                        tempBitmap.recycle();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error trimming bitmap: " + e.getMessage());
+                    if (tempBitmap != null && !tempBitmap.isRecycled()) {
+                        tempBitmap.recycle();
+                    }
+                    throw e;
+                }
+                
+                Log.d(TAG, String.format("Created grid at (%d,%d) with final size %dx%d", 
+                    startX, startY, trimmedWidth, trimmedHeight));
             }
             
             // 检查结果数组是否包含空值

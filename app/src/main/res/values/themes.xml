@@ -84,4 +84,16 @@
         <item name="android:navigationBarColor">#B73607</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_maple</item>
     </style>
+
+    <style name="WinterTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:navigationBarColor">#EBF3F3</item>
+        <item name="android:windowBackground">@drawable/bg_card_background_winter</item>
+    </style>
+
+    <style name="WinterSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#D8FFFD</item>
+        <item name="android:navigationBarColor">#9BACAC</item>
+        <item name="android:windowBackground">@drawable/bg_setting_card_background_winter</item>
+    </style>
 </resources>

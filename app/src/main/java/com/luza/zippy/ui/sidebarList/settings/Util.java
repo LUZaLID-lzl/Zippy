@@ -56,6 +56,9 @@ public class Util {
                 case "maple":
                     activity.setTheme(R.style.MapleSplashTheme);
                     break;
+                case "winter":
+                    activity.setTheme(R.style.WinterSplashTheme);
+                    break;
                 default:
             }
         }

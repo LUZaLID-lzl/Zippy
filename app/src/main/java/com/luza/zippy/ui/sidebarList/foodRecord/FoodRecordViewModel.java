@@ -107,4 +107,8 @@ public class FoodRecordViewModel extends AndroidViewModel {
     public LiveData<List<FoodRecordHistory>> getAllHistories() {
         return allHistories;
     }
+
+    public void deleteHistory(FoodRecordHistory history) {
+        repository.deleteHistory(history);
+    }
 } 

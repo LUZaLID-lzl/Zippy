@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 引入标题栏布局 -->
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_page_title"/>
+
+    <!-- 顶部按钮布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_scrummage_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="添加"
+                android:textColor="#000000"
+                android:backgroundTint="#D8FFFD"
+                app:icon="@drawable/ic_add"
+                app:iconTint="#000000"
+                app:iconGravity="top"
+                app:iconPadding="4dp"
+                app:strokeColor="#CCCCCC"
+                app:strokeWidth="1dp"
+                app:cornerRadius="8dp"
+                android:layout_marginEnd="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_scrummage_center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="过滤"
+                android:textColor="#000000"
+                android:backgroundTint="#D8FFFD"
+                app:icon="@drawable/ic_filter"
+                app:iconTint="#000000"
+                app:iconGravity="top"
+                app:iconPadding="4dp"
+                app:strokeColor="#CCCCCC"
+                app:strokeWidth="1dp"
+                app:cornerRadius="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_scrummage_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="设置"
+                android:textColor="#000000"
+                android:backgroundTint="#D8FFFD"
+                app:icon="@drawable/ic_settings"
+                app:iconTint="#000000"
+                app:iconGravity="top"
+                app:iconPadding="4dp"
+                app:strokeColor="#CCCCCC"
+                app:strokeWidth="1dp"
+                app:cornerRadius="8dp"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+        <!-- 过滤状态提示 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_filter_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/text_filter_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="#F5F5F5"
+                android:textColor="#000000"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- 主要内容区域 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_scrummage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/scrummage_empty"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>

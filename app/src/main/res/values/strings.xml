@@ -20,7 +20,10 @@
     <string name="menu_pyp">画中画渲染</string>
     <string name="menu_turntable">大大大转盘</string>
     <string name="menu_turntable_presuppose">大大大转盘 - 预设</string>
-    <string name="menu_food_record">饕餮饮食记录</string>
+    <string name="menu_food_record">越吃越年轻</string>
+    <string name="menu_intonation">音高测试</string>
+    <string name="menu_scrummage">收割份子</string>
+    <string name="menu_scrummage_setting">收割份子 - 设置</string>
 
 
     <string name="menu_example">举例</string>
@@ -435,4 +438,65 @@
     <string name="food_record_history_empty">暂无历史记录</string>
     <string name="food_record_history_title">历史记录</string>
     <string name="food_record_close">关闭</string>
+
+    <string name="food_record_delete_history">删除历史记录</string>
+    <string name="food_record_delete_history_confirm">确定要删除这条历史记录吗？</string>
+    <string name="food_record_delete_success">删除成功</string>
+
+    <string name="intonation_start_record">开始录音</string>
+    <string name="intonation_stop_record">停止录音</string>
+    <string name="intonation_current_pitch">当前音高: %1$s</string>
+    <string name="intonation_permission_required">需要麦克风权限来进行音高检测</string>
+
+    <!-- 收割份子相关 -->
+    <string name="scrummage_add">添加</string>
+    <string name="scrummage_edit">编辑</string>
+    <string name="scrummage_delete">删除</string>
+    <string name="scrummage_empty">暂无记录</string>
+    <string name="scrummage_title">标题</string>
+    <string name="scrummage_amount">金额</string>
+    <string name="scrummage_date">日期</string>
+    <string name="scrummage_participants">参与人员</string>
+    <string name="scrummage_payer">支付给谁</string>
+    <string name="scrummage_notes">备注</string>
+    <string name="scrummage_add_participant">添加参与人</string>
+    <string name="scrummage_delete_participant">删除参与人</string>
+    <string name="scrummage_title_empty">请输入标题</string>
+    <string name="scrummage_amount_empty">金额不能为空</string>
+    <string name="scrummage_payer_empty">支付人不能为空</string>
+    <string name="scrummage_participants_empty">请添加参与人员</string>
+    <string name="scrummage_add_success">添加成功</string>
+    <string name="scrummage_edit_success">修改成功</string>
+    <string name="scrummage_delete_success">删除成功</string>
+    <string name="scrummage_delete_confirm">确定要删除吗？</string>
+    <string name="scrummage_per_person">每人应付：¥%.2f</string>
+
+    <string name="add_scrummage">添加新的 Scrummage</string>
+
+    <!-- 份子钱设置 -->
+    <string name="scrummage_setting_add_type">添加类型</string>
+    <string name="scrummage_setting_edit_type">编辑类型</string>
+    <string name="scrummage_setting_delete_type">删除类型</string>
+    <string name="scrummage_setting_type_name">类型名称</string>
+    <string name="scrummage_setting_type_empty">类型名称不能为空</string>
+    <string name="scrummage_setting_type_exists">该类型已存在</string>
+    <string name="scrummage_setting_add_success">添加成功</string>
+    <string name="scrummage_setting_edit_success">修改成功</string>
+    <string name="scrummage_setting_delete_success">删除成功</string>
+    <string name="scrummage_setting_delete_confirm">确定要删除类型"%1$s"吗？</string>
+
+    <!-- 过滤相关 -->
+    <string name="scrummage_filter">过滤</string>
+    <string name="scrummage_filter_type">类型</string>
+    <string name="scrummage_filter_name">名字</string>
+    <string name="scrummage_filter_amount">金额</string>
+    <string name="scrummage_filter_date">日期</string>
+    <string name="scrummage_filter_name_hint">输入名字</string>
+    <string name="scrummage_min_amount">最小金额</string>
+    <string name="scrummage_max_amount">最大金额</string>
+    <string name="scrummage_start_date">开始日期</string>
+    <string name="scrummage_end_date">结束日期</string>
+    <string name="scrummage_clear_filter">清除过滤</string>
+    <string name="scrummage_filter_applied">已应用过滤</string>
+    <string name="scrummage_filter_cleared">已清除过滤</string>
 </resources>

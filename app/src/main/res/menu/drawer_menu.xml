@@ -54,6 +54,16 @@
             android:icon="@drawable/ic_food_record"
             android:title="@string/menu_food_record"/>
 
+        <item
+            android:id="@+id/nav_scrummage"
+            android:icon="@drawable/ic_scrummage"
+            android:title="@string/menu_scrummage"/>
+
+<!--        <item-->
+<!--            android:id="@+id/nav_intonation"-->
+<!--            android:icon="@drawable/ic_music"-->
+<!--            android:title="@string/menu_intonation"/>-->
+
 <!--        <item-->
 <!--            android:id="@+id/nav_test"-->
 <!--            android:icon="@drawable/ic_test"-->

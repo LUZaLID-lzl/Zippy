@@ -39,10 +39,13 @@ public class HomeFragment extends Fragment {
     private ImageProcess imageProcess;
     private int animationNum;
 
-    public static Bitmap[] pikachuImages;
-    public static Bitmap[] bulbasaurImages;
-    public static Bitmap[] squirtleImages;
-    public static Bitmap[] mewImages;
+    public int[] capooSpark = {
+            R.drawable.ic_hamburg,
+            R.drawable.ic_cola,
+            R.drawable.ic_fries
+    };
+
+    public static int capoo;
 
     @Nullable
     @Override
@@ -50,6 +53,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         imageProcess = new ImageProcess();
+        capoo = capooSpark[random.nextInt(capooSpark.length)];
         procesImage();
         shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
         animationNum = shardPerfenceSetting.getHomeAnimationNum();
@@ -132,15 +136,33 @@ public class HomeFragment extends Fragment {
             case "maple":
                 currentImages = SplashActivity.mapleImages;
                 break;
+            case "winter":
+                currentImages = SplashActivity.winterImages;
+                break;
             default:
                 currentImages = SplashActivity.squirtleImages;
                 break;
         }
 
-
+        // 添加图片圆形裁剪处理
         if (lightningImage != null) {
             int randomIndex = new Random().nextInt(currentImages.length);
-            lightningImage.setImageBitmap(currentImages[randomIndex]);
+            Bitmap originalBitmap = currentImages[randomIndex];
+            
+            // 确保图片尺寸合适
+            int targetSize = Math.min(originalBitmap.getWidth(), originalBitmap.getHeight());
+            int x = (originalBitmap.getWidth() - targetSize) / 2;
+            int y = (originalBitmap.getHeight() - targetSize) / 2;
+            
+            // 裁剪为正方形
+            Bitmap squareBitmap = Bitmap.createBitmap(
+                originalBitmap, 
+                x, y, 
+                targetSize, 
+                targetSize
+            );
+            
+            lightningImage.setImageBitmap(squareBitmap);
         }
         
         // 如果已经有动画在运行，就不需要重新启动
@@ -183,9 +205,14 @@ public class HomeFragment extends Fragment {
                             ViewGroup.LayoutParams.WRAP_CONTENT));
                     
                     // 随机间隔后生成下一个闪电
+                    if (animationNum == 0){
+                        return; // 直接返回，停止线程
+                    }else{
+                        int delayMills = (int) (100 + (100 - 300) * ((animationNum - 10) / (float) (100 - 10))) * 10;
+                        handler.postDelayed(this, delayMills);
+                    }
 
-                    int delayMills = (int) (100 + (100 - 300) * ((animationNum - 10) / (float) (100 - 10))) * 10;
-                    handler.postDelayed(this, delayMills);
+
                 }
             }
         });

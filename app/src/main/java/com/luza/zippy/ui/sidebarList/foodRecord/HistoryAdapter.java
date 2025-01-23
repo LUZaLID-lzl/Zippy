@@ -21,8 +21,19 @@ import java.util.List;
 
 public class HistoryAdapter extends ListAdapter<FoodRecordHistory, HistoryAdapter.HistoryViewHolder> {
 
+    private OnHistoryClickListener listener;
+
+    public interface OnHistoryClickListener {
+        void onHistoryLongClick(FoodRecordHistory history);
+        void onHistoryClick(FoodRecordHistory history);
+    }
+
     protected HistoryAdapter() {
         super(new HistoryDiff());
+    }
+
+    public void setOnHistoryClickListener(OnHistoryClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,7 +41,7 @@ public class HistoryAdapter extends ListAdapter<FoodRecordHistory, HistoryAdapte
     public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_history, parent, false);
-        return new HistoryViewHolder(view);
+        return new HistoryViewHolder(view, listener);
     }
 
     @Override
@@ -43,15 +54,34 @@ public class HistoryAdapter extends ListAdapter<FoodRecordHistory, HistoryAdapte
         private TextView nameText;
         private TextView dateText;
         private TextView summaryText;
+        private final OnHistoryClickListener listener;
+        private FoodRecordHistory currentHistory;
 
-        HistoryViewHolder(@NonNull View itemView) {
+        HistoryViewHolder(@NonNull View itemView, OnHistoryClickListener listener) {
             super(itemView);
+            this.listener = listener;
             nameText = itemView.findViewById(R.id.text_history_name);
             dateText = itemView.findViewById(R.id.text_history_date);
             summaryText = itemView.findViewById(R.id.text_history_summary);
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION && currentHistory != null) {
+                    listener.onHistoryClick(currentHistory);
+                }
+            });
+
+            itemView.setOnLongClickListener(v -> {
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION && currentHistory != null) {
+                    listener.onHistoryLongClick(currentHistory);
+                    return true;
+                }
+                return false;
+            });
         }
 
         void bind(FoodRecordHistory history) {
+            this.currentHistory = history;
             nameText.setText(history.getName());
             dateText.setText(history.getRecordDate());
 
