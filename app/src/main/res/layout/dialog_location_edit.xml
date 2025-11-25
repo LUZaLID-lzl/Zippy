@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 基本信息区域 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="基本信息"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <!-- 坐标信息区域 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <!-- 名称输入框 -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                style="@style/CustomOutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="坐标名称"
+                    android:textColor="@android:color/black"
+                    android:inputType="text"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- X坐标输入框 -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                style="@style/CustomOutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etX"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:hint="X"
+                    android:textColor="@android:color/black"
+                    android:inputType="numberSigned"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Y坐标输入框 -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                style="@style/CustomOutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etY"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Y"
+                    android:textColor="@android:color/black"
+                    android:inputType="numberSigned"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- 附加信息区域 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="附加信息"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <!-- 连接方式选择 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="连接方式"
+            android:textColor="#757575"
+            android:textSize="12sp"/>
+
+        <RadioGroup
+            android:id="@+id/rgConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <RadioButton
+                android:id="@+id/rbConnectionNone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NO"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <RadioButton
+                android:id="@+id/rbConnectionX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="X"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <RadioButton
+                android:id="@+id/rbConnectionY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Y"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <RadioButton
+                android:id="@+id/rbConnectionXY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="XY"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+        </RadioGroup>
+
+        <!-- 维度选择 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="所在维度"
+            android:textColor="#757575"
+            android:textSize="12sp"/>
+
+        <RadioGroup
+            android:id="@+id/rgDimension"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <RadioButton
+                android:id="@+id/rbOverworld"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="主世界"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <RadioButton
+                android:id="@+id/rbNether"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="地狱"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+
+            <RadioButton
+                android:id="@+id/rbEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="末地"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+        </RadioGroup>
+
+        <!-- 描述输入框 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            style="@style/CustomOutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="描述（可选）"
+                android:textColor="@android:color/black"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:gravity="top"
+                android:maxLines="4"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</ScrollView> 

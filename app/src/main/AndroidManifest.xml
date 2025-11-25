@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="22"
-    android:versionName="1.0.22"
+    android:versionCode="32"
+    android:versionName="1.4.18.32"
     xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    version更新规则-->
+<!--    x.a.b.c-->
+<!--    x: 主版本号，每次大版本更新时增加-->
+<!--    a: UI变化版本号，每次UI更新时增加-->
+<!--    b: 新功能版本号，每次新功能更新时增加-->
+<!--    c: 日常变更版本号，每次变更时增加-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- 指南针功能所需权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".application.ZippyApplication"
@@ -24,7 +38,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

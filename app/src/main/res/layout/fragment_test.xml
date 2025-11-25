@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <!-- 引入标题栏布局 -->
     <include
@@ -16,53 +16,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:background="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp">
 
+        <!-- 添加一个垂直方向的LinearLayout来包裹Button和TextView -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_io_speed"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/blue_500"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/test_io_description"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_start_test"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:textColor="@color/black"
-                android:text="@string/start_test"
-                app:backgroundTint="@color/light_gray"/>
+                android:text="SN:"
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
+            <!-- 新增TextView用于显示蓝牙MAC地址 -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_bluetooth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone"/>
+                android:textColor="@color/black"
+                android:text="Bluetooth MAC:"
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/text_result"
-                android:layout_width="wrap_content"
+            <!-- 新增TextView用于显示Wi-Fi MAC地址 -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_wifi"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="16sp"/>
-
+                android:textColor="@color/black"
+                android:text="Wi-Fi MAC:"
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</LinearLayout> 
+</LinearLayout>

@@ -2,6 +2,23 @@ plugins {
     id 'com.android.application'
 }
 
+// 从AndroidManifest.xml读取版本信息
+def getVersionFromManifest() {
+    def manifestFile = file('src/main/AndroidManifest.xml')
+    def manifest = new XmlSlurper().parse(manifestFile)
+    
+    // 获取android命名空间的属性
+    def versionCode = manifest.attributes()['android:versionCode']
+    def versionName = manifest.attributes()['android:versionName']
+    
+    return [
+        versionCode: versionCode ? versionCode.toInteger() : 1,
+        versionName: versionName ? versionName.toString() : "1.0.0"
+    ]
+}
+
+def versionInfo = getVersionFromManifest()
+
 android {
     namespace 'com.luza.zippy'
     compileSdk 34
@@ -17,6 +34,8 @@ android {
         applicationId "com.luza.zippy"
         minSdk 23
         targetSdk 34
+        versionCode versionInfo.versionCode
+        versionName versionInfo.versionName
         
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         
@@ -42,6 +61,22 @@ android {
     buildFeatures {
         viewBinding true
     }
+    
+    // 自定义APK输出名称
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def appName = "Zippy"
+            def buildType = variant.buildType.name
+            def versionName = variant.versionName ?: "1.0"
+            def versionCode = variant.versionCode ?: 1
+            
+            if (buildType == "debug") {
+                outputFileName = "${appName}-debug-v${versionName}-${versionCode}.apk"
+            } else if (buildType == "release") {
+                outputFileName = "${appName}-release-v${versionName}-${versionCode}.apk"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -53,10 +88,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.6.0'
     implementation 'androidx.activity:activity:1.8.0'
     implementation 'androidx.room:room-common:2.6.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.core:core:1.6.0'  // 包含最新NFC API
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     def room_version = "2.6.1"
     
@@ -82,4 +120,8 @@ dependencies {
     // WorkManager
     def work_version = "2.9.0"
     implementation "androidx.work:work-runtime:$work_version"
+
+    // Glide图片加载库
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
 }

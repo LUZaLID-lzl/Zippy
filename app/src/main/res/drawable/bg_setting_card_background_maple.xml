@@ -2,7 +2,7 @@
     <corners android:radius="16dp" /> <!-- 设置圆角半径 -->
     <gradient
         android:angle="56"
-        android:startColor="#E76D40"
-        android:endColor="#B73607"
+        android:startColor="#F0B39B"
+        android:endColor="#EB6230"
         android:type="linear" />
 </shape>

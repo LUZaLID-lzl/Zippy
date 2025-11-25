@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <!-- 阴影层 -->
+            <item android:top="1dp" android:left="1dp">
+                <shape android:shape="oval">
+                    <solid android:color="@color/button_shadow" />
+                </shape>
+            </item>
+            <!-- 按钮层 -->
+            <item android:bottom="1dp" android:right="1dp">
+                <shape android:shape="oval">
+                    <gradient
+                        android:startColor="@color/direction_button_pressed_start"
+                        android:endColor="@color/direction_button_pressed_end"
+                        android:angle="135"
+                        android:type="linear" />
+                    <stroke android:width="3dp" android:color="#FFFFFF" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <!-- 阴影层 -->
+            <item android:top="3dp" android:left="3dp">
+                <shape android:shape="oval">
+                    <solid android:color="@color/button_shadow" />
+                </shape>
+            </item>
+            <!-- 按钮层 -->
+            <item android:bottom="3dp" android:right="3dp">
+                <shape android:shape="oval">
+                    <gradient
+                        android:startColor="@color/direction_button_start"
+                        android:endColor="@color/direction_button_end"
+                        android:angle="135"
+                        android:type="linear" />
+                    <stroke android:width="3dp" android:color="#FFFFFF" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector> 

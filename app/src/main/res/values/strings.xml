@@ -9,22 +9,67 @@
     <string name="english">中英切换</string>
 
     <!-- 侧边栏菜单 -->
-    <string name="menu_todo">待办事项</string>
-    <string name="menu_device_info">设备信息</string>
-    <string name="menu_battery">电池管理</string>
-    <string name="menu_test">测试</string>
+    <string name="menu_todo">待办</string>
+    <string name="menu_device_info">设备详情</string>
+    <string name="menu_battery">电池</string>
+    <string name="menu_test">功能测试</string>
     <string name="menu_calorie">热量计算</string>
     <string name="menu_calendar">日历</string>
     <string name="menu_performance_test">性能测试</string>
     <string name="menu_timer">计时器</string>
-    <string name="menu_pyp">画中画渲染</string>
-    <string name="menu_turntable">大大大转盘</string>
-    <string name="menu_turntable_presuppose">大大大转盘 - 预设</string>
-    <string name="menu_food_record">越吃越年轻</string>
-    <string name="menu_intonation">音高测试</string>
-    <string name="menu_scrummage">收割份子</string>
-    <string name="menu_scrummage_setting">收割份子 - 设置</string>
+    <string name="menu_pyp">画中画</string>
+    <string name="menu_turntable">大转盘</string>
+    <string name="menu_turntable_sifter">大转盘：骰子模式</string>
+    <string name="menu_turntable_touch">大转盘：触控模式</string>
+    <string name="menu_turntable_coin">大转盘：投掷硬币</string>
+    <string name="menu_turntable_presuppose">大转盘：预设模式</string>
+    <string name="menu_food_record">饮食记录</string>
+    <string name="menu_intonation">音高检测</string>
+    <string name="menu_scrummage">份份子</string>
+    <string name="menu_scrummage_setting">份份子：设置</string>
+    <string name="menu_consumption">共同消费</string>
+    <string name="menu_minecraft">我的世界</string>
+    <string name="menu_minecraft_location">我的世界：地图</string>
+    <string name="menu_minecraft_location_setting">我的世界：地图设置</string>
+    <string name="menu_wifi">无线信息</string>
+    <string name="menu_tzfe">2048</string>
+    <string name="menu_tetris">俄罗斯方块</string>
+    <string name="menu_compass">指南针</string>
+    <string name="menu_sort">排序演示</string>
 
+    <!-- 排序演示相关 -->
+    <string name="sort_select_algorithm">选择排序算法</string>
+    <string name="sort_bubble">冒泡排序</string>
+    <string name="sort_selection">选择排序</string>
+    <string name="sort_insertion">插入排序</string>
+    <string name="sort_quick">快速排序</string>
+    <string name="sort_merge">归并排序</string>
+    <string name="sort_heap">堆排序</string>
+    <string name="sort_generate_data">生成数据</string>
+    <string name="sort_start">开始排序</string>
+    <string name="sort_reset">重置</string>
+    <string name="sort_pause">暂停</string>
+    <string name="sort_resume">继续</string>
+    <string name="sort_sorting">排序中...</string>
+    <string name="sort_paused">已暂停排序</string>
+    <string name="sort_resumed">继续排序</string>
+    <string name="sort_not_sorting">当前没有进行排序</string>
+    <string name="sort_complete">排序完成！</string>
+    <string name="sort_select_first">请先选择排序算法</string>
+    <string name="sort_generate_first">请先生成数据</string>
+    <string name="sort_wait_complete">排序进行中，请等待完成</string>
+    <string name="sort_algorithm_selected">已选择: %1$s</string>
+    <string name="sort_data_generated">已生成 %1$d 个随机数</string>
+    <string name="sort_data_reset">已重置数据</string>
+    <string name="sort_current_algorithm">当前算法: %1$s</string>
+    <string name="sort_select_and_generate">请选择排序算法并生成数据</string>
+    <string name="sort_steps">步骤: %1$d</string>
+    <string name="sort_generate_data_hint">请生成数据开始排序演示</string>
+    <string name="sort_control_title">排序控制</string>
+    <string name="sort_info_title">排序信息</string>
+    <string name="sort_visualization_title">排序可视化</string>
+    <string name="sort_algorithm_description">选择一种排序算法，然后生成随机数据进行排序演示</string>
+    <string name="sort_visualization_placeholder">请先生成数据开始排序演示</string>
 
     <string name="menu_example">举例</string>
 
@@ -158,12 +203,19 @@
     <string name="language_description">开启为英文，关闭为中文</string>
     <string name="theme_description">点击切换主题</string>
     <string name="theme_tips">切换成功</string>
+    <string name="random_theme">随机主题</string>
+    <string name="random_theme_description">每次启动时随机选择主题</string>
     <!-- Strings used for fragments for navigation -->
 
     <!-- 设置页面主页动画数量 -->
     <string name="homeAnimationNum_title">主页粒子数量</string>
     <string name="homeAnimationNum_current_num">当前值：</string>
     <string name="homeAnimationNum_description">拖动滑块调节数值</string>
+
+    <!-- 底部菜单项大小设置 -->
+    <string name="bottom_menu_item_size_title">底部菜单项大小</string>
+    <string name="bottom_menu_item_size_current">当前大小：%d dp</string>
+    <string name="bottom_menu_item_size_description">拖动滑块调节菜单项的整体大小（60-120dp）</string>
 
     <!-- Calendar Strings -->
     <string name="calendar_type">日历类型</string>
@@ -387,6 +439,8 @@
     <string name="title_layout_horizontal">横向布局</string>
     <string name="title_layout_description">切换标题栏的显示方向，重启应用后生效</string>
     <string name="restart_confirm">是否立即重启应用以应用更改？</string>
+    <string name="bottom_menu_title">底部菜单</string>
+    <string name="bottom_menu_description">以卡片形式进行布局</string>
     <string name="restart_now">立即重启</string>
     <string name="restart_later">稍后重启</string>
 
@@ -499,4 +553,90 @@
     <string name="scrummage_clear_filter">清除过滤</string>
     <string name="scrummage_filter_applied">已应用过滤</string>
     <string name="scrummage_filter_cleared">已清除过滤</string>
+
+    <string name="add_to_favorites">添加到收藏</string>
+    <string name="remove_from_favorites">取消收藏</string>
+
+    <!-- 工作模式设置 -->
+    <string name="work_mode_title">独立模式</string>
+    <string name="work_mode_work">工作</string>
+    <string name="work_mode_life">生活</string>
+    <string name="work_mode_game">游戏</string>
+    <string name="work_mode_all">全部</string>
+    <string name="work_mode_description">选择不同的独立模式将显示对应类型的内容</string>
+    <string name="work_mode_changed">独立模式已更改</string>
+
+    <string name="wifi_info_title">WiFi信息</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="wifi_bssid">BSSID</string>
+    <string name="wifi_signal_strength">信号强度</string>
+    <string name="wifi_ip_address">IP地址</string>
+    <string name="wifi_mac_address">MAC地址</string>
+    <string name="wifi_test_title">WiFi功能测试</string>
+    <string name="wifi_ping_test">Ping测试</string>
+    <string name="wifi_ping_result">Ping结果</string>
+    <string name="wifi_test_start">开始测试</string>
+    <string name="wifi_test_success">网络畅通</string>
+    <string name="wifi_test_fail">网络不通</string>
+    <string name="wifi_test_running">测试中...</string>
+    <string name="wifi_switch_title">WiFi开关</string>
+    <string name="wifi_switch_on">开启WiFi</string>
+    <string name="wifi_switch_off">关闭WiFi</string>
+
+    <!-- 2048游戏相关字符串 -->
+    <string name="game_2048_score">分数</string>
+    <string name="game_2048_high_score">最高分</string>
+    <string name="game_2048_description">滑动合并相同数字，目标是达到2048！</string>
+    <string name="game_2048_new_game">新游戏</string>
+    <string name="game_2048_undo">撤销</string>
+    <string name="game_2048_win_message">恭喜！您达到了2048！</string>
+    <string name="game_2048_game_over">游戏结束！</string>
+
+    <!-- 俄罗斯方块游戏相关字符串 -->
+    <string name="tetris_score">分数</string>
+    <string name="tetris_high_score">最高分</string>
+    <string name="tetris_level">等级</string>
+    <string name="tetris_lines">消除行数</string>
+    <string name="tetris_next">下一个</string>
+    <string name="tetris_pause">暂停</string>
+    <string name="tetris_resume">继续</string>
+    <string name="tetris_new_game">新游戏</string>
+    <string name="tetris_game_over">游戏结束！</string>
+    <string name="tetris_paused">游戏已暂停</string>
+    <string name="tetris_controls">控制说明</string>
+    <string name="tetris_move_left">左移</string>
+    <string name="tetris_move_right">右移</string>
+    <string name="tetris_rotate">旋转</string>
+    <string name="tetris_drop">快速下降</string>
+    <string name="tetris_soft_drop">软下降</string>
+    <string name="tetris_description">经典俄罗斯方块游戏，消除完整行来获得分数！</string>
+    <string name="tetris_new_high_score">新纪录！</string>
+    <string name="tetris_lines_cleared">消除了 %d 行</string>
+    <string name="tetris_combo">连击 x%d</string>
+    <string name="tetris_left">左移</string>
+    <string name="tetris_right">右移</string>
+    <string name="tetris_hard_drop">快速下降</string>
+
+    <!-- 指南针相关字符串 -->
+    <string name="compass_rose">指南针盘</string>
+    <string name="direction_indicator">方向指示器</string>
+    <string name="compass_center">指南针中心</string>
+    <string name="compass_north">北</string>
+    <string name="compass_south">南</string>
+    <string name="compass_east">东</string>
+    <string name="compass_west">西</string>
+    <string name="compass_northeast">东北</string>
+    <string name="compass_northwest">西北</string>
+    <string name="compass_southeast">东南</string>
+    <string name="compass_southwest">西南</string>
+    <string name="compass_accuracy_high">精度: 高</string>
+    <string name="compass_accuracy_medium">精度: 中</string>
+    <string name="compass_accuracy_low">精度: 低</string>
+    <string name="compass_altitude">海拔: %dm</string>
+    <string name="compass_degrees">%d°</string>
+    <string name="compass_latitude">纬度: %.6f°</string>
+    <string name="compass_longitude">经度: %.6f°</string>
+    <string name="compass_no_sensor">设备不支持指南针传感器</string>
+    <string name="compass_permission_denied">需要位置权限才能使用指南针</string>
+    <string name="compass_calibrating">正在校准指南针...</string>
 </resources>

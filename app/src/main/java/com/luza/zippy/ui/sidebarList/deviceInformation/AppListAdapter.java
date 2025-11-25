@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.luza.zippy.MainActivity;
 import com.luza.zippy.R;
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +62,39 @@ public class AppListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             itemHolder.textView.setText(packageManager.getApplicationLabel(app));
             itemHolder.imageView.setImageDrawable(packageManager.getApplicationIcon(app));
+            
+            // 设置应用包名
+            itemHolder.packageTextView.setText(app.packageName);
+            
+            // 获取并显示应用大小
+            String appSize = getAppSize(app);
+            itemHolder.sizeTextView.setText(appSize);
         }
     }
 
     @Override
     public int getItemCount() {
         return apps.size() + 1; // +1 for header
+    }
+    
+    // 获取应用大小的方法
+    private String getAppSize(ApplicationInfo info) {
+        try {
+            File appFile = new File(info.sourceDir);
+            long appSize = appFile.length();
+            return formatSize(appSize);
+        } catch (Exception e) {
+            return MainActivity.mContext.getString(R.string.unknow);
+        }
+    }
+    
+    // 格式化文件大小
+    private String formatSize(long size) {
+        if (size <= 0) return "0";
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) 
+            + " " + units[digitGroups];
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
@@ -74,17 +103,21 @@ public class AppListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         HeaderViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.header_text);
+        }
     }
-}
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
+        TextView sizeTextView;
+        TextView packageTextView;
 
         ItemViewHolder(View view) {
             super(view);
             imageView = view.findViewById(R.id.app_icon);
             textView = view.findViewById(R.id.app_name);
+            packageTextView = view.findViewById(R.id.app_package);
+            sizeTextView = view.findViewById(R.id.app_size);
         }
     }
 } 

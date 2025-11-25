@@ -16,8 +16,9 @@ import android.util.Log;
 
 public class ImageProcess {
     private static final String TAG = "ImageProcess";
+    //单个图片默认大小256x256
     private static int maxWidthNum = 16;    // 最大宽度数量
-    private static int maxHeightNum = 8;    // 最大高度数量
+    private static int maxHeightNum = 9;    // 最大高度数量
     private static final int EDGE_TRIM = 4;         // 边缘裁剪像素数（8px）
     
     /**

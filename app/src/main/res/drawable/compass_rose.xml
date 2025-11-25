@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 外圈背景 -->
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="4dp"
+                android:color="#2196F3" />
+            <solid android:color="#F5F5F5" />
+        </shape>
+    </item>
+    
+    <!-- 刻度标记 - 每30度一个主刻度，每10度一个小刻度 -->
+    <!-- 北 (0度) -->
+    <item android:gravity="top|center_horizontal">
+        <shape android:shape="rectangle">
+            <size android:width="4dp" android:height="20dp" />
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+    
+    <!-- 东北 (45度) -->
+    <item android:gravity="top|end" android:left="20dp" android:top="20dp">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="rectangle">
+                <size android:width="3dp" android:height="15dp" />
+                <solid android:color="#2196F3" />
+            </shape>
+        </rotate>
+    </item>
+    
+    <!-- 东 (90度) -->
+    <item android:gravity="center_vertical|end">
+        <shape android:shape="rectangle">
+            <size android:width="4dp" android:height="20dp" />
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+    
+    <!-- 东南 (135度) -->
+    <item android:gravity="bottom|end" android:left="20dp" android:bottom="20dp">
+        <rotate android:fromDegrees="135">
+            <shape android:shape="rectangle">
+                <size android:width="3dp" android:height="15dp" />
+                <solid android:color="#2196F3" />
+            </shape>
+        </rotate>
+    </item>
+    
+    <!-- 南 (180度) -->
+    <item android:gravity="bottom|center_horizontal">
+        <shape android:shape="rectangle">
+            <size android:width="4dp" android:height="20dp" />
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+    
+    <!-- 西南 (225度) -->
+    <item android:gravity="bottom|start" android:right="20dp" android:bottom="20dp">
+        <rotate android:fromDegrees="225">
+            <shape android:shape="rectangle">
+                <size android:width="3dp" android:height="15dp" />
+                <solid android:color="#2196F3" />
+            </shape>
+        </rotate>
+    </item>
+    
+    <!-- 西 (270度) -->
+    <item android:gravity="center_vertical|start">
+        <shape android:shape="rectangle">
+            <size android:width="4dp" android:height="20dp" />
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+    
+    <!-- 西北 (315度) -->
+    <item android:gravity="top|start" android:right="20dp" android:top="20dp">
+        <rotate android:fromDegrees="315">
+            <shape android:shape="rectangle">
+                <size android:width="3dp" android:height="15dp" />
+                <solid android:color="#2196F3" />
+            </shape>
+        </rotate>
+    </item>
+    
+    <!-- 内圈装饰 -->
+    <item android:left="20dp" android:top="20dp" android:right="20dp" android:bottom="20dp">
+        <shape android:shape="oval">
+            <stroke
+                android:width="2dp"
+                android:color="#2196F3" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    
+    <!-- 中心点 -->
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size android:width="8dp" android:height="8dp" />
+            <solid android:color="#2196F3" />
+        </shape>
+    </item>
+</layer-list> 

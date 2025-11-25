@@ -2,98 +2,110 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- 使用styles.xml中的AppTheme -->
     <style name="PikachuTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#FFEBA6</item>
+        <item name="android:statusBarColor">#FFFEFC</item>
+        <item name="android:navigationBarColor">#FFEAA4</item>
         <item name="android:windowBackground">@drawable/bg_card_background_pikaqiu</item>
     </style>
 
     <style name="PikachuSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#C8D127</item>
-        <item name="android:navigationBarColor">#F2CB47</item>
+        <item name="android:statusBarColor">#C9D128</item>
+        <item name="android:navigationBarColor">#F0CB45</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_pikaqiu</item>
     </style>
 
     <style name="BulbasaurTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#ACE5FE</item>
+        <item name="android:statusBarColor">#FCFEFF</item>
+        <item name="android:navigationBarColor">#AAE4FE</item>
         <item name="android:windowBackground">@drawable/bg_card_background_bulbasaur</item>
     </style>
 
     <style name="BulbasaurSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#12E8FF</item>
-        <item name="android:navigationBarColor">#1BA0AE</item>
+        <item name="android:statusBarColor">#12E5FC</item>
+        <item name="android:navigationBarColor">#1AA4B3</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_bulbasaur</item>
     </style>
 
     <style name="SquirtleTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#C6E6C7</item>
+        <item name="android:statusBarColor">#FDFEFD</item>
+        <item name="android:navigationBarColor">#C4E5C6</item>
         <item name="android:windowBackground">@drawable/bg_card_background_squirtle</item>
     </style>
 
     <style name="SquirtleSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#87E08B</item>
-        <item name="android:navigationBarColor">#01C80A</item>
+        <item name="android:statusBarColor">#C6F3C6</item>
+        <item name="android:navigationBarColor">#89E575</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_squirtle</item>
     </style>
 
     <style name="MewTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#FEE0E8</item>
+        <item name="android:statusBarColor">#FFFEFE</item>
+        <item name="android:navigationBarColor">#FEDFE7</item>
         <item name="android:windowBackground">@drawable/bg_card_background_mew</item>
     </style>
 
     <style name="MewSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#F3C0CD</item>
-        <item name="android:navigationBarColor">#CF728B</item>
+        <item name="android:statusBarColor">#F2BDCB</item>
+        <item name="android:navigationBarColor">#D1778F</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_mew</item>
     </style>
 
     <style name="KarsaTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#EEC6F5</item>
+        <item name="android:statusBarColor">#FEFDFF</item>
+        <item name="android:navigationBarColor">#EDC4F5</item>
         <item name="android:windowBackground">@drawable/bg_card_background_karsa</item>
     </style>
 
     <style name="KarsaSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#E97AFF</item>
-        <item name="android:navigationBarColor">#921DA9</item>
+        <item name="android:statusBarColor">#E677FC</item>
+        <item name="android:navigationBarColor">#9723AE</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_karsa</item>
     </style>
 
     <style name="CapooTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#B1FDF1</item>
+        <item name="android:statusBarColor">#FCFFFF</item>
+        <item name="android:navigationBarColor">#AFFDF1</item>
         <item name="android:windowBackground">@drawable/bg_card_background_capoo</item>
     </style>
 
     <style name="CapooSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#7EF1DE</item>
-        <item name="android:navigationBarColor">#0CAC93</item>
+        <item name="android:statusBarColor">#7AEFDB</item>
+        <item name="android:navigationBarColor">#13B098</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_capoo</item>
     </style>
 
     <style name="MapleTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#F1BCA9</item>
+        <item name="android:statusBarColor">#FFFCFC</item>
+        <item name="android:navigationBarColor">#F1BBA8</item>
         <item name="android:windowBackground">@drawable/bg_card_background_maple</item>
     </style>
 
     <style name="MapleSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#E76D40</item>
-        <item name="android:navigationBarColor">#B73607</item>
+        <item name="android:statusBarColor">#F0B097</item>
+        <item name="android:navigationBarColor">#EB6736</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_maple</item>
     </style>
 
     <style name="WinterTheme" parent="AppTheme">
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:navigationBarColor">#EBF3F3</item>
+        <item name="android:statusBarColor">#FEFFFF</item>
+        <item name="android:navigationBarColor">#EAF3F3</item>
         <item name="android:windowBackground">@drawable/bg_card_background_winter</item>
     </style>
 
     <style name="WinterSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#D8FFFD</item>
-        <item name="android:navigationBarColor">#9BACAC</item>
+        <item name="android:statusBarColor">#D6FCFA</item>
+        <item name="android:navigationBarColor">#9FB1B1</item>
         <item name="android:windowBackground">@drawable/bg_setting_card_background_winter</item>
+    </style>
+
+    <style name="GengarTheme" parent="AppTheme">
+        <item name="android:statusBarColor">#FCFCFC</item>
+        <item name="android:navigationBarColor">#AFA4B1</item>
+        <item name="android:windowBackground">@drawable/bg_card_background_gengar</item>
+    </style>
+
+    <style name="GengarSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#7A4CCD</item>
+        <item name="android:navigationBarColor">#26072F</item>
+        <item name="android:windowBackground">@drawable/bg_setting_card_background_gengar</item>
     </style>
 </resources>

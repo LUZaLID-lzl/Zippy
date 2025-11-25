@@ -17,12 +17,19 @@ import android.view.animation.LinearInterpolator;
 
 public class LiquidBackgroundView extends View {
     private static final String TAG = "LiquidBackgroundView";
+    
+    // 颜色变化监听器接口
+    public interface ColorChangeListener {
+        void onColorChanged(String topColor, String bottomColor, String actualTopColor, String actualBottomColor);
+    }
+    
     private Paint paint;
     private Path path;
     private float phase = 0;
     private ValueAnimator waveAnimator;
     private ValueAnimator colorAnimator;
     private int[] currentColors = new int[4];
+    private ColorChangeListener colorChangeListener;
     private int[] startColors = {
             Color.parseColor("#1A1A1A"),
             Color.parseColor("#2D2D2D"),
@@ -82,6 +89,16 @@ public class LiquidBackgroundView extends View {
             updateGradient();
             logCurrentColors();
             invalidate();
+            
+            // 通知颜色变化
+            if (colorChangeListener != null) {
+                colorChangeListener.onColorChanged(
+                    getTopColor(), 
+                    getBottomColor(),
+                    getActualDisplayedTopColor(),
+                    getActualDisplayedBottomColor()
+                );
+            }
         });
     }
 
@@ -116,6 +133,62 @@ public class LiquidBackgroundView extends View {
     }
 
     /**
+     * 获取实际显示的底部颜色值（考虑动画插值和叠加效果）
+     * @return 6位十六进制颜色代码
+     */
+    public String getActualDisplayedBottomColor() {
+        // 获取当前动画进度
+        float fraction = 0;
+        if (colorAnimator != null && colorAnimator.isRunning()) {
+            fraction = colorAnimator.getAnimatedFraction();
+        }
+        
+        // 计算实际显示的颜色（考虑动画插值）
+        ArgbEvaluator evaluator = new ArgbEvaluator();
+        int actualColor = (int) evaluator.evaluate(fraction, startColors[startColors.length - 1], endColors[endColors.length - 1]);
+        
+        // 考虑白色叠加效果（约30%透明度）
+        int red = Color.red(actualColor);
+        int green = Color.green(actualColor);
+        int blue = Color.blue(actualColor);
+        
+        // 添加白色叠加效果（约30%透明度）
+        red = Math.min(255, red + (int)((255 - red) * 0.3));
+        green = Math.min(255, green + (int)((255 - green) * 0.3));
+        blue = Math.min(255, blue + (int)((255 - blue) * 0.3));
+        
+        return String.format("#%02X%02X%02X", red, green, blue);
+    }
+
+    /**
+     * 获取实际显示的顶部颜色值（考虑动画插值和叠加效果）
+     * @return 6位十六进制颜色代码
+     */
+    public String getActualDisplayedTopColor() {
+        // 获取当前动画进度
+        float fraction = 0;
+        if (colorAnimator != null && colorAnimator.isRunning()) {
+            fraction = colorAnimator.getAnimatedFraction();
+        }
+        
+        // 计算实际显示的颜色（考虑动画插值）
+        ArgbEvaluator evaluator = new ArgbEvaluator();
+        int actualColor = (int) evaluator.evaluate(fraction, startColors[0], endColors[0]);
+        
+        // 考虑白色叠加效果（约30%透明度）
+        int red = Color.red(actualColor);
+        int green = Color.green(actualColor);
+        int blue = Color.blue(actualColor);
+        
+        // 添加白色叠加效果（约30%透明度）
+        red = Math.min(255, red + (int)((255 - red) * 0.3));
+        green = Math.min(255, green + (int)((255 - green) * 0.3));
+        blue = Math.min(255, blue + (int)((255 - blue) * 0.3));
+        
+        return String.format("#%02X%02X%02X", red, green, blue);
+    }
+
+    /**
      * 获取当前所有颜色值
      * @return 包含所有当前颜色的数组
      */
@@ -125,6 +198,14 @@ public class LiquidBackgroundView extends View {
             colorStrings[i] = colorToHex(currentColors[i]);
         }
         return colorStrings;
+    }
+
+    /**
+     * 设置颜色变化监听器
+     * @param listener 颜色变化监听器
+     */
+    public void setColorChangeListener(ColorChangeListener listener) {
+        this.colorChangeListener = listener;
     }
 
     private void updateGradient() {
@@ -260,7 +341,11 @@ public class LiquidBackgroundView extends View {
         Log.d(TAG, "setColors called");
         if (newStartColors != null && newStartColors.length == 4 &&
             newEndColors != null && newEndColors.length == 4) {
-            
+
+            System.arraycopy(newStartColors, 0, startColors, 0, 4);
+            System.arraycopy(newEndColors, 0, endColors, 0, 4);
+            System.arraycopy(startColors, 0, currentColors, 0, 4);
+
             // 打印新的颜色值
             Log.d(TAG, "Setting new colors:");
             Log.d(TAG, "Start colors:");
@@ -272,10 +357,6 @@ public class LiquidBackgroundView extends View {
                 Log.d(TAG, "Color " + i + ": " + colorToHex(newEndColors[i]));
             }
 
-            System.arraycopy(newStartColors, 0, startColors, 0, 4);
-            System.arraycopy(newEndColors, 0, endColors, 0, 4);
-            System.arraycopy(startColors, 0, currentColors, 0, 4);
-            
             // 更新渐变
             updateGradient();
             

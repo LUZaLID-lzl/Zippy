@@ -1,8 +1,6 @@
 package com.luza.zippy;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,39 +19,38 @@ import android.view.MotionEvent;
 import com.luza.zippy.setting.ShardPerfenceSetting;
 import com.luza.zippy.ui.fragments.HomeFragment;
 import com.luza.zippy.ui.sidebarList.calendar.CalendarFragment;
+import com.luza.zippy.ui.sidebarList.compass.CompassFragment;
+import com.luza.zippy.ui.sidebarList.consumption.ConsumptionFragment;
 import com.luza.zippy.ui.sidebarList.deviceInformation.DeviceInfoFragment;
 import com.luza.zippy.ui.sidebarList.battery.BatteryFragment;
 import com.luza.zippy.ui.sidebarList.foodRecord.FoodRecordFragment;
-import com.luza.zippy.ui.sidebarList.intonation.IntonationFragment;
+import com.luza.zippy.ui.sidebarList.minecraft.MinecraftFragment;
+import com.luza.zippy.ui.sidebarList.minecraft.location.MinecraftLocationFragment;
 import com.luza.zippy.ui.sidebarList.performance.PerformanceFragment;
 import com.luza.zippy.ui.sidebarList.pyprender.PyprenderFragment;
 import com.luza.zippy.ui.sidebarList.scrummage.ScrummageFragment;
 import com.luza.zippy.ui.sidebarList.settings.Util;
+import com.luza.zippy.ui.sidebarList.sort.SortFragment;
 import com.luza.zippy.ui.sidebarList.test.TestFragment;
+import com.luza.zippy.ui.sidebarList.tetris.TetrisFragment;
 import com.luza.zippy.ui.sidebarList.timer.TimerFragment;
 import com.luza.zippy.ui.sidebarList.todo.TodoFragment;
 import com.luza.zippy.ui.sidebarList.calorie.CalorieFragment;
 
-import java.util.Locale;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 
 import com.luza.zippy.ui.sidebarList.turntable.TurntableFragment;
-import com.luza.zippy.ui.sidebarList.turntable.TurntablePresupposeFragment;
+import com.luza.zippy.ui.sidebarList.tzfe.TzfeFragment;
+import com.luza.zippy.ui.sidebarList.wifi.WifiFragment;
 import com.luza.zippy.ui.utils.ColorCalibration;
 import com.luza.zippy.ui.views.LiquidBackgroundView;
 import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.PixelCopy;
-import android.view.Window;
 import android.view.WindowManager;
-import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
-import android.os.Build;
 import android.view.Menu;
 
 /**
@@ -105,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case "winter":
                 setTheme(R.style.WinterTheme);
                 break;
+            case "gengar":
+                setTheme(R.style.GengarTheme);
+                break;
         }
 
         super.onCreate(savedInstanceState);
@@ -121,10 +121,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             loadHomeFragment();
         }
+        ColorCalibration.calculateGradientColors();
 
         if (SplashActivity.isDebug){
-            loadFragment(new ScrummageFragment());
+            loadFragment(new TurntableFragment());
         }
+
+        // 保持屏幕常亮
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     /**
@@ -138,11 +142,92 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         
         drawerLayout.setOnTouchListener(this);
 
-        // 检查激活状态并控制计时器菜单项的显示
+        // 根据工作模式过滤菜单项
+        filterMenuItemsByWorkMode();
+    }
+
+    /**
+     * 根据当前工作模式过滤菜单项
+     */
+    public void filterMenuItemsByWorkMode() {
+        String currentWorkMode = shardPerfenceSetting.getWorkMode();
         Menu navMenu = navigationView.getMenu();
+        
+        // 遍历所有菜单项
+        for (int i = 0; i < navMenu.size(); i++) {
+            MenuItem menuItem = navMenu.getItem(i);
+            if (menuItem.hasSubMenu()) {
+                // 如果有子菜单，递归处理
+                Menu subMenu = menuItem.getSubMenu();
+                for (int j = 0; j < subMenu.size(); j++) {
+                    filterMenuItem(subMenu.getItem(j), currentWorkMode);
+                }
+            } else {
+                // 处理单个菜单项
+                filterMenuItem(menuItem, currentWorkMode);
+            }
+        }
+
+        // 检查激活状态并控制计时器菜单项的显示
         MenuItem timerItem = navMenu.findItem(R.id.nav_timer);
         Boolean activationCode = shardPerfenceSetting.getActivate();
         timerItem.setVisible(activationCode);
+    }
+    
+    /**
+     * 根据工作模式过滤单个菜单项
+     */
+    private void filterMenuItem(MenuItem menuItem, String workMode) {
+        // 使用菜单项ID来确定其类型
+        String itemTag = getMenuItemTag(menuItem.getItemId());
+        
+        android.util.Log.d("liziluo","menuItem: " + menuItem.getTitle() + ", itemTag: " + itemTag);
+        
+        // 如果工作模式是"all"，显示所有菜单项
+        if ("all".equals(workMode) || itemTag.equals(workMode)) {
+            menuItem.setVisible(true);
+        } else {
+            menuItem.setVisible(false);
+        }
+    }
+    
+    /**
+     * 根据菜单项ID获取其标签类型
+     */
+    private String getMenuItemTag(int itemId) {
+        // 工作相关的菜单项
+        if (itemId == R.id.nav_subscriptions ||
+            itemId == R.id.nav_battery ||
+            itemId == R.id.nav_performance_test ||
+            itemId == R.id.nav_wifi ||
+            itemId == R.id.nav_test ||
+            itemId == R.id.nav_compass ||
+            itemId == R.id.nav_sort) {
+            return "work";
+        }
+        // 生活相关的菜单项
+        else if (itemId == R.id.nav_todo ||
+                itemId == R.id.nav_calorie ||
+                itemId == R.id.nav_calendar ||
+                itemId == R.id.nav_timer ||
+                itemId == R.id.nav_pyp ||
+                itemId == R.id.nav_turntable ||
+                itemId == R.id.nav_food_record ||
+                itemId == R.id.nav_scrummage ||
+                itemId == R.id.nav_consumption) {
+            return "life";
+        }
+
+        else if (itemId == R.id.nav_tzfe ||
+                itemId == R.id.nav_tetris ||
+                itemId == R.id.nav_minecraft) {
+            return "game";
+        }
+
+        // 默认为通用菜单项
+        else {
+            return "all";
+        }
     }
 
     /**
@@ -226,15 +311,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFragment(new FoodRecordFragment());
         }  else if (id == R.id.nav_scrummage) {
             loadFragment(new ScrummageFragment());
+        } else if (id == R.id.nav_consumption) {
+            loadFragment(new ConsumptionFragment());
+        } else if (id == R.id.nav_minecraft) {
+            loadFragment(new MinecraftLocationFragment());
+        } else if (id == R.id.nav_test) {
+            loadFragment(new TestFragment());
+        } else if (id == R.id.nav_wifi){
+            loadFragment(new WifiFragment());
+        } else if (id == R.id.nav_tzfe){
+            loadFragment(new TzfeFragment());
+        } else if (id == R.id.nav_tetris){
+            loadFragment(new TetrisFragment());
+        } else if (id == R.id.nav_compass){
+            loadFragment(new CompassFragment());
+        } else if (id == R.id.nav_sort){
+            loadFragment(new SortFragment());
         }
-
-//        else if (id == R.id.nav_intonation) {
-//            loadFragment(new IntonationFragment());
-//        }
-
-//        else if (id == R.id.nav_test){
-//            loadFragment(new TestFragment());
-//        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -290,17 +383,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         
         // 获取当前主题
         String currentTheme = shardPerfenceSetting.getHomeTheme();
-        Log.d("MainActivity", "当前主题: " + currentTheme);
+        Log.d("MainActivity-color", "当前主题: " + currentTheme);
         
         // 设置背景颜色
         LiquidBackgroundView liquidBackgroundView = findViewById(R.id.liquid_background);
         if (liquidBackgroundView != null) {
             int[] startColors = ColorCalibration.judgeColor(currentTheme, 0);
             int[] endColors = ColorCalibration.judgeColor(currentTheme, 1);
-            Log.d("MainActivity", "设置背景颜色");
+            Log.d("MainActivity-color", "设置背景颜色");
             liquidBackgroundView.setColors(startColors, endColors);
+            
+            // 获取当前实际颜色
+            String actualBottomColor = liquidBackgroundView.getActualDisplayedBottomColor();
+            String actualTopColor = liquidBackgroundView.getActualDisplayedTopColor();
+            Log.d("MainActivity-color", "当前实际颜色 - 顶部: " + actualTopColor + ", 底部: " + actualBottomColor);
+            
+            // 更新 ColorCalibration 中的实际颜色
+            ColorCalibration.setActualDisplayedColors(actualBottomColor, actualTopColor);
         } else {
-            Log.e("MainActivity", "liquidBackgroundView is null");
+            Log.e("MainActivity-color", "liquidBackgroundView is null");
+        }
+        
+        // 根据工作模式过滤菜单项
+        filterMenuItemsByWorkMode();
+        
+        // 如果当前是首页，刷新首页以更新底部菜单
+        if (isHome) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            if (currentFragment instanceof HomeFragment) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.detach(currentFragment);
+                transaction.attach(currentFragment);
+                transaction.commit();
+            }
         }
     }
 
@@ -323,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                     
                     if (diffX > 0) {  // 从左向右滑动
-                        drawerLayout.openDrawer(GravityCompat.START);
+                        //drawerLayout.openDrawer(GravityCompat.START);
                         return true;
                     }
                 }
@@ -396,8 +511,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     // 计算采样位置（避开状态栏和导航栏）
                     int[] samplePoints = {
-                            statusBarHeight + 50,  // 顶部位置
-                            decorView.getHeight() - navigationBarHeight - 50  // 底部位置
+                            statusBarHeight + 10,  // 顶部位置
+                            decorView.getHeight() - navigationBarHeight - 10  // 底部位置
                     };
 
                     // 使用 PixelCopy API 捕获屏幕
@@ -421,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         }
 
                                         Log.d("MainActivity", String.format(
-                                                "Captured colors - Top: #%06X, Bottom: #%06X",
+                                                "Captured colors - Top: # %06X , Bottom: # %06X",
                                                 (0xFFFFFF & topColor),
                                                 (0xFFFFFF & bottomColor)
                                         ));

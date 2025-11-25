@@ -10,6 +10,112 @@
         android:id="@+id/layout_title"
         layout="@layout/layout_page_title"/>
 
+    <!-- 新增底部图标按钮卡片 -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_horizontal">
+
+            <!-- 筛子功能按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sifter"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_sifter"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="24dp"
+                app:iconTint="@color/blue_500"
+                android:layout_marginHorizontal="12dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="@color/blue_500"
+                app:strokeWidth="1dp"
+                app:backgroundTint="@color/white"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <!-- 触摸功能按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_touch"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="24dp"
+                app:iconTint="@color/blue_500"
+                android:layout_marginHorizontal="12dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="@color/blue_500"
+                app:strokeWidth="1dp"
+                app:backgroundTint="@color/white"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <!-- 硬币功能按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_coin"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_coin"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="24dp"
+                app:iconTint="@color/blue_500"
+                android:layout_marginHorizontal="12dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="@color/blue_500"
+                app:strokeWidth="1dp"
+                app:backgroundTint="@color/white"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <!-- 设置功能按钮 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_settings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/ic_settings"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="24dp"
+                app:iconTint="@color/blue_500"
+                android:layout_marginHorizontal="12dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="@color/blue_500"
+                app:strokeWidth="1dp"
+                app:backgroundTint="@color/white"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <!-- 转盘部分 -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,19 +125,45 @@
         android:layout_margin="16dp"
         android:gravity="center">
 
-        <!-- 预设名称 -->
-        <TextView
-            android:id="@+id/text_current_presuppose"
+        <!-- 预设名称和开关的容器 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/turntable_current_presuppose"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_500"
+            android:orientation="vertical"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/bg_rounded_card"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"/>
+            android:gravity="center">
+
+            <!-- 预设名称 -->
+            <TextView
+                android:id="@+id/text_current_presuppose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/turntable_current_presuppose"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/blue_500"
+                android:background="@drawable/bg_rounded_card"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:layout_marginEnd="12dp"/>
+
+            <!-- 自动移除开关 -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_auto_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选中3s后删除"
+                android:textSize="16sp"
+                android:minHeight="48dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_card"
+                app:thumbTint="@color/blue_500"
+                app:trackTint="@color/blue_100"
+                android:alpha="0.6"/>
+
+        </LinearLayout>
 
         <com.luza.zippy.ui.views.TurntableView
             android:id="@+id/turntable_view"
@@ -62,9 +194,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="20dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="2dp"
         app:cardBackgroundColor="@color/white">
 
         <!-- 按钮容器 -->
@@ -72,38 +205,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:padding="12dp"
             android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_select_presuppose"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:text="@string/turntable_select_presuppose"
-                android:textColor="@color/black"
-                app:cornerRadius="24dp"
+                android:textSize="14sp"
+                android:textColor="@color/blue_500"
+                android:letterSpacing="0"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="16dp"
                 android:layout_marginEnd="8dp"
                 app:strokeColor="@color/blue_500"
                 app:strokeWidth="1dp"
+                app:rippleColor="@color/blue_100"
                 app:backgroundTint="@color/white"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit_presuppose"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:text="@string/turntable_edit_presuppose"
-                android:textColor="@color/black"
-                app:cornerRadius="24dp"
-                app:strokeColor="@color/blue_500"
-                app:strokeWidth="1dp"
-                app:backgroundTint="@color/white"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:letterSpacing="0"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="16dp"
+                app:rippleColor="@color/blue_700"
+                app:backgroundTint="@color/blue_500"
+                style="@style/Widget.MaterialComponents.Button"/>
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+
 
 </LinearLayout>

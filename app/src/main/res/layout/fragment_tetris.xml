@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 标题栏 -->
+    <include layout="@layout/layout_page_title" />
+
+    <!-- 游戏信息栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/tetris_info_background"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/tv_score"
+            style="@style/TetrisInfoText"
+            android:text="@string/tetris_score" />
+
+        <TextView
+            android:id="@+id/tv_level"
+            style="@style/TetrisInfoText"
+            android:text="@string/tetris_level" />
+
+        <TextView
+            android:id="@+id/tv_lines"
+            style="@style/TetrisInfoText"
+            android:text="@string/tetris_lines" />
+
+        <TextView
+            android:id="@+id/tv_high_score"
+            style="@style/TetrisInfoText"
+            android:text="@string/tetris_high_score" />
+
+    </LinearLayout>
+
+    <!-- 主游戏区域 - 横向布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- 游戏画布区域 -->
+        <com.luza.zippy.ui.sidebarList.tetris.TetrisGameView
+            android:id="@+id/tetris_game_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_margin="8dp"
+            android:background="@drawable/tetris_board_background"
+            android:elevation="8dp" />
+
+        <!-- 右侧信息区域 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:gravity="top">
+
+            <!-- 游戏控制按钮 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <Button
+                    android:id="@+id/btn_new_game"
+                    style="@style/TetrisButtonPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/tetris_new_game" />
+
+                <Button
+                    android:id="@+id/btn_pause"
+                    style="@style/TetrisButtonPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/tetris_pause" />
+
+            </LinearLayout>
+
+            <!-- 游戏信息区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/tetris_info_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:id="@+id/tv_score_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="分数: 0"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_level_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="等级: 1"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_lines_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="行数: 0"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_high_score_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="最高分: 0"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <!-- 下一个方块预览区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/tetris_info_background"
+                android:padding="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="下一个"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- 下一个方块预览画布 -->
+                <com.luza.zippy.ui.sidebarList.tetris.NextPiecePreview
+                    android:id="@+id/next_piece_preview"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@color/tetris_board_background"
+                    android:elevation="1dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 底部方向键控制区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp"
+        android:background="@drawable/tetris_info_background"
+        android:layout_margin="8dp"
+        android:elevation="4dp">
+
+        <!-- 上方向键：旋转 -->
+        <Button
+            android:id="@+id/btn_rotate"
+            style="@style/TetrisDirectionButton"
+            android:layout_marginBottom="16dp"
+            android:text="↻" />
+
+        <!-- 中间一行：左、下、右方向键 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_move_left"
+                style="@style/TetrisDirectionButton"
+                android:layout_marginEnd="16dp"
+                android:text="◀" />
+
+            <Button
+                android:id="@+id/btn_hard_drop"
+                style="@style/TetrisDirectionButton"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="▼" />
+
+            <Button
+                android:id="@+id/btn_move_right"
+                style="@style/TetrisDirectionButton"
+                android:layout_marginStart="16dp"
+                android:text="▶" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

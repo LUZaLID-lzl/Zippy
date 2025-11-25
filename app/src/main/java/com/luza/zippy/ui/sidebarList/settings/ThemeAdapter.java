@@ -79,6 +79,12 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
 
             // 为整个卡片添加点击事件
             cardView.setOnClickListener(v -> {
+                // 检查是否开启了随机主题
+                if (shardPerfenceSetting.getRandomTheme()) {
+                    Toast.makeText(mActivity, "随机主题已开启，请先关闭随机主题后再手动选择", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     ThemeItem theme = themes.get(position);
@@ -132,5 +138,10 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeViewHol
             // 只需要更新开关状态，不需要添加监听器
             themeSwitch.setChecked(theme.isEnabled);
         }
+    }
+
+    public void updateRandomThemeState() {
+        // 刷新所有视图的状态
+        notifyDataSetChanged();
     }
 }

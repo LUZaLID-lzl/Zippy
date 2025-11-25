@@ -1,35 +1,58 @@
 package com.luza.zippy.ui.sidebarList.test;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import com.luza.zippy.R;
 import com.luza.zippy.ui.base.BaseFragment;
+import android.content.Intent;
+import android.content.Context;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
-import android.os.AsyncTask;
-import android.util.Log;
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class TestFragment extends BaseFragment {
-    private Button startButton;
-    private ProgressBar progressBar;
-    private TextView resultText;
-    private IOSpeedTest currentTest;
-    
-    private static final int BUFFER_SIZE = 4 * 1024; // 4KB
-    private static final int MIN_CHUNK_SIZE = 10 * 1024; // 10KB
-    private static final int MAX_CHUNK_SIZE = 100 * 1024; // 100KB
-    private static final int MAX_FILE_SIZE = 10 * 1024 * 1024; // 最大文件大小10MB
-    private static final long TEST_DURATION = 30000; // 30秒
-    private static final int UPDATE_INTERVAL = 500; // 每500ms更新一次显示
+
+    private static final String TAG = "liziluo_TestFragment";
+    private Button button;
+
+    private TextView textView;
+
+    private TextView textViewBluetooth;
+    private TextView textViewWifi;
+    private BroadcastReceiver receiver;
+
+    private static final int REQUEST_CODE_SCAN = 1001;
+    private ActivityResultLauncher<Intent> scanLauncher;
+
+    private static final String BLUETOOTH_MAC_ADDRESS = "/sys/devices/platform/ecn_info/bluetooth_addr";
+    private static final String WIFI_MAC_ADDRESS = "/sys/devices/platform/ecn_info/wifi_addr";
+    private static final String SN_INFO = "/sys/devices/platform/ecn_info/sn_info";
+
+    private static final String ECN_INFO_JSON = "/sys/devices/platform/ecn_info/json_info";
 
     @Override
     protected String getTitle() {
@@ -43,233 +66,121 @@ public class TestFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-        startButton = view.findViewById(R.id.btn_start_test);
-        progressBar = view.findViewById(R.id.progress_bar);
-        resultText = view.findViewById(R.id.text_result);
+        textView = view.findViewById(R.id.textview1);
 
-        startButton.setOnClickListener(v -> startTest());
+        // 初始化新增的TextView
+        textViewBluetooth = view.findViewById(R.id.textview_bluetooth);
+        textViewWifi = view.findViewById(R.id.textview_wifi);
+
+        // 更新SN信息
+        textView.setText("ECN_INFO: " + ReadFile(ECN_INFO_JSON));
+
+        // 更新蓝牙MAC地址
+        textViewBluetooth.setText("Bluetooth MAC: " + ReadFile(BLUETOOTH_MAC_ADDRESS));
+//
+//        // 更新Wi-Fi MAC地址
+//        textViewWifi.setText("Wi-Fi MAC: " + ReadFile(WIFI_MAC_ADDRESS));
+
+
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
+        if (nfcAdapter == null) {
+            // 设备不支持 NFC
+            Log.d("NFC1", "该设备不支持NFC");
+        } else if (!nfcAdapter.isEnabled()) {
+            // NFC 已支持但未启用
+            Log.d("NFC1", "NFC支持但未开启");
+        } else {
+            // NFC 已启用
+            Log.d("NFC1", "NFC已启用");
+        }
+        try {
+            // 反射调用兼容不同版本
+            Method method = nfcAdapter.getClass().getMethod("isNdefPushEnabled", Context.class);
+            boolean isP2pSupported = (boolean) method.invoke(nfcAdapter, requireContext());
+
+            Log.d("NFC1", "isP2pSupported： " + isP2pSupported);
+        } catch (Exception e) {
+            // 回退处理
+        }
+
+        registerBroadcastReceiver();
+
+        // 初始化（通常在 onCreate 或 onViewCreated 中）
+//        scanLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                result -> {
+//                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        Intent data = result.getData();
+//                        if (data != null) {
+//                            // 处理返回的数据
+//                            String resultText = data.getStringExtra("com.cipherlab.image2textlauncher.notify.text");
+//                            Log.d("Result", "返回结果: " + resultText);
+//                        }
+//                    } else {
+//                        Log.d("Result", "用户取消或失败");
+//                    }
+//                }
+//        );
+
+        // 启动目标 Activity
+//        Intent intent = new Intent();
+//        intent.setAction("com.cipherlab.intent.action.ImageToText");
+//        intent.addCategory(Intent.CATEGORY_DEFAULT);
+//        // 可选：设置包名确保定向调用（避免选择器弹窗）
+//        intent.setPackage("com.cipherlab.imagetotext");
+//        startActivity(intent);
+//        //scanLauncher.launch(intent);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume： ");
+    }
+
+    private void registerBroadcastReceiver() {
+        Log.d(TAG, "registerBroadcastReceiver： ");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.cipherlab.image2textlauncher.notify");
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "onReceive： ");
+                String textValue = intent.getStringExtra("com.cipherlab.image2textlauncher.notify.text");
+                if (textValue != null) {
+                    Log.d(TAG, "广播接收到参数: " + textValue);
+                }
+            }
+        };
+
+    }
+
+    public static String ReadFile(String sys_path) {
+        String prop = "waiting";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(sys_path));
+            prop = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return prop;
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (currentTest != null) {
-            currentTest.cancel(true);
-        }
+
     }
 
-    private void startTest() {
-        if (currentTest != null) {
-            currentTest.cancel(true);
-        }
-        startButton.setEnabled(false);  // 禁用按钮
-        progressBar.setVisibility(View.VISIBLE);  // 显示进度条
-        progressBar.setProgress(0);  // 重置进度
-        resultText.setText(getString(R.string.preparing_test));  // 显示准备信息
-        
-        currentTest = new IOSpeedTest();
-        currentTest.execute();
-    }
-
-    private class IOSpeedTest extends AsyncTask<Void, TestProgress, TestResult> {
-        private long startTestTime;
-        private long lastUpdateTime;
-        private File testFile;
-        private FileInputStream fis;
-        private FileOutputStream fos;
-
-        @Override
-        protected TestResult doInBackground(Void... ignored) {
-            byte[] readBuffer = new byte[BUFFER_SIZE];
-            long totalTime = 0;
-            long totalBytes = 0;
-            int successfulReads = 0;
-            Random random = new Random();
-
-            try {
-                testFile = File.createTempFile("speedtest", null, requireContext().getCacheDir());
-                fos = new FileOutputStream(testFile);
-                fis = new FileInputStream(testFile);
-                
-                startTestTime = System.currentTimeMillis();
-                lastUpdateTime = startTestTime;
-                long fileSize = 0;
-
-                while (!isCancelled() && (System.currentTimeMillis() - startTestTime) < TEST_DURATION) {
-                    // 检查是否取消
-                    if (isCancelled()) {
-                        cleanupResources();
-                        return null;
-                    }
-
-                    // 生成新的随机大小的数据块
-                    if (fileSize < MAX_FILE_SIZE) {
-                        int currentChunkSize = MIN_CHUNK_SIZE + random.nextInt(MAX_CHUNK_SIZE - MIN_CHUNK_SIZE + 1);
-                        byte[] writeBuffer = new byte[currentChunkSize];
-                        random.nextBytes(writeBuffer);
-                        fos.write(writeBuffer);
-                        fos.flush();
-                        fileSize += currentChunkSize;
-                    }
-
-                    try {
-                        if (fileSize > BUFFER_SIZE) {
-                            long position = (long) (random.nextDouble() * (fileSize - BUFFER_SIZE));
-                            fis.getChannel().position(position);
-
-                            long readStartTime = System.nanoTime();
-                            int bytesRead = fis.read(readBuffer);
-                            long readEndTime = System.nanoTime();
-
-                            if (bytesRead > 0) {
-                                totalTime += (readEndTime - readStartTime);
-                                totalBytes += bytesRead;
-                                successfulReads++;
-
-                                // 更新进度
-                                long now = System.currentTimeMillis();
-                                if (now - lastUpdateTime >= UPDATE_INTERVAL) {
-                                    if (!isCancelled()) {
-                                        double currentDuration = (now - startTestTime) / 1000.0;
-                                        double currentSpeed = (totalBytes / 1024.0 / 1024.0) / currentDuration;
-                                        double currentLatency = (totalTime / 1_000_000.0) / successfulReads;
-
-                                        publishProgress(new TestProgress(
-                                            (int)((now - startTestTime) * 100 / TEST_DURATION),
-                                            currentSpeed,
-                                            currentLatency,
-                                            successfulReads
-                                        ));
-                                    }
-                                    lastUpdateTime = now;
-                                }
-                            }
-                        }
-                    } catch (IOException e) {
-                        Log.e("IOSpeedTest", "Error during read: " + e.getMessage());
-                    }
-                }
-
-                double testDurationSeconds = (System.currentTimeMillis() - startTestTime) / 1000.0;
-                double speedMBps = (totalBytes / 1024.0 / 1024.0) / testDurationSeconds;
-                double avgLatencyMs = (totalTime / 1_000_000.0) / successfulReads;
-
-                return new TestResult(speedMBps, avgLatencyMs, testDurationSeconds, successfulReads);
-
-            } catch (Exception e) {
-                Log.e("IOSpeedTest", "Test failed: " + e.getMessage());
-                return new TestResult(e);
-            } finally {
-                cleanupResources();
-            }
-        }
-
-        private void cleanupResources() {
-            try {
-                if (fis != null) fis.close();
-                if (fos != null) {
-                    fos.flush();
-                    fos.close();
-                }
-                if (testFile != null && testFile.exists()) {
-                    testFile.delete();
-                }
-            } catch (IOException e) {
-                Log.e("IOSpeedTest", "Error cleaning up: " + e.getMessage());
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            startButton.setEnabled(false);
-            progressBar.setVisibility(View.VISIBLE);
-            progressBar.setProgress(0);
-            resultText.setText(getString(R.string.preparing_test));
-        }
-
-        @Override
-        protected void onProgressUpdate(TestProgress... values) {
-            if (!isCancelled() && isAdded()) {
-                TestProgress progress = values[0];
-                progressBar.setVisibility(View.VISIBLE);  // 确保进度条可见
-                progressBar.setProgress(progress.progressPercent);
-                resultText.setText(getString(R.string.test_result_realtime,
-                    progress.currentSpeedMBps,
-                    progress.currentLatencyMs,
-                    (System.currentTimeMillis() - startTestTime) / 1000.0,
-                    progress.successfulReads));
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            cleanupResources();
-            if (startButton != null) {
-                startButton.setEnabled(true);
-            }
-            if (progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-            }
-            if (resultText != null) {
-                resultText.setText(R.string.test_cancelled);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(TestResult result) {
-            if (isAdded()) {
-                startButton.setEnabled(true);
-                progressBar.setVisibility(View.GONE);
-                
-                if (result.error != null) {
-                    resultText.setText(getString(R.string.test_error, result.error.getMessage()));
-                } else {
-                    resultText.setText(getString(R.string.test_result_extended,
-                        result.speedMBps,
-                        result.avgLatencyMs,
-                        result.testDurationSeconds,
-                        result.successfulReads));
-                }
-            }
-        }
-    }
-
-    private static class TestProgress {
-        final int progressPercent;
-        final double currentSpeedMBps;
-        final double currentLatencyMs;
-        final int successfulReads;
-
-        TestProgress(int progressPercent, double currentSpeedMBps, 
-                    double currentLatencyMs, int successfulReads) {
-            this.progressPercent = progressPercent;
-            this.currentSpeedMBps = currentSpeedMBps;
-            this.currentLatencyMs = currentLatencyMs;
-            this.successfulReads = successfulReads;
-        }
-    }
-
-    private static class TestResult {
-        final double speedMBps;
-        final double avgLatencyMs;
-        final double testDurationSeconds;
-        final int successfulReads;
-        final Exception error;
-
-        TestResult(double speedMBps, double avgLatencyMs, double testDurationSeconds, int successfulReads) {
-            this.speedMBps = speedMBps;
-            this.avgLatencyMs = avgLatencyMs;
-            this.testDurationSeconds = testDurationSeconds;
-            this.successfulReads = successfulReads;
-            this.error = null;
-        }
-
-        TestResult(Exception error) {
-            this.speedMBps = 0;
-            this.avgLatencyMs = 0;
-            this.testDurationSeconds = 0;
-            this.successfulReads = 0;
-            this.error = error;
-        }
-    }
 }

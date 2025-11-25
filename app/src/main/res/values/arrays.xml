@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_algorithms">
+        <item>@string/sort_bubble</item>
+        <item>@string/sort_selection</item>
+        <item>@string/sort_insertion</item>
+        <item>@string/sort_quick</item>
+        <item>@string/sort_merge</item>
+        <item>@string/sort_heap</item>
+    </string-array>
+</resources> 

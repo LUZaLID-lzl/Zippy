@@ -27,6 +27,8 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
     private final List<Point> trailPoints;
     private static final int TRAIL_LENGTH = 10;
     private final float rotation;
+    private final float rotationSpeed;  // 添加旋转速度作为成员变量
+    private float currentRotationAngle;  // 添加当前旋转角度作为成员变量
 
     private ShardPerfenceSetting shardPerfenceSetting;
 
@@ -53,8 +55,10 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
         // 设置Z轴层级高于按钮
         setZ(10f);
         
-        // 设置随机旋转角度
+        // 初始化旋转相关变量
         this.rotation = random.nextFloat() * 360;
+        this.rotationSpeed = 180f + random.nextFloat() * 180f; // 180-360度之间的速度
+        this.currentRotationAngle = rotation;
         setRotation(rotation);
 
         shardPerfenceSetting = ShardPerfenceSetting.getInstance(getContext());
@@ -82,6 +86,9 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
                 break;
             case "winter":
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_snowflake2));
+                break;
+            case "gengar":
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_foge));
                 break;
             default:
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_spark));
@@ -112,22 +119,15 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
         // 决定闪电的起始位置
         int startX, startY;
         
-        // 50%的概率从底部生成
-        if (random.nextFloat() < 0.5f) {
+        // 80%的概率从底部生成
+        if (random.nextFloat() < 0.7f) {
             // 从底部开始，X坐标随机
             startX = random.nextInt(screenWidth);
             startY = screenHeight;
         } else {
-            // 剩余30%概率从其他三个边生成
-            if (random.nextBoolean()) {
-                // 从左边或右边开始
-                startX = random.nextBoolean() ? 0 : screenWidth;
-                startY = random.nextInt(screenHeight);
-            } else {
-                // 从顶部开始
-                startX = random.nextInt(screenWidth);
-                startY = 0;
-            }
+            // 30%概率从左边或右边生成
+            startX = random.nextBoolean() ? 0 : screenWidth;
+            startY = random.nextInt(screenHeight);
         }
 
         setX(startX);
@@ -168,9 +168,10 @@ public class SparkView extends androidx.appcompat.widget.AppCompatImageView {
             setScaleY(scale);
             setAlpha(1 - fraction);
 
-            // 添加旋转效果
-            float currentRotation = rotation + fraction * 360 * (random.nextBoolean() ? 1 : -1);
-            setRotation(currentRotation);
+            // 添加平滑旋转效果
+            float smoothFraction = (float) (1 - Math.pow(1 - fraction, 3)); // 使用三次方缓动
+            currentRotationAngle = rotation + smoothFraction * rotationSpeed;
+            setRotation(currentRotationAngle);
             
             invalidate();
         });

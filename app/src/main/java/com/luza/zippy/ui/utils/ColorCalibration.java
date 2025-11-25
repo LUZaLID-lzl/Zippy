@@ -3,14 +3,48 @@ package com.luza.zippy.ui.utils;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.luza.zippy.MainActivity;
+import com.luza.zippy.setting.ShardPerfenceSetting;
+
 public class ColorCalibration {
     private static final String TAG = "ColorCalibration";
 
+    // 静态变量存储实际显示的颜色
+    private static String actualBottomColor = "#FFFFFF";
+    private static String actualTopColor = "#FFFFFF";
+
+    /**
+     * 设置实际显示的颜色
+     * @param bottomColor 实际底部颜色
+     * @param topColor 实际顶部颜色
+     */
+    public static void setActualDisplayedColors(String bottomColor, String topColor) {
+        actualBottomColor = bottomColor;
+        actualTopColor = topColor;
+        Log.d(TAG, "设置实际显示颜色 - 底部: " + bottomColor + ", 顶部: " + topColor);
+    }
+
+    /**
+     * 获取实际底部颜色
+     * @return 实际底部颜色
+     */
+    public static String getActualBottomColor() {
+        return actualBottomColor;
+    }
+
+    /**
+     * 获取实际顶部颜色
+     * @return 实际顶部颜色
+     */
+    public static String getActualTopColor() {
+        return actualTopColor;
+    }
+
     /**
      * 根据基准色计算渐变色系列
-     * @param baseColor 基准色（十六进制颜色值，例如："#EAB1F4"）
      */
-    public static void calculateGradientColors(String baseColor) {
+    public static void calculateGradientColors() {
+        String baseColor = getThemeColor(ShardPerfenceSetting.getInstance(MainActivity.mContext).getHomeTheme());
         try {
             // 解析基准色
             int color = Color.parseColor(baseColor);
@@ -65,38 +99,108 @@ public class ColorCalibration {
         }
     }
 
-    public static int[] judgeColor(String theme, int position) {
-        String baseColor;
-        
-        // 为每个主题定义基准色
+    public static String getThemeColor(String theme) {
+        String themeColor;
         switch (theme) {
             case "pikachu":
-                baseColor = "#FFC603";  // 皮卡丘黄色
+                themeColor = "#FFC603";  // 皮卡丘黄色
                 break;
             case "bulbasaur":
-                baseColor = "#13B4FC";  // 妙蛙种子蓝色
+                themeColor = "#13B4FC";  // 妙蛙种子蓝色
                 break;
             case "squirtle":
-                baseColor = "#5CB860";  // 杰尼龟绿色
+                themeColor = "#5CB860";  // 杰尼龟绿色
                 break;
             case "mew":
-                baseColor = "#FBA7BD";  // 梦幻粉色
+                themeColor = "#FBA7BD";  // 梦幻粉色
                 break;
             case "karsa":
-                baseColor = "#EAB1F4";  // karsa紫色
+                themeColor = "#EAB1F4";  // karsa紫色
                 break;
             case "capoo":
-                baseColor = "#21FAD7";  // capoo青色
+                themeColor = "#21FAD7";  // capoo青色
                 break;
             case "maple":
-                baseColor = "#D8420C";  // maple橙色
+                themeColor = "#D8420C";  // maple橙色
                 break;
             case "winter":
-                baseColor = "#C6DEDD";  // winter淡灰色
+                themeColor = "#C6DEDD";  // winter淡灰色
+                break;
+            case "gengar":
+                themeColor = "#200225";  // gengar紫色
                 break;
             default:
-                baseColor = "#1A1A1A";  // 默认深灰色
+                themeColor = "#1A1A1A";  // 默认深灰色
         }
+        //calculateGradientColors(themeColor);
+        return themeColor;
+    }
+
+    public static String getThemeColorType(String theme,int type){
+        /***
+         * type
+         * 1: 基准色
+         * 2：底部框背景颜色（基于实际底部颜色，模拟渐变叠加效果）
+         * 3：单个BLOCK背景颜色（实际底部颜色）
+         * 4：收藏BLOCK背景颜色（基于实际底部颜色，模拟渐变叠加效果）
+         */
+        String returnColor = "FFFFFF";
+        
+        switch (type){
+            case 1:
+                returnColor = getThemeColor(theme);
+                break;
+            case 2:
+                // 模拟渐变叠加效果 - 更亮的叠加
+                returnColor = simulateGradientOverlay(getActualBottomColor(), 0.4f);
+                break;
+            case 3:
+                // 返回实际底部颜色（考虑动画和叠加效果）
+                returnColor = getActualBottomColor();
+                break;
+            case 4:
+                // 模拟渐变叠加效果 - 更暗的叠加
+                returnColor = simulateGradientOverlay(getActualBottomColor(), 0.2f);
+                break;
+            default:
+                returnColor = getThemeColor(theme);
+                break;
+        }
+
+        Log.d(TAG, "type：" + type + "   returnColor:" + returnColor);
+        return returnColor;
+    }
+
+    /**
+     * 模拟渐变叠加效果（类似 LiquidBackgroundView 中的白色叠加）
+     * @param colorHex 十六进制颜色值（如 "#FFC603"）
+     * @param overlayIntensity 叠加强度（0.0-1.0，值越大越亮）
+     * @return 调整后的十六进制颜色值
+     */
+    private static String simulateGradientOverlay(String colorHex, float overlayIntensity) {
+        try {
+            int color = Color.parseColor(colorHex);
+            int red = Color.red(color);
+            int green = Color.green(color);
+            int blue = Color.blue(color);
+            
+            // 模拟白色叠加效果（类似 LiquidBackgroundView 中的效果）
+            // overlayIntensity 控制叠加的强度
+            red = Math.min(255, red + (int)((255 - red) * overlayIntensity));
+            green = Math.min(255, green + (int)((255 - green) * overlayIntensity));
+            blue = Math.min(255, blue + (int)((255 - blue) * overlayIntensity));
+            
+            return String.format("#%02X%02X%02X", red, green, blue);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "颜色格式错误：" + colorHex);
+            return colorHex; // 返回原颜色
+        }
+    }
+
+    public static int[] judgeColor(String theme, int position) {
+        String baseColor;
+
+        baseColor = getThemeColor(theme);
 
         // 解析基准色
         int color = Color.parseColor(baseColor);

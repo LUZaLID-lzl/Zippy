@@ -169,7 +169,15 @@ public class DeviceInfoFragment extends BaseFragment {
             new Thread(() -> {
                 try {
                     PackageManager pm = requireContext().getPackageManager();
-                    List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+                    List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+                    
+                    // 按照应用大小从大到小排序
+                    Collections.sort(apps, (a, b) -> {
+                        long sizeA = new File(a.sourceDir).length();
+                        long sizeB = new File(b.sourceDir).length();
+                        // 降序排列
+                        return Long.compare(sizeB, sizeA);
+                    });
                     
                     // 在主线程中更新UI
                     mainHandler.post(() -> {

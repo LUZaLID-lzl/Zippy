@@ -19,11 +19,23 @@
     <string name="menu_timer">Timer</string>
     <string name="menu_pyp">Pyp Render</string>
     <string name="menu_turntable">Turntable</string>
-    <string name="menu_turntable_presuppose">Turntable - Presuppose</string>
+    <string name="menu_turntable_sifter">Turntable：Sifter</string>
+    <string name="menu_turntable_touch">Turntable：Touch</string>
+    <string name="menu_turntable_coin">Turntable：Coin</string>
+    <string name="menu_turntable_presuppose">Turntable：Presuppose</string>
     <string name="menu_food_record">Diet Record</string>
     <string name="menu_intonation">Intonation</string>
     <string name="menu_scrummage">Scrummage Planer</string>
-    <string name="menu_scrummage_setting">Scrummage Planer - Setting</string>
+    <string name="menu_scrummage_setting">Scrummage Planer：Setting</string>
+    <string name="menu_consumption">Joint consumption</string>
+    <string name="menu_minecraft">Minecraft</string>
+    <string name="menu_minecraft_location">Minecraft：Location</string>
+    <string name="menu_minecraft_location_setting">Minecraft：Location Setting</string>
+    <string name="menu_wifi">Wifi</string>
+    <string name="menu_tzfe">2048</string>
+    <string name="menu_tetris">Tetris</string>
+    <string name="menu_compass">Compass</string>
+    <string name="menu_sort">Sorting demonstration</string>
 
     <string name="menu_example">example</string>
 
@@ -160,11 +172,18 @@
     <string name="language_description">Turn on for English, turn off for Chinese</string>
     <string name="theme_description">Click to switch theme</string>
     <string name="theme_tips">Switchover successful</string>
+    <string name="random_theme">Random Theme</string>
+    <string name="random_theme_description">Random theme on each launch</string>
 
-    <!-- Set the number of home page animations -->
+    <!-- 设置页面主页动画数量 -->
     <string name="homeAnimationNum_title">Home particle count</string>
-    <string name="homeAnimationNum_current_num">Current value:</string>
+    <string name="homeAnimationNum_current_num">Current value: </string>
     <string name="homeAnimationNum_description">Drag the slider to adjust the value</string>
+
+    <!-- 底部菜单项大小设置 -->
+    <string name="bottom_menu_item_size_title">Bottom Menu Item Size</string>
+    <string name="bottom_menu_item_size_current">Current size: %d dp</string>
+    <string name="bottom_menu_item_size_description">Drag the slider to adjust the overall size of menu items (60-120dp)</string>
 
     <!-- Calendar Strings -->
     <string name="calendar_type">Calendar Type</string>
@@ -382,6 +401,8 @@
     <string name="title_layout_horizontal">Horizontal Layout</string>
     <string name="title_layout_description">Change title bar display direction, effective after app restart</string>
     <string name="restart_confirm">Restart app now to apply changes?</string>
+    <string name="bottom_menu_title">Bottom menu</string>
+    <string name="bottom_menu_description">Layout in card form</string>
     <string name="restart_now">Restart Now</string>
     <string name="restart_later">Later</string>
 
@@ -433,4 +454,61 @@
     <string name="food_record_history_empty">No History Records</string>
     <string name="food_record_history_title">History Records</string>
     <string name="food_record_close">Close</string>
+
+    <!-- Work Mode Settings -->
+    <string name="work_mode_title">Independent Mode</string>
+    <string name="work_mode_work">Work</string>
+    <string name="work_mode_life">Life</string>
+    <string name="work_mode_game">Game</string>
+    <string name="work_mode_all">All</string>
+    <string name="work_mode_description">Select different independent modes to display corresponding content</string>
+    <string name="work_mode_changed">Independent mode changed</string>
+
+    <string name="wifi_info_title">WiFi Info</string>
+    <string name="wifi_ssid">SSID</string>
+    <string name="wifi_bssid">BSSID</string>
+    <string name="wifi_signal_strength">Signal Strength</string>
+    <string name="wifi_ip_address">IP Address</string>
+    <string name="wifi_mac_address">MAC Address</string>
+    <string name="wifi_test_title">WiFi Test</string>
+    <string name="wifi_ping_test">Ping Test</string>
+    <string name="wifi_ping_result">Ping Result</string>
+    <string name="wifi_test_start">Start Test</string>
+    <string name="wifi_test_success">Network OK</string>
+    <string name="wifi_test_fail">Network Unreachable</string>
+    <string name="wifi_test_running">Testing...</string>
+
+    <!-- 2048 Game Strings -->
+    <string name="game_2048_score">Score</string>
+    <string name="game_2048_high_score">High Score</string>
+    <string name="game_2048_description">Swipe to merge same numbers, goal is to reach 2048!</string>
+    <string name="game_2048_new_game">New Game</string>
+    <string name="game_2048_undo">Undo</string>
+    <string name="game_2048_win_message">Congratulations! You reached 2048!</string>
+    <string name="game_2048_game_over">Game Over!</string>
+
+    <!-- Tetris Game Strings -->
+    <string name="tetris_score">Score</string>
+    <string name="tetris_high_score">High Score</string>
+    <string name="tetris_level">Level</string>
+    <string name="tetris_lines">Lines</string>
+    <string name="tetris_next">Next</string>
+    <string name="tetris_pause">Pause</string>
+    <string name="tetris_resume">Resume</string>
+    <string name="tetris_new_game">New Game</string>
+    <string name="tetris_game_over">Game Over!</string>
+    <string name="tetris_paused">Game Paused</string>
+    <string name="tetris_controls">Controls</string>
+    <string name="tetris_move_left">Move Left</string>
+    <string name="tetris_move_right">Move Right</string>
+    <string name="tetris_rotate">Rotate</string>
+    <string name="tetris_drop">Hard Drop</string>
+    <string name="tetris_soft_drop">Soft Drop</string>
+    <string name="tetris_description">Classic Tetris game, clear complete lines to score!</string>
+    <string name="tetris_new_high_score">New High Score!</string>
+    <string name="tetris_lines_cleared">Cleared %d lines</string>
+    <string name="tetris_combo">Combo x%d</string>
+    <string name="tetris_left">Left</string>
+    <string name="tetris_right">Right</string>
+    <string name="tetris_hard_drop">Hard Drop</string>
 </resources> 

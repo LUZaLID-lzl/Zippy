@@ -59,6 +59,9 @@ public class Util {
                 case "winter":
                     activity.setTheme(R.style.WinterSplashTheme);
                     break;
+                case "gengar":
+                    activity.setTheme(R.style.GengarSplashTheme);
+                    break;
                 default:
             }
         }

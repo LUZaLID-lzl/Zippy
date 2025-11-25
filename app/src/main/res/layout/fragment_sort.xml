@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.sidebarList.sort.SortFragment">
+
+    <!-- 引入标题栏布局 -->
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/layout_page_title"/>
+
+    <!-- 滚动视图 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 可视化显示卡片 - 放在最上方 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- 可视化标题 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_chart"
+                            app:tint="@color/blue_500" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_visualization_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/blue_500"
+                            android:layout_marginStart="12dp"/>
+
+                        <!-- 步数显示 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="end|center_vertical">
+
+                            <TextView
+                                android:id="@+id/tv_step_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sort_steps"
+                                android:textSize="12sp"
+                                android:textColor="@color/blue_600"
+                                android:textStyle="bold"
+                                android:background="@drawable/bg_step_counter"
+                                android:padding="8dp"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 可视化区域 -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/chart_background">
+
+                        <com.luza.zippy.ui.sidebarList.sort.SortVisualizationView
+                            android:id="@+id/sort_visualization"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                        <!-- 占位符文本（当没有数据时显示） -->
+                        <LinearLayout
+                            android:id="@+id/layout_visualization_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@drawable/ic_chart_placeholder"
+                                android:alpha="0.3"
+                                app:tint="#CCCCCC"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sort_visualization_placeholder"
+                                android:textSize="14sp"
+                                android:textColor="#CCCCCC"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 排序控制卡片 - 包含算法选择和控制按钮 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- 控制标题 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_control"
+                            app:tint="@color/blue_500" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_control_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/blue_500"
+                            android:layout_marginStart="12dp"/>
+                    </LinearLayout>
+
+                    <!-- 美化的算法选择下拉框 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/algorithm_selector_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:hint="@string/sort_select_algorithm"
+                        app:boxBackgroundColor="#F8F9FA"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/blue_500"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@color/blue_500"
+                        app:startIconDrawable="@drawable/ic_sort"
+                        app:startIconTint="@color/blue_500"
+                        app:endIconTint="@color/blue_500"
+                        app:helperText="选择要演示的排序算法"
+                        app:helperTextTextColor="@color/blue_600"
+                        app:hintAnimationEnabled="true"
+                        app:expandedHintEnabled="false">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/algorithm_selector"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:inputType="none"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:paddingStart="56dp"
+                            android:paddingEnd="48dp"
+                            android:paddingTop="24dp"
+                            android:paddingBottom="8dp"
+                            android:gravity="center_vertical|start"
+                            android:dropDownWidth="match_parent"
+                            android:focusable="false"
+                            android:cursorVisible="false"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 控制按钮组 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="24dp">
+
+                        <!-- 第一排：生成数据和开始排序 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_generate_data"
+                                style="@style/Widget.MaterialComponents.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_weight="1"
+                                android:text="@string/sort_generate_data"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginEnd="8dp"
+                                app:backgroundTint="@color/blue_500"
+                                app:cornerRadius="12dp"
+                                app:elevation="4dp"
+                                app:icon="@drawable/ic_refresh"
+                                app:iconGravity="textStart"
+                                app:iconPadding="8dp"
+                                app:iconTint="@android:color/white"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_start_sort"
+                                style="@style/Widget.MaterialComponents.Button"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_weight="1"
+                                android:text="@string/sort_start"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginStart="8dp"
+                                app:backgroundTint="@color/green_500"
+                                app:cornerRadius="12dp"
+                                app:elevation="4dp"
+                                app:icon="@drawable/ic_play"
+                                app:iconGravity="textStart"
+                                app:iconPadding="8dp"
+                                app:iconTint="@android:color/white"/>
+                        </LinearLayout>
+
+                        <!-- 第二排：暂停按钮 -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_reset"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:text="@string/sort_pause"
+                            android:textColor="@color/red_500"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:strokeColor="@color/red_500"
+                            app:strokeWidth="2dp"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_stop"
+                            app:iconGravity="textStart"
+                            app:iconPadding="8dp"
+                            app:iconTint="@color/red_500"/>
+                    </LinearLayout>
+
+                    <!-- 设置参数区域 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/info_background"
+                        android:padding="16dp">
+
+                        <!-- 参数设置标题 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_settings"
+                                app:tint="@color/blue_600" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="参数设置"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/blue_600"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+
+                        <!-- 数据个数滑动条 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="20dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="8dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="数据个数"
+                                    android:textSize="14sp"
+                                    android:textColor="#666666"/>
+
+                                <TextView
+                                    android:id="@+id/tv_data_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/blue_600"
+                                    android:background="@drawable/bg_step_counter"
+                                    android:padding="6dp"
+                                    android:minWidth="36dp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/slider_data_count"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:valueFrom="5"
+                                android:valueTo="20"
+                                android:value="15"
+                                android:stepSize="1"
+                                app:thumbColor="@color/blue_500"
+                                app:trackColorActive="@color/blue_500"
+                                app:trackColorInactive="#E0E0E0"
+                                app:trackHeight="4dp"/>
+                        </LinearLayout>
+
+                        <!-- 排序速度滑动条 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="8dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="排序速度"
+                                    android:textSize="14sp"
+                                    android:textColor="#666666"/>
+
+                                <TextView
+                                    android:id="@+id/tv_sort_speed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="中等"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/green_500"
+                                    android:background="@drawable/bg_step_counter"
+                                    android:padding="6dp"
+                                    android:minWidth="48dp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/slider_sort_speed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:valueFrom="1"
+                                android:valueTo="5"
+                                android:value="3"
+                                android:stepSize="1"
+                                app:thumbColor="@color/green_500"
+                                app:trackColorActive="@color/green_500"
+                                app:trackColorInactive="#E0E0E0"
+                                app:trackHeight="4dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

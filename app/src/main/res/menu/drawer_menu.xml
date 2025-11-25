@@ -7,66 +7,115 @@
         <item
             android:id="@+id/nav_subscriptions"
             android:icon="@drawable/ic_device"
-            android:title="@string/menu_device_info"/>
+            android:title="@string/menu_device_info"
+            android:contentDescription="work"/>
 
         <item
             android:id="@+id/nav_battery"
             android:icon="@drawable/ic_battery"
-            android:title="@string/menu_battery"/>
+            android:title="@string/menu_battery"
+            android:contentDescription="work"/>
 
         <item
             android:id="@+id/nav_todo"
             android:icon="@drawable/ic_todo"
-            android:title="@string/menu_todo"/>
+            android:title="@string/menu_todo"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_calorie"
             android:icon="@drawable/ic_calorie"
-            android:title="@string/menu_calorie"/>
+            android:title="@string/menu_calorie"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_calendar"
-            android:title="@string/menu_calendar"/>
+            android:title="@string/menu_calendar"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_performance_test"
             android:icon="@drawable/ic_performance"
-            android:title="@string/menu_performance_test"/>
+            android:title="@string/menu_performance_test"
+            android:contentDescription="work"/>
 
         <item
             android:id="@+id/nav_timer"
             android:icon="@drawable/ic_timer"
-            android:title="@string/menu_timer"/>
+            android:title="@string/menu_timer"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_pyp"
             android:icon="@drawable/ic_pyp"
-            android:title="@string/menu_pyp"/>
+            android:title="@string/menu_pyp"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_turntable"
             android:icon="@drawable/ic_turntable"
-            android:title="@string/menu_turntable"/>
+            android:title="@string/menu_turntable"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_food_record"
             android:icon="@drawable/ic_food_record"
-            android:title="@string/menu_food_record"/>
+            android:title="@string/menu_food_record"
+            android:contentDescription="life"/>
 
         <item
             android:id="@+id/nav_scrummage"
             android:icon="@drawable/ic_scrummage"
-            android:title="@string/menu_scrummage"/>
+            android:title="@string/menu_scrummage"
+            android:contentDescription="life"/>
 
-<!--        <item-->
-<!--            android:id="@+id/nav_intonation"-->
-<!--            android:icon="@drawable/ic_music"-->
-<!--            android:title="@string/menu_intonation"/>-->
+        <item
+            android:id="@+id/nav_consumption"
+            android:icon="@drawable/ic_consumption"
+            android:title="@string/menu_consumption"
+            android:contentDescription="life"/>
 
-<!--        <item-->
-<!--            android:id="@+id/nav_test"-->
-<!--            android:icon="@drawable/ic_test"-->
-<!--            android:title="@string/menu_test"/>-->
+        <item
+            android:id="@+id/nav_minecraft"
+            android:icon="@drawable/ic_minecraft"
+            android:title="@string/menu_minecraft"
+            android:contentDescription="game"/>
+
+        <item
+            android:id="@+id/nav_test"
+            android:icon="@drawable/ic_test"
+            android:title="@string/menu_test"
+            android:contentDescription="work"/>
+
+        <item
+            android:id="@+id/nav_wifi"
+            android:icon="@drawable/ic_wifi"
+            android:title="@string/menu_wifi"
+            android:contentDescription="work"/>
+
+        <item
+            android:id="@+id/nav_tzfe"
+            android:icon="@drawable/ic_tzfe"
+            android:title="@string/menu_tzfe"
+            android:contentDescription="game"/>
+
+        <item
+            android:id="@+id/nav_tetris"
+            android:icon="@drawable/ic_tetris"
+            android:title="@string/menu_tetris"
+            android:contentDescription="game"/>
+
+        <item
+            android:id="@+id/nav_compass"
+            android:icon="@drawable/ic_compass"
+            android:title="@string/menu_compass"
+            android:contentDescription="work"/>
+
+        <item
+            android:id="@+id/nav_sort"
+            android:icon="@drawable/ic_sort"
+            android:title="@string/menu_sort"
+            android:contentDescription="work"/>
     </group>
 </menu> 
